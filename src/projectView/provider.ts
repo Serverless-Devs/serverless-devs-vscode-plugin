@@ -1,8 +1,9 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
+import core from '@serverless-devs/core';
 
-import { NxProject, ProjectTreeItem } from './item';
+import { ProjectTreeItem } from './item';
 import {AbstractTreeProvider} from '../lib/abstractTreeProvider';
 import { ProviderResult } from 'vscode';
 
@@ -20,22 +21,27 @@ export class ProjectTreeProvider extends AbstractTreeProvider<ProjectTreeItem> {
 			vscode.window.showInformationMessage('No ProjectTreeItem in empty workspace');
 			return Promise.resolve([]);
 		}
-
-		if (element) {
-			return Promise.resolve(this.getDepsInPackageJson(path.join(this.workspaceRoot, 'node_modules', element.label, 'package.json')));
-		} else {
-			const packageJsonPath = path.join(this.workspaceRoot, 'package.json');
-			if (this.pathExists(packageJsonPath)) {
-				return Promise.resolve(this.getDepsInPackageJson(packageJsonPath));
-			} else {
-				vscode.window.showInformationMessage('Workspace has no package.json');
-				return Promise.resolve([]);
+		const template = path.join(this.workspaceRoot, 's.yaml');
+		if (this.pathExists(template)) {
+			// s config get 为空
+			if(true) {
+				return Promise.resolve([
+					new ProjectTreeItem('Please Add Account', '', vscode.TreeItemCollapsibleState.None, {
+						command: 'serverless-devs.config',
+						title: '',
+						arguments: ['aaa']
+					})
+				]);
 			}
+			// return Promise.resolve(this.getDepsInPackageJson(template));
+		} else {
+			vscode.window.showInformationMessage('Workspace has no s.yaml');
+			return Promise.resolve([]);
 		}
   }
 
   /**
-	 * Given the path to package.json, read all its dependencies and devDependencies.
+	 * Given the path to s.yaml, read all its dependencies and devDependencies.
 	 */
 	private getDepsInPackageJson(packageJsonPath: string): ProjectTreeItem[] {
 		return [].concat(new ProjectTreeItem('dankun', '0.0.1', vscode.TreeItemCollapsibleState.None, {

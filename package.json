@@ -72,7 +72,7 @@
       ],
       "view/item/context": [
         {
-          "command": "serverless-devs.public.demo",
+          "command": "serverless-devs.init",
           "when": "view == localResource",
           "group": "inline"
         }
@@ -101,7 +101,7 @@
     "typescript": "^4.5.5"
   },
   "dependencies": {
-    "@serverless-devs/core": "^0.1.33",
+    "@serverless-devs/core": "^0.1.36",
     "fs-extra": "^10.0.1"
   }
 }
