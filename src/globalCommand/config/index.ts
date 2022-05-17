@@ -47,29 +47,57 @@ export async function config(context: ExtensionContext) {
       activeItem: state.pickItem,
       shouldResume: shouldResume,
     });
-    return (input: MultiStepInput) => pickSolution(input, state);
+    return await pickSolution(input, state);
   }
 
   async function pickSolution(input: MultiStepInput, state: Partial<State>) {
     const tmp: any = {};
-    const keyList = providerCollection[state.pickItem.value];
-    for (const k of keyList) {
-      tmp[k] = await input.showInputBox({
-        title,
-        step: state.step++,
-        totalSteps: state.totalSteps,
-        value: state.value,
-        prompt: k,
-        validate: validate,
-        shouldResume: shouldResume,
-      });
+    const pickValue = state.pickItem.value;
+    const keyList = providerCollection[pickValue];
+    if (pickValue === "custom") {
+      await handleCustom(tmp, input, state);
+    } else {
+      for (const k of keyList) {
+        tmp[k] = await input.showInputBox({
+          title,
+          step: state.step++,
+          totalSteps: state.totalSteps,
+          value: state.value,
+          prompt: k,
+          validate: validate,
+          shouldResume: shouldResume,
+        });
+      }
     }
-    // TODO：alibaba 的case需要获取 AccountID
     // alias
-    let alias = await handleAlias(input, state);
+    tmp.$alias = await handleAlias(input, state);
+    await checkAliasExisted(tmp, input, state);
+
+    // alibaba 的case需要获取 AccountID
+    if (pickValue === "alibaba") {
+      try {
+        const data: any = await core.getAccountId(tmp);
+        tmp.AccountID = data.AccountId;
+      } catch (error) {
+        window.showErrorMessage(
+          "You are configuring an incorrect Alibaba Cloud SecretKey."
+        );
+        return;
+      }
+    }
+    const { $alias, ...rest } = tmp;
+    await core.setKnownCredential(rest, $alias);
+    window.showInformationMessage(`Add ${$alias} configuration successful.`);
+  }
+
+  async function checkAliasExisted(
+    tmp: any,
+    input: MultiStepInput,
+    state: Partial<State>
+  ) {
     const filePath = path.join(core.getRootHome(), "access.yaml");
     const content = await core.getYamlContent(filePath);
-    if (_.includes(_.keys(content), alias)) {
+    if (_.includes(_.keys(content), tmp.$alias)) {
       state.pickItem = await input.showQuickPick({
         title,
         step: state.step++,
@@ -87,14 +115,53 @@ export async function config(context: ExtensionContext) {
         setArgs(["-f"]);
       }
       if (state.pickItem.value === "rename") {
-        alias = await handleAlias(input, state);
+        tmp.$alias = await handleAlias(input, state);
+        await checkAliasExisted(tmp, input, state);
       }
       if (state.pickItem.value === "exit") {
-        return;
+        process.exit();
       }
     }
-    await core.setKnownCredential(tmp, alias);
-    window.showInformationMessage(`Add ${alias} configuration successful.`);
+  }
+
+  async function handleCustom(
+    tmp: any,
+    input: MultiStepInput,
+    state: Partial<State>
+  ) {
+    state.pickItem = await input.showQuickPick({
+      title,
+      step: state.step++,
+      totalSteps: state.totalSteps,
+      placeholder: "Please select a type:",
+      items: [
+        { label: "Add key-value pairs", value: "add" },
+        { label: "End of adding key-value pairs", value: "over" },
+      ],
+      activeItem: state.pickItem,
+      shouldResume: shouldResume,
+    });
+    if (state.pickItem.value === "add") {
+      const customKey = await input.showInputBox({
+        title,
+        step: state.step++,
+        totalSteps: state.totalSteps,
+        value: state.value,
+        prompt: "Please enter key",
+        validate: validate,
+        shouldResume: shouldResume,
+      });
+      tmp[customKey] = await input.showInputBox({
+        title,
+        step: state.step++,
+        totalSteps: state.totalSteps,
+        value: state.value,
+        prompt: "Please enter value",
+        validate: validate,
+        shouldResume: shouldResume,
+      });
+      await handleCustom(tmp, input, state);
+    }
   }
 
   async function handleAlias(input: MultiStepInput, state: Partial<State>) {
@@ -119,5 +186,5 @@ export async function config(context: ExtensionContext) {
       // noop
     });
   }
-  const state = await collectInputs();
+  await collectInputs();
 }

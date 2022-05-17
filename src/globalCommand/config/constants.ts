@@ -27,11 +27,10 @@ export const providers = [
     label: "Tencent Cloud (tencent)",
     value: "tencent",
   },
-  // TODO:
-  // {
-  //   label: "Custom (others)",
-  //   value: "custom",
-  // },
+  {
+    label: "Custom (others)",
+    value: "custom",
+  },
 ];
 
 export const providerCollection = {
