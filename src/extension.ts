@@ -20,7 +20,6 @@ export function activate(context: vscode.ExtensionContext) {
     config(context)
   );
 
-  // @ts-ignore
   const depNodeProvider = new ProjectTreeProvider(rootPath);
   vscode.window.registerTreeDataProvider("localResource", depNodeProvider);
 }
