@@ -1,10 +1,4 @@
-import {
-  QuickPickItem,
-  window,
-  ExtensionContext,
-  QuickInputButtons,
-  Uri,
-} from "vscode";
+import { window, ExtensionContext } from "vscode";
 import { MultiStepInput } from "../../lib/multiStepInput";
 import * as core from "@serverless-devs/core";
 import * as path from "path";
@@ -75,7 +69,7 @@ export async function config(context: ExtensionContext) {
     }
     const { $alias, ...rest } = tmp;
     await core.setKnownCredential(rest, $alias);
-    window.showInformationMessage(`Add ${$alias} configuration successful.`);
+    window.showInformationMessage(`Add ${$alias} configuration successfully.`);
   }
 
   async function checkAliasExisted(

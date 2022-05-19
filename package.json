@@ -9,11 +9,12 @@
   "categories": [
     "Other"
   ],
+  "main": "./out/extension.js",
   "activationEvents": [
     "onView:localResource",
-    "onView:remoteResource"
+    "onView:remoteResource",
+    "onCommand:serverless-devs.config"
   ],
-  "main": "./out/extension.js",
   "contributes": {
     "views": {
       "Serverless-Devs-explorer": [
@@ -39,7 +40,8 @@
     "commands": [
       {
         "command": "serverless-devs.config",
-        "title": "Add Account"
+        "title": "Add Account",
+        "category": "Serverless-Devs"
       },
       {
         "command": "serverless-devs.init",
