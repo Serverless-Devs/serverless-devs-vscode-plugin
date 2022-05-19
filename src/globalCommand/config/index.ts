@@ -1,4 +1,4 @@
-import { window, ExtensionContext } from "vscode";
+import * as vscode from "vscode";
 import { MultiStepInput } from "../../lib/multiStepInput";
 import * as core from "@serverless-devs/core";
 import * as path from "path";
@@ -8,7 +8,7 @@ const { lodash: _ } = core;
 
 const title = "Add Account";
 
-export async function config(context: ExtensionContext) {
+export async function config() {
   async function collectInputs() {
     const state = {} as Partial<State>;
     state.step = 1;
@@ -61,7 +61,7 @@ export async function config(context: ExtensionContext) {
         const data: any = await core.getAccountId(tmp);
         tmp.AccountID = data.AccountId;
       } catch (error) {
-        window.showErrorMessage(
+        vscode.window.showErrorMessage(
           "You are configuring an incorrect Alibaba Cloud SecretKey."
         );
         return;
@@ -69,7 +69,9 @@ export async function config(context: ExtensionContext) {
     }
     const { $alias, ...rest } = tmp;
     await core.setKnownCredential(rest, $alias);
-    window.showInformationMessage(`Add ${$alias} configuration successfully.`);
+    vscode.window.showInformationMessage(
+      `Add ${$alias} configuration successfully.`
+    );
   }
 
   async function checkAliasExisted(

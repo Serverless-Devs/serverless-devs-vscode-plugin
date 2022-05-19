@@ -1,13 +1,14 @@
-import { window, ExtensionContext } from "vscode";
+import * as vscode from "vscode";
 import { MultiStepInput } from "../../lib/multiStepInput";
 import * as core from "@serverless-devs/core";
 import * as path from "path";
+import { ext } from "../../extensionVariables";
 import { State } from "../../interface";
 const { lodash: _, fse } = core;
 
 const title = "Init Serverless Devs Application";
 
-export async function init(context: ExtensionContext) {
+export async function init() {
   async function collectInputs() {
     const state = {} as Partial<State>;
     state.step = 1;
@@ -89,7 +90,9 @@ export async function init(context: ExtensionContext) {
       registry,
       source: template.value,
       target: "./",
-      name: projectName,
+      name: path.isAbsolute(projectName)
+        ? projectName
+        : path.join(ext.cwd, projectName),
       parameters: {},
     };
 
@@ -115,7 +118,7 @@ export async function init(context: ExtensionContext) {
       }
     }
     core.loadApplication(appParams).then((appPath) => {
-      window.showInformationMessage(
+      vscode.window.showInformationMessage(
         `You could [cd ${appPath}] and enjoy your serverless journey!`
       );
     });
@@ -124,9 +127,7 @@ export async function init(context: ExtensionContext) {
     if (name.length === 0) {
       return "value cannot be empty.";
     }
-    const projectPath = path.isAbsolute(name)
-      ? name
-      : path.join(process.cwd(), name);
+    const projectPath = path.isAbsolute(name) ? name : path.join(ext.cwd, name);
 
     if (fse.existsSync(projectPath)) {
       return `File ${name} already exists`;
@@ -138,6 +139,10 @@ export async function init(context: ExtensionContext) {
     return new Promise<boolean>((resolve, reject) => {
       // noop
     });
+  }
+  if (!ext.cwd) {
+    vscode.window.showErrorMessage("Please open a workspace");
+    return;
   }
   await collectInputs();
 }

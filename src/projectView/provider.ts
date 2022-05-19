@@ -8,7 +8,7 @@ import { AbstractTreeProvider } from "../lib/abstractTreeProvider";
 import { ProviderResult } from "vscode";
 
 export class ProjectTreeProvider extends AbstractTreeProvider<ProjectTreeItem> {
-  constructor(private workspaceRoot: string) {
+  constructor() {
     super();
   }
 
@@ -19,7 +19,7 @@ export class ProjectTreeProvider extends AbstractTreeProvider<ProjectTreeItem> {
   async getChildren(element?: ProjectTreeItem): Promise<ProjectTreeItem[]> {
     const accessPath = path.join(core.getRootHome(), "access.yaml");
     const accessData = await core.getYamlContent(accessPath);
-    if (!accessData || 1) {
+    if (!accessData) {
       return Promise.resolve([
         new ProjectTreeItem(
           "Add Account",
