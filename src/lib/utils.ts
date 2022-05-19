@@ -3,3 +3,7 @@ export function setArgs(args: string[]) {
     process.argv.slice(2).concat(args)
   );
 }
+
+export function setEnvs(key: string, value: string) {
+  process.env[key] = value;
+}

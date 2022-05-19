@@ -1,26 +1,16 @@
-import {
-  QuickPickItem,
-  window,
-  ExtensionContext,
-  QuickInputButtons,
-  Uri,
-} from "vscode";
+import { window, ExtensionContext } from "vscode";
 import { MultiStepInput } from "../../lib/multiStepInput";
-import { providers } from "./constants";
+import * as core from "@serverless-devs/core";
+import * as path from "path";
+import { State } from "../../interface";
+const { lodash: _, fse } = core;
 
 const title = "Init Serverless Devs Application";
 
 export async function init(context: ExtensionContext) {
-  interface State {
-    title: string;
-    step: number;
-    totalSteps: number;
-    provider: QuickPickItem;
-    name: string;
-  }
-
   async function collectInputs() {
     const state = {} as Partial<State>;
+    state.step = 1;
     await MultiStepInput.run((input) => pickCloudProvider(input, state));
     return state as State;
   }
@@ -29,70 +19,118 @@ export async function init(context: ExtensionContext) {
     input: MultiStepInput,
     state: Partial<State>
   ) {
-    state.provider = await input.showQuickPick({
+    // 第一层级
+    state.pickItem = await input.showQuickPick({
       title,
-      step: 1,
-      totalSteps: 3,
-      placeholder: "Pick a resource group",
-      items: providers,
-      activeItem:
-        typeof state.provider !== "string" ? state.provider : undefined,
+      step: state.step++,
+      totalSteps: state.totalSteps,
+      placeholder: "Hello Serverless for Cloud Vendors",
+      items: core.INIT_PROVIDERS,
+      activeItem: state.pickItem,
       shouldResume: shouldResume,
     });
-    return (input: MultiStepInput) => pickSolution(input, state);
+    return await pickSolution(input, state);
   }
 
   async function pickSolution(input: MultiStepInput, state: Partial<State>) {
-    console.log(state);
-
-    if (state.provider.label === "Alibaba Cloud Serverless") {
-      await input.showQuickPick({
+    const pickValue = state.pickItem.value;
+    let template = state.pickItem;
+    if (pickValue === "Alibaba_Cloud_Serverless") {
+      // 第二层级
+      state.pickItem = await input.showQuickPick({
         title,
-        step: 2,
-        totalSteps: 3,
+        step: state.step++,
+        totalSteps: state.totalSteps,
         placeholder: "Hello, serverlesser. Which template do you like?",
-        items: [
-          {
-            label: "Quick start",
-            description: "Deploy a Hello World function to FaaS",
-          },
-          {
-            label: "Web Framework",
-            description: "Deploy a web framework to FaaS",
-          },
-          {
-            label: "Container example",
-            description: "Deploy function to FaaS with custom-container",
-          },
-          {
-            label: "Static website",
-            description: "Deploy a static website",
-          },
-          {
-            label: "Best practice",
-            description: "Experience serverless project",
-          },
-        ],
+        items: _.get(core.INIT_TEMPLATE, pickValue),
+        activeItem: state.pickItem,
         shouldResume: shouldResume,
       });
-      return (input: MultiStepInput) => pickAliyunCommand(input, state);
-    } else if (state.provider.label === "AWS Cloud Serverless") {
+      // 第三层级
+      state.pickItem = await input.showQuickPick({
+        title,
+        step: state.step++,
+        totalSteps: state.totalSteps,
+        placeholder: "Which template do you like?",
+        items: _.get(core.INIT_ALI_TEMPLATE, state.pickItem.value),
+        activeItem: state.pickItem,
+        shouldResume: shouldResume,
+      });
+      template = state.pickItem;
     }
-  }
-
-  async function pickAliyunCommand(
-    input: MultiStepInput,
-    state: Partial<State>
-  ) {
-    const commandItem = await input.showQuickPick({
+    if (pickValue === "Dev_Template_for_Serverless_Devs") {
+      // 第二层级
+      state.pickItem = await input.showQuickPick({
+        title,
+        step: state.step++,
+        totalSteps: state.totalSteps,
+        placeholder: "Which template do you like?",
+        items: core.INIT_DEVS_TEMPLATE,
+        activeItem: state.pickItem,
+        shouldResume: shouldResume,
+      });
+      template = state.pickItem;
+    }
+    const projectName = await input.showInputBox({
       title,
-      step: 3,
-      totalSteps: 3,
-      placeholder: "Pick a runtime",
-      items: ["Express.js", "Egg.js", "Koa.js"].map((label) => ({ label })),
+      step: state.step++,
+      totalSteps: state.totalSteps,
+      value: "",
+      prompt: "Please input your project name (init dir)",
+      validate: validate,
       shouldResume: shouldResume,
     });
-    state.name = commandItem.label;
+
+    const registry = await core.getSetConfig(
+      "registry",
+      core.DEFAULT_REGIRSTRY
+    );
+    const appParams = {
+      registry,
+      source: template.value,
+      target: "./",
+      name: projectName,
+      parameters: {},
+    };
+
+    if (pickValue !== "Dev_Template_for_Serverless_Devs") {
+      const credentialAliasList = _.map(
+        await core.getCredentialAliasList(),
+        (o) => ({
+          label: o,
+          value: o,
+        })
+      );
+      if (credentialAliasList.length > 0) {
+        state.pickItem = await input.showQuickPick({
+          title,
+          step: state.step++,
+          totalSteps: state.totalSteps,
+          placeholder: "please select credential alias",
+          items: credentialAliasList,
+          activeItem: state.pickItem,
+          shouldResume: shouldResume,
+        });
+        _.set(appParams, "access", state.pickItem.value);
+      }
+    }
+    core.loadApplication(appParams).then((appPath) => {
+      window.showInformationMessage(
+        `You could [cd ${appPath}] and enjoy your serverless journey!`
+      );
+    });
+  }
+  async function validate(name: string) {
+    if (name.length === 0) {
+      return "value cannot be empty.";
+    }
+    const projectPath = path.isAbsolute(name)
+      ? name
+      : path.join(process.cwd(), name);
+
+    if (fse.existsSync(projectPath)) {
+      return `File ${name} already exists`;
+    }
   }
 
   function shouldResume() {
@@ -101,6 +139,5 @@ export async function init(context: ExtensionContext) {
       // noop
     });
   }
-  const state = await collectInputs();
-  window.showInformationMessage(`Creating Application Service '${state.name}'`);
+  await collectInputs();
 }

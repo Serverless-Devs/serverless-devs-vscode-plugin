@@ -6,27 +6,15 @@ import {
   Uri,
 } from "vscode";
 import { MultiStepInput } from "../../lib/multiStepInput";
-import { providers, providerCollection } from "./constants";
 import * as core from "@serverless-devs/core";
 import * as path from "path";
 import { setArgs } from "../../lib/utils";
+import { State } from "../../interface";
 const { lodash: _ } = core;
 
 const title = "Add Account";
 
 export async function config(context: ExtensionContext) {
-  interface IPickItem extends QuickPickItem {
-    value: string;
-  }
-  interface State {
-    title: string;
-    step: number;
-    totalSteps: number;
-    pickItem: IPickItem;
-    name: string;
-    value: string;
-  }
-
   async function collectInputs() {
     const state = {} as Partial<State>;
     state.step = 1;
@@ -43,7 +31,7 @@ export async function config(context: ExtensionContext) {
       step: state.step++,
       totalSteps: state.totalSteps,
       placeholder: "Please select a provider:",
-      items: providers,
+      items: core.CONFIG_PROVIDERS,
       activeItem: state.pickItem,
       shouldResume: shouldResume,
     });
@@ -53,7 +41,7 @@ export async function config(context: ExtensionContext) {
   async function pickSolution(input: MultiStepInput, state: Partial<State>) {
     const tmp: any = {};
     const pickValue = state.pickItem.value;
-    const keyList = providerCollection[pickValue];
+    const keyList = _.get(core.CONFIG_ACCESS, pickValue);
     if (pickValue === "custom") {
       await handleCustom(tmp, input, state);
     } else {
