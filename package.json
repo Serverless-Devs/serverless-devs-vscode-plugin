@@ -50,14 +50,6 @@
           "light": "media/light/plus.svg",
           "dark": "media/dark/plus.svg"
         }
-      },
-      {
-        "command": "serverless-devs.public.demo",
-        "title": "Create Demo",
-        "icon": {
-          "light": "media/light/plus.svg",
-          "dark": "media/dark/plus.svg"
-        }
       }
     ],
     "menus": {
@@ -75,7 +67,7 @@
       "view/item/context": [
         {
           "command": "serverless-devs.init",
-          "when": "view == localResource",
+          "when": "view == localResource && viewItem != local",
           "group": "inline"
         }
       ]

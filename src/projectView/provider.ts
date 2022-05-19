@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import * as fs from "fs";
 import * as path from "path";
-import core from "@serverless-devs/core";
+import * as core from "@serverless-devs/core";
 
 import { ProjectTreeItem } from "./item";
 import { AbstractTreeProvider } from "../lib/abstractTreeProvider";
@@ -16,34 +16,21 @@ export class ProjectTreeProvider extends AbstractTreeProvider<ProjectTreeItem> {
     throw new Error("Method not implemented.");
   }
 
-  getChildren(element?: ProjectTreeItem): ProviderResult<ProjectTreeItem[]> {
-    if (!this.workspaceRoot) {
-      vscode.window.showInformationMessage(
-        "No ProjectTreeItem in empty workspace"
-      );
-      return Promise.resolve([]);
-    }
-    const template = path.join(this.workspaceRoot, "s.yaml");
-    if (this.pathExists(template)) {
-      // s config get 为空
-      if (true) {
-        return Promise.resolve([
-          new ProjectTreeItem(
-            "Please Add Account",
-            "",
-            vscode.TreeItemCollapsibleState.None,
-            {
-              command: "serverless-devs.config",
-              title: "",
-              arguments: ["aaa"],
-            }
-          ),
-        ]);
-      }
-      // return Promise.resolve(this.getDepsInPackageJson(template));
-    } else {
-      vscode.window.showInformationMessage("Workspace has no s.yaml");
-      return Promise.resolve([]);
+  async getChildren(element?: ProjectTreeItem): Promise<ProjectTreeItem[]> {
+    const accessPath = path.join(core.getRootHome(), "access.yaml");
+    const accessData = await core.getYamlContent(accessPath);
+    if (!accessData || 1) {
+      return Promise.resolve([
+        new ProjectTreeItem(
+          "Add Account",
+          "",
+          vscode.TreeItemCollapsibleState.None,
+          {
+            command: "serverless-devs.config",
+            title: "Add Account",
+          }
+        ),
+      ]);
     }
   }
 
