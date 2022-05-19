@@ -45,10 +45,18 @@
       },
       {
         "command": "serverless-devs.init",
-        "title": "Create Function",
+        "title": "Init Serverless Devs Application",
         "icon": {
           "light": "media/light/plus.svg",
           "dark": "media/dark/plus.svg"
+        }
+      },
+      {
+        "command": "serverless-devs.refresh",
+        "title": "Refresh",
+        "icon": {
+          "light": "media/light/refresh.svg",
+          "dark": "media/dark/refresh.svg"
         }
       }
     ],
@@ -56,6 +64,11 @@
       "view/title": [
         {
           "command": "serverless-devs.config",
+          "when": "view == localResource"
+        },
+        {
+          "command": "serverless-devs.refresh",
+          "group": "navigation",
           "when": "view == localResource"
         },
         {

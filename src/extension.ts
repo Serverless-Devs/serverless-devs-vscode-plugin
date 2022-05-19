@@ -20,8 +20,12 @@ export function activate(context: vscode.ExtensionContext) {
   // s config add
   vscode.commands.registerCommand("serverless-devs.config", () => config());
 
-  const depNodeProvider = new ProjectTreeProvider();
-  vscode.window.registerTreeDataProvider("localResource", depNodeProvider);
+  ext.localResource = new ProjectTreeProvider();
+  vscode.window.registerTreeDataProvider("localResource", ext.localResource);
+
+  vscode.commands.registerCommand("serverless-devs.refresh", () => {
+    ext.localResource.refresh();
+  });
 }
 
 // this method is called when your extension is deactivated
