@@ -5,6 +5,7 @@ import { ext } from "./extensionVariables";
 import { ProjectTreeProvider } from "./projectView/provider";
 import { init } from "./globalCommand/init";
 import { config } from "./globalCommand/config";
+import { TestView } from "./projectView/testView";
 
 export function activate(context: vscode.ExtensionContext) {
   ext.context = context;
@@ -26,6 +27,8 @@ export function activate(context: vscode.ExtensionContext) {
   vscode.commands.registerCommand("serverless-devs.refresh", () => {
     ext.localResource.refresh();
   });
+
+  new TestView(context);
 }
 
 // this method is called when your extension is deactivated

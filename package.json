@@ -26,6 +26,12 @@
           "id": "remoteResource",
           "name": "remote resource"
         }
+      ],
+      "explorer": [
+        {
+          "id": "testView",
+          "name": "Serverless-Devs Test View"
+        }
       ]
     },
     "viewsContainers": {
@@ -64,6 +70,11 @@
           "light": "media/light/refresh.svg",
           "dark": "media/dark/refresh.svg"
         }
+      },
+      {
+        "command": "testView.changeTitle",
+        "title": "Change Title",
+        "category": "Serverless-Devs"
       }
     ],
     "menus": {
