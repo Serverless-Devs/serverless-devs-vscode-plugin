@@ -40,7 +40,7 @@
     "viewsWelcome": [
       {
         "view": "localResource",
-        "contents": "some text found [learn more](https://www.npmjs.com/).\n[Add Account](command:serverless-devs.config)\n[Create Application](command:serverless-devs.init)"
+        "contents": "some text found [learn more](https://www.npmjs.com/).\n[Open a Folder](command:vscode.openFolder)\n[Add Account](command:serverless-devs.config)\n[Create Application](command:serverless-devs.init)"
       }
     ],
     "commands": [
