@@ -6,6 +6,7 @@ import { ProjectTreeProvider } from "./projectView/provider";
 import { init } from "./globalCommand/init";
 import { config } from "./globalCommand/config";
 import { TestView } from "./projectView/testView";
+import { webviewTest } from "./projectView/webviewTest";
 
 export function activate(context: vscode.ExtensionContext) {
   ext.context = context;
@@ -22,13 +23,22 @@ export function activate(context: vscode.ExtensionContext) {
   vscode.commands.registerCommand("serverless-devs.config", () => config());
 
   ext.localResource = new ProjectTreeProvider();
-  vscode.window.registerTreeDataProvider("localResource", ext.localResource);
-
+  const localResourceTreeView = vscode.window.createTreeView("localResource", {
+    treeDataProvider: ext.localResource,
+    showCollapseAll: true,
+  });
   vscode.commands.registerCommand("serverless-devs.refresh", () => {
     ext.localResource.refresh();
   });
 
   new TestView(context);
+  webviewTest(context);
+
+  localResourceTreeView.onDidChangeVisibility(({ visible }) => {
+    if (visible) {
+      vscode.commands.executeCommand("catCoding.start");
+    }
+  });
 }
 
 // this method is called when your extension is deactivated

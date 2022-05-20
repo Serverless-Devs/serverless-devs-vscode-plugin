@@ -13,7 +13,8 @@
   "activationEvents": [
     "onView:localResource",
     "onView:remoteResource",
-    "onCommand:serverless-devs.config"
+    "onCommand:serverless-devs.config",
+    "onCommand:catCoding.start"
   ],
   "contributes": {
     "views": {
@@ -75,6 +76,11 @@
         "command": "testView.changeTitle",
         "title": "Change Title",
         "category": "Serverless-Devs"
+      },
+      {
+        "command": "catCoding.start",
+        "title": "Start new cat coding session",
+        "category": "Cat Coding"
       }
     ],
     "menus": {
