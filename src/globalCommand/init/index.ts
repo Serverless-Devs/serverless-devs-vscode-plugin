@@ -72,15 +72,6 @@ export async function init() {
       });
       template = state.pickItem;
     }
-    const projectName = await input.showInputBox({
-      title,
-      step: state.step++,
-      totalSteps: state.totalSteps,
-      value: "",
-      prompt: "Please input your project name (init dir)",
-      validate: validate,
-      shouldResume: shouldResume,
-    });
 
     const registry = await core.getSetConfig(
       "registry",
@@ -90,9 +81,7 @@ export async function init() {
       registry,
       source: template.value,
       target: "./",
-      name: path.isAbsolute(projectName)
-        ? projectName
-        : path.join(ext.cwd, projectName),
+      name: ext.cwd,
       parameters: {},
     };
 
@@ -117,21 +106,9 @@ export async function init() {
         _.set(appParams, "access", state.pickItem.value);
       }
     }
-    core.loadApplication(appParams).then((appPath) => {
-      vscode.window.showInformationMessage(
-        `You could [cd ${appPath}] and enjoy your serverless journey!`
-      );
+    core.loadApplication(appParams).then(() => {
+      vscode.window.showInformationMessage("Thanks for using Serverless-Devs");
     });
-  }
-  async function validate(name: string) {
-    if (name.length === 0) {
-      return "value cannot be empty.";
-    }
-    const projectPath = path.isAbsolute(name) ? name : path.join(ext.cwd, name);
-
-    if (fse.existsSync(projectPath)) {
-      return `File ${name} already exists`;
-    }
   }
 
   function shouldResume() {
@@ -142,6 +119,14 @@ export async function init() {
   }
   if (!ext.cwd) {
     vscode.window.showErrorMessage("Please open a workspace");
+    return;
+  }
+  const spath = path.join(ext.cwd, "s.yaml");
+  const hasYaml = await core.getYamlContent(spath);
+  if (hasYaml) {
+    vscode.window.showErrorMessage(
+      "A Serverless-Devs project is detected in the current workspace, Please open a new workspace"
+    );
     return;
   }
   await collectInputs();
