@@ -37,6 +37,12 @@
         }
       ]
     },
+    "viewsWelcome": [
+      {
+        "view": "localResource",
+        "contents": "some text found [learn more](https://www.npmjs.com/).\n[Add Account](command:serverless-devs.config)\n[Create Application](command:serverless-devs.init)"
+      }
+    ],
     "commands": [
       {
         "command": "serverless-devs.config",

@@ -5,6 +5,7 @@ import * as core from "@serverless-devs/core";
 
 import { ProjectTreeItem } from "./item";
 import { AbstractTreeProvider } from "../lib/abstractTreeProvider";
+import { getYaml } from "../lib/utils";
 import { ProviderResult } from "vscode";
 
 export class ProjectTreeProvider extends AbstractTreeProvider<ProjectTreeItem> {
@@ -19,18 +20,18 @@ export class ProjectTreeProvider extends AbstractTreeProvider<ProjectTreeItem> {
   async getChildren(element?: ProjectTreeItem): Promise<ProjectTreeItem[]> {
     const accessPath = path.join(core.getRootHome(), "access.yaml");
     const accessData = await core.getYamlContent(accessPath);
-    if (!accessData) {
-      return Promise.resolve([
-        new ProjectTreeItem(
-          "Add Account",
-          "",
-          vscode.TreeItemCollapsibleState.None,
-          {
-            command: "serverless-devs.config",
-            title: "Add Account",
-          }
-        ),
-      ]);
+    if (accessData) {
+      const yamlData = await getYaml();
+      if (yamlData) {
+        const result = [];
+        const { services } = yamlData;
+        for (const key in services) {
+          result.push(
+            new ProjectTreeItem(key, "", vscode.TreeItemCollapsibleState.None)
+          );
+        }
+        return Promise.resolve(result);
+      }
     }
   }
 

@@ -12,28 +12,10 @@ export class ProjectTreeItem extends vscode.TreeItem {
 
     this.tooltip = this.desc ? `${this.label}-${this.desc}` : this.label;
     this.description = this.desc;
-    this.iconPath = desc
-      ? {
-          light: path.join(
-            __filename,
-            "..",
-            "..",
-            "..",
-            "resources",
-            "light",
-            "dependency.svg"
-          ),
-          dark: path.join(
-            __filename,
-            "..",
-            "..",
-            "..",
-            "resources",
-            "dark",
-            "dependency.svg"
-          ),
-        }
-      : null;
+    this.iconPath = {
+      light: path.resolve(__dirname, "..", "..", "media", "light", "box.svg"),
+      dark: path.resolve(__dirname, "..", "..", "media", "dark", "box.svg"),
+    };
   }
 
   contextValue = "local";

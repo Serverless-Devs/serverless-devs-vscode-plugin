@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import { MultiStepInput } from "../../lib/multiStepInput";
+import { getYaml } from "../../lib/utils";
 import * as core from "@serverless-devs/core";
 import * as path from "path";
 import { ext } from "../../extensionVariables";
@@ -107,6 +108,7 @@ export async function init() {
       }
     }
     core.loadApplication(appParams).then(() => {
+      ext.localResource.refresh();
       vscode.window.showInformationMessage("Thanks for using Serverless-Devs");
     });
   }
@@ -121,8 +123,8 @@ export async function init() {
     vscode.window.showErrorMessage("Please open a workspace");
     return;
   }
-  const spath = path.join(ext.cwd, "s.yaml");
-  const hasYaml = await core.getYamlContent(spath);
+
+  const hasYaml = await getYaml();
   if (hasYaml) {
     vscode.window.showErrorMessage(
       "A Serverless-Devs project is detected in the current workspace, Please open a new workspace"
