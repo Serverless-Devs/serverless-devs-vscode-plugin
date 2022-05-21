@@ -7,6 +7,7 @@ import { init } from "./globalCommand/init";
 import { config } from "./globalCommand/config";
 import { TestView } from "./projectView/testView";
 import { webviewTest } from "./projectView/webviewTest";
+import { HelloWorldPanel } from "./panels/HelloWorldPanel";
 
 export function activate(context: vscode.ExtensionContext) {
   ext.context = context;
@@ -33,10 +34,15 @@ export function activate(context: vscode.ExtensionContext) {
 
   new TestView(context);
   webviewTest(context);
-
+  context.subscriptions.push(
+    vscode.commands.registerCommand("serverless-devs.helloWorld", () => {
+      HelloWorldPanel.render(context.extensionUri);
+    })
+  );
   localResourceTreeView.onDidChangeVisibility(({ visible }) => {
     if (visible) {
-      vscode.commands.executeCommand("catCoding.start");
+      // vscode.commands.executeCommand("catCoding.start");
+      vscode.commands.executeCommand("serverless-devs.helloWorld");
     }
   });
 }

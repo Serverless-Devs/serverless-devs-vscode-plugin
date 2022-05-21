@@ -4,51 +4,52 @@ import * as path from "path";
 export function webviewTest(context: vscode.ExtensionContext) {
   // Track currently webview panel
   let currentPanel: vscode.WebviewPanel | undefined = undefined;
+  context.subscriptions.push(
+    vscode.commands.registerCommand("catCoding.start", () => {
+      const columnToShowIn = vscode.window.activeTextEditor
+        ? vscode.window.activeTextEditor.viewColumn
+        : undefined;
 
-  vscode.commands.registerCommand("catCoding.start", () => {
-    const columnToShowIn = vscode.window.activeTextEditor
-      ? vscode.window.activeTextEditor.viewColumn
-      : undefined;
+      if (currentPanel) {
+        // If we already have a panel, show it in the target column
+        currentPanel.reveal(columnToShowIn);
+      } else {
+        // Otherwise, create a new panel
+        currentPanel = vscode.window.createWebviewPanel(
+          "catCoding",
+          "Cat Coding",
+          columnToShowIn,
+          {
+            // Only allow the webview to access resources in our extension's media directory
+            localResourceRoots: [
+              vscode.Uri.file(path.join(context.extensionPath, "media")),
+            ],
+            // Enable scripts in the webview
+            enableScripts: true,
+          }
+        );
 
-    if (currentPanel) {
-      // If we already have a panel, show it in the target column
-      currentPanel.reveal(columnToShowIn);
-    } else {
-      // Otherwise, create a new panel
-      currentPanel = vscode.window.createWebviewPanel(
-        "catCoding",
-        "Cat Coding",
-        columnToShowIn,
-        {
-          // Only allow the webview to access resources in our extension's media directory
-          localResourceRoots: [
-            vscode.Uri.file(path.join(context.extensionPath, "media")),
-          ],
-          // Enable scripts in the webview
-          enableScripts: true,
-        }
-      );
+        const onDiskPath = vscode.Uri.file(
+          path.join(context.extensionPath, "media", "light", "fc.svg")
+        );
+        const catSrc = currentPanel.webview.asWebviewUri(onDiskPath);
 
-      const onDiskPath = vscode.Uri.file(
-        path.join(context.extensionPath, "media", "light", "fc.svg")
-      );
-      const catSrc = currentPanel.webview.asWebviewUri(onDiskPath);
+        currentPanel.webview.html = getWebviewContent(catSrc);
 
-      currentPanel.webview.html = getWebviewContent(catSrc);
+        //  close webview
+        // currentPanel.dispose()
 
-      //  close webview
-      // currentPanel.dispose()
-
-      // Reset when the current panel is closed
-      currentPanel.onDidDispose(
-        () => {
-          currentPanel = undefined;
-        },
-        null,
-        context.subscriptions
-      );
-    }
-  });
+        // Reset when the current panel is closed
+        currentPanel.onDidDispose(
+          () => {
+            currentPanel = undefined;
+          },
+          null,
+          context.subscriptions
+        );
+      }
+    })
+  );
 }
 
 function getWebviewContent(src) {
@@ -60,7 +61,6 @@ function getWebviewContent(src) {
       <title>Cat Coding</title>
   </head>
   <body>
-      <img src="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif" width="300" />
       <img src="${src}" width="300" />
      <h1 id="lines-of-code-counter">0</h1>
      <script>

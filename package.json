@@ -14,7 +14,8 @@
     "onView:localResource",
     "onView:remoteResource",
     "onCommand:serverless-devs.config",
-    "onCommand:catCoding.start"
+    "onCommand:catCoding.start",
+    "onCommand:serverless-devs.helloWorld"
   ],
   "contributes": {
     "views": {
@@ -51,6 +52,11 @@
       }
     ],
     "commands": [
+      {
+        "command": "serverless-devs.helloWorld",
+        "title": "helloWorld",
+        "category": "Serverless-Devs"
+      },
       {
         "command": "serverless-devs.config",
         "title": "Add Account",
@@ -131,6 +137,7 @@
     "typescript": "^4.5.5"
   },
   "dependencies": {
-    "@serverless-devs/core": "^0.1.37-beta.1"
+    "@serverless-devs/core": "^0.1.37-beta.1",
+    "@vscode/webview-ui-toolkit": "^1.0.0"
   }
 }
