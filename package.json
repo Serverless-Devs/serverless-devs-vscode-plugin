@@ -86,7 +86,12 @@
       {
         "command": "catCoding.start",
         "title": "Start new cat coding session",
-        "category": "Cat Coding"
+        "category": "Serverless-Devs"
+      },
+      {
+        "command": "extension.startTask",
+        "title": "Show Progress",
+        "category": "Serverless-Devs"
       }
     ],
     "menus": {

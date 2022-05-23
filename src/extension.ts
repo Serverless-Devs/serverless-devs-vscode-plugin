@@ -9,6 +9,7 @@ import { TestView } from "./views/testView";
 import { webviewTest } from "./views/webviewTest";
 import { statusBarItem } from "./status-bar/statusBarItem";
 import getHtmlForWebview from "./webview/getHtml";
+import { progressTest } from "./progress/index";
 
 export function activate(context: vscode.ExtensionContext) {
   ext.context = context;
@@ -42,6 +43,7 @@ export function activate(context: vscode.ExtensionContext) {
   new TestView(context);
   webviewTest(context);
   statusBarItem(context);
+  progressTest(context);
 
   // init config webview
   let configWebviewPanel: vscode.WebviewPanel | undefined;
