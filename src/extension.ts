@@ -8,6 +8,7 @@ import { config } from "./globalCommand/config";
 import { TestView } from "./projectView/testView";
 import { webviewTest } from "./projectView/webviewTest";
 import { HelloWorldPanel } from "./panels/HelloWorldPanel";
+import { statusBarItem } from "./status-bar/statusBarItem";
 
 export function activate(context: vscode.ExtensionContext) {
   ext.context = context;
@@ -34,6 +35,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   new TestView(context);
   webviewTest(context);
+  statusBarItem(context);
   context.subscriptions.push(
     vscode.commands.registerCommand("serverless-devs.helloWorld", () => {
       HelloWorldPanel.render(context.extensionUri);
