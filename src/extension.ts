@@ -8,7 +8,7 @@ import { config } from "./commands/config";
 import { TestView } from "./views/testView";
 import { webviewTest } from "./views/webviewTest";
 import { statusBarItem } from "./status-bar/statusBarItem";
-import { getHtmlForWebview } from "./webview/getHtmlForWebview";
+import getHtmlForWebview from "./webview/getHtml";
 
 export function activate(context: vscode.ExtensionContext) {
   ext.context = context;
@@ -19,19 +19,25 @@ export function activate(context: vscode.ExtensionContext) {
       : undefined;
 
   // s init
-  vscode.commands.registerCommand("serverless-devs.init", () => init());
-
+  context.subscriptions.push(
+    vscode.commands.registerCommand("serverless-devs.init", () => init())
+  );
   // s config add
-  vscode.commands.registerCommand("serverless-devs.config", () => config());
+  context.subscriptions.push(
+    vscode.commands.registerCommand("serverless-devs.config", () => config())
+  );
 
   ext.localResource = new ProjectTreeProvider();
   const localResourceTreeView = vscode.window.createTreeView("localResource", {
     treeDataProvider: ext.localResource,
     showCollapseAll: true,
   });
-  vscode.commands.registerCommand("serverless-devs.refresh", () => {
-    ext.localResource.refresh();
-  });
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand("serverless-devs.refresh", () => {
+      ext.localResource.refresh();
+    })
+  );
 
   new TestView(context);
   webviewTest(context);

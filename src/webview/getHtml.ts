@@ -6,7 +6,7 @@ import { webViewEvent } from "./event/index";
 
 const { fse } = core;
 
-export function getHtmlForWebview(
+export default function getHtml(
   entryName: string,
   context: vscode.ExtensionContext,
   webview: vscode.Webview
