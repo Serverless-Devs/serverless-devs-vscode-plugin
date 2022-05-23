@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { ProjectTreeProvider } from "./projectView/provider";
+import { ProjectTreeProvider } from "./views/provider";
 
 export namespace ext {
   export let context: vscode.ExtensionContext;

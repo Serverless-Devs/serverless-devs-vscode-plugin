@@ -2,11 +2,11 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
 import { ext } from "./extensionVariables";
-import { ProjectTreeProvider } from "./projectView/provider";
-import { init } from "./globalCommand/init";
-import { config } from "./globalCommand/config";
-import { TestView } from "./projectView/testView";
-import { webviewTest } from "./projectView/webviewTest";
+import { ProjectTreeProvider } from "./views/provider";
+import { init } from "./commands/init";
+import { config } from "./commands/config";
+import { TestView } from "./views/testView";
+import { webviewTest } from "./views/webviewTest";
 import { HelloWorldPanel } from "./panels/HelloWorldPanel";
 import { statusBarItem } from "./status-bar/statusBarItem";
 
