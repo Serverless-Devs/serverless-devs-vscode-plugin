@@ -4,7 +4,7 @@ import { hello } from "./event";
 
 // init app-center webview
 let appCenterWebviewPanel: vscode.WebviewPanel | undefined;
-export function appCenter(context: vscode.ExtensionContext) {
+export function activeAppCenterWebview(context: vscode.ExtensionContext) {
   if (appCenterWebviewPanel) {
     appCenterWebviewPanel.reveal();
   } else {

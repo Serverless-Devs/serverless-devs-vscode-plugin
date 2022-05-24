@@ -8,7 +8,7 @@ import { config } from "./commands/config";
 import { TestView } from "./local-resource/testView";
 import { testWebview } from "./local-resource/testWebview";
 import { statusBarItem } from "./status/statusBarItem";
-import { appCenter } from "./app-center";
+import { activeAppCenterWebview } from "./app-center";
 
 export function activate(context: vscode.ExtensionContext) {
   ext.context = context;
@@ -42,10 +42,10 @@ export function activate(context: vscode.ExtensionContext) {
   testWebview(context);
   statusBarItem(context);
   // app-center webview
-  appCenter(context);
+  activeAppCenterWebview(context);
   context.subscriptions.push(
     vscode.commands.registerCommand("serverless-devs.helloWorld", () => {
-      appCenter(context);
+      activeAppCenterWebview(context);
     })
   );
   localResourceTreeView.onDidChangeVisibility(({ visible }) => {
