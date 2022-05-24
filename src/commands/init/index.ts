@@ -2,9 +2,8 @@ import * as vscode from "vscode";
 import { MultiStepInput } from "../../common";
 import { getYaml } from "../../utils";
 import * as core from "@serverless-devs/core";
-import * as path from "path";
 import { ext } from "../../extensionVariables";
-import { State } from "../../interface";
+import { IMultiStepInputState as State } from "../../interface";
 const { lodash: _, fse } = core;
 
 const title = "Init Serverless Devs Application";

@@ -4,7 +4,7 @@ export interface IPickItem extends QuickPickItem {
   value: string;
 }
 
-export interface State {
+export interface IMultiStepInputState {
   title: string;
   step: number;
   totalSteps: number;

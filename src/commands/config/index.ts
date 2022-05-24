@@ -4,7 +4,7 @@ import * as core from "@serverless-devs/core";
 import * as path from "path";
 import { ext } from "../../extensionVariables";
 import { setArgs } from "../../utils";
-import { State } from "../../interface";
+import { IMultiStepInputState as State } from "../../interface";
 const { lodash: _ } = core;
 
 const title = "Add Account";
