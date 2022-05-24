@@ -1,8 +1,8 @@
 import * as vscode from "vscode";
-import { ProjectTreeProvider } from "./tree-view/provider";
+import { LocalResource } from "./local-resource";
 
 export namespace ext {
   export let context: vscode.ExtensionContext;
   export let cwd: string | undefined;
-  export let localResource: ProjectTreeProvider;
+  export let localResource: LocalResource;
 }

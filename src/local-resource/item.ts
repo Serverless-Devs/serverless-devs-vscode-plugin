@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import * as path from "path";
 
-export class ProjectTreeItem extends vscode.TreeItem {
+export class LocalTreeItem extends vscode.TreeItem {
   constructor(
     public readonly label: string,
     private readonly desc: string,
@@ -19,13 +19,4 @@ export class ProjectTreeItem extends vscode.TreeItem {
   }
 
   contextValue = "local";
-}
-
-export interface Project {
-  project: string;
-  root: string;
-  target?: {
-    name: string;
-    configuration?: string;
-  };
 }

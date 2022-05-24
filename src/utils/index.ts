@@ -1,6 +1,7 @@
 import * as path from "path";
 import { ext } from "../extensionVariables";
 import * as core from "@serverless-devs/core";
+import * as vscode from "vscode";
 
 export function setArgs(args: string[]) {
   process.env["serverless_devs_temp_argv"] = JSON.stringify(
@@ -15,4 +16,12 @@ export function setEnvs(key: string, value: string) {
 export async function getYaml() {
   const spath = path.join(ext.cwd, "s.yaml");
   return await core.getYamlContent(spath);
+}
+
+export function getUri(
+  webview: vscode.Webview,
+  extensionUri: vscode.Uri,
+  pathList: string[]
+) {
+  return webview.asWebviewUri(vscode.Uri.joinPath(extensionUri, ...pathList));
 }

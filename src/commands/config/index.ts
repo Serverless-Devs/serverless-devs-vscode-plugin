@@ -1,9 +1,9 @@
 import * as vscode from "vscode";
-import { MultiStepInput } from "../../lib/multiStepInput";
+import { MultiStepInput } from "../../common";
 import * as core from "@serverless-devs/core";
 import * as path from "path";
 import { ext } from "../../extensionVariables";
-import { setArgs } from "../../lib/utils";
+import { setArgs } from "../../utils";
 import { State } from "../../interface";
 const { lodash: _ } = core;
 

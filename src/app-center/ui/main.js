@@ -9,7 +9,7 @@ function main() {
 
 function handleHowdyClick() {
   vscode.postMessage({
-    command: "hello",
-    text: "Hey there partner! 🤠",
+    type: "hello",
+    message: "Hey there partner! 🤠",
   });
 }

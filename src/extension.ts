@@ -2,14 +2,14 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
 import { ext } from "./extensionVariables";
-import { ProjectTreeProvider } from "./tree-view/provider";
+import { LocalResource } from "./local-resource";
 import { init } from "./commands/init";
 import { config } from "./commands/config";
-import { TestView } from "./tree-view/testView";
-import { webviewTest } from "./tree-view/webviewTest";
-import { statusBarItem } from "./status-bar/statusBarItem";
-import getHtmlForWebview from "./webview/getHtml";
-import { progressTest } from "./progress/index";
+import { TestView } from "./local-resource/testView";
+import { testWebview } from "./local-resource/testWebview";
+import { statusBarItem } from "./status/statusBarItem";
+import { getHtmlForWebview } from "./common";
+import appCenterEvent from "./app-center/event/index";
 
 export function activate(context: vscode.ExtensionContext) {
   ext.context = context;
@@ -28,10 +28,9 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand("serverless-devs.config", () => config())
   );
 
-  ext.localResource = new ProjectTreeProvider();
+  ext.localResource = new LocalResource();
   const localResourceTreeView = vscode.window.createTreeView("localResource", {
     treeDataProvider: ext.localResource,
-    showCollapseAll: true,
   });
 
   context.subscriptions.push(
@@ -41,17 +40,16 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   new TestView(context);
-  webviewTest(context);
+  testWebview(context);
   statusBarItem(context);
-  progressTest(context);
 
-  // init config webview
-  let configWebviewPanel: vscode.WebviewPanel | undefined;
-  function activeConfigWebview() {
-    if (configWebviewPanel) {
-      configWebviewPanel.reveal();
+  // init app-center webview
+  let appCenterWebviewPanel: vscode.WebviewPanel | undefined;
+  function activeAppCenterWebview() {
+    if (appCenterWebviewPanel) {
+      appCenterWebviewPanel.reveal();
     } else {
-      configWebviewPanel = vscode.window.createWebviewPanel(
+      appCenterWebviewPanel = vscode.window.createWebviewPanel(
         "Serverless-Devs",
         "设置 - Serverless-Devs",
         vscode.ViewColumn.One,
@@ -60,18 +58,22 @@ export function activate(context: vscode.ExtensionContext) {
           retainContextWhenHidden: true,
         }
       );
-      configWebviewPanel.webview.html = getHtmlForWebview(
-        "hello",
+      appCenterWebviewPanel.webview.html = getHtmlForWebview(
+        "app-center",
         context,
-        configWebviewPanel.webview
+        appCenterWebviewPanel.webview
       );
-      configWebviewPanel.iconPath = vscode.Uri.parse(
+      appCenterWebviewPanel.iconPath = vscode.Uri.parse(
         "https://img.alicdn.com/imgextra/i4/O1CN01AvqMOu1sYpY1j8xaI_!!6000000005779-2-tps-574-204.png"
       );
-
-      configWebviewPanel.onDidDispose(
+      appCenterWebviewPanel.webview.onDidReceiveMessage(
+        appCenterEvent,
+        undefined,
+        context.subscriptions
+      );
+      appCenterWebviewPanel.onDidDispose(
         () => {
-          configWebviewPanel = undefined;
+          appCenterWebviewPanel = undefined;
         },
         null,
         context.subscriptions
@@ -81,7 +83,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   context.subscriptions.push(
     vscode.commands.registerCommand("serverless-devs.helloWorld", () => {
-      activeConfigWebview();
+      activeAppCenterWebview();
     })
   );
   localResourceTreeView.onDidChangeVisibility(({ visible }) => {

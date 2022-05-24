@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
-import { MultiStepInput } from "../../lib/multiStepInput";
-import { getYaml } from "../../lib/utils";
+import { MultiStepInput } from "../../common";
+import { getYaml } from "../../utils";
 import * as core from "@serverless-devs/core";
 import * as path from "path";
 import { ext } from "../../extensionVariables";

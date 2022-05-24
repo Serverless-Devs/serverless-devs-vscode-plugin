@@ -1,23 +1,19 @@
 import * as vscode from "vscode";
 import * as path from "path";
-import { getUri } from "../lib/getUri";
+import { getUri } from "../utils";
 import * as core from "@serverless-devs/core";
-import { webViewEvent } from "./event/index";
-
 const { fse } = core;
 
-export default function getHtml(
+export function getHtmlForWebview(
   entryName: string,
   context: vscode.ExtensionContext,
   webview: vscode.Webview
 ) {
-  webview.onDidReceiveMessage(webViewEvent, undefined, context.subscriptions);
   const indexHtml = path.join(
     context.extensionPath,
     "src",
-    "webview",
-    "ui",
     entryName,
+    "ui",
     "index.html"
   );
   const toolkitUri = getUri(webview, context.extensionUri, [
@@ -30,9 +26,8 @@ export default function getHtml(
 
   const mainUri = getUri(webview, context.extensionUri, [
     "src",
-    "webview",
-    "ui",
     entryName,
+    "ui",
     "main.js",
   ]);
 

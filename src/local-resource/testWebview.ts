@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import * as path from "path";
 
-export function webviewTest(context: vscode.ExtensionContext) {
+export function testWebview(context: vscode.ExtensionContext) {
   // Track currently webview panel
   let currentPanel: vscode.WebviewPanel | undefined = undefined;
   context.subscriptions.push(
