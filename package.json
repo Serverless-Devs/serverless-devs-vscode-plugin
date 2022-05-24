@@ -12,7 +12,6 @@
   "main": "./out/extension.js",
   "activationEvents": [
     "onView:localResource",
-    "onView:remoteResource",
     "onCommand:serverless-devs.config",
     "onCommand:catCoding.start",
     "onCommand:serverless-devs.helloWorld"
@@ -25,8 +24,16 @@
           "name": "local resource"
         },
         {
-          "id": "remoteResource",
-          "name": "remote resource"
+          "id": "quick-start",
+          "name": "快速开始"
+        },
+        {
+          "id": "dev-docs",
+          "name": "开发必读"
+        },
+        {
+          "id": "learn-more",
+          "name": "更多"
         }
       ],
       "explorer": [
@@ -49,6 +56,18 @@
       {
         "view": "localResource",
         "contents": "some text found [learn more](https://www.npmjs.com/).\n[Open a Folder](command:vscode.openFolder)\n[Add Account](command:serverless-devs.config)\n[Create Application](command:serverless-devs.init)"
+      },
+      {
+        "view": "quick-start",
+        "contents": "快速开始你的Serverless之旅\n[添加一组密钥信息](command:serverless-devs.config)\n[创建一个应用](command:serverless-devs.init)\n除此之外，您可以可以快速通过[快速上手](https://docs.serverless-devs.com/serverless-devs/quick_start)进行更多的图文案例的参考和学习。"
+      },
+      {
+        "view": "dev-docs",
+        "contents": "您可以在使用该插件之前，查看[帮助文档](https://docs.serverless-devs.com/serverless-devs/readme)，以便对Serverless-Devs和本插件有更深入的了解，您也可以通过以下链接快速学习和探索\n[快速上手案例](https://docs.serverless-devs.com/serverless-devs/quick_start#%E4%B8%8A%E6%89%8B%E4%BD%93%E9%AA%8C)\n[Serverless 应用介绍](http://www.devsapp.cn/application.html)\n[Serverless Devs Yaml规范](https://docs.serverless-devs.com/fc/yaml/readme)\n[Yaml继承和多环境实战](https://docs.serverless-devs.com/serverless-devs/extend)\n[与常见的CI/CD平台集成](https://docs.serverless-devs.com/serverless-devs/cicd)"
+      },
+      {
+        "view": "learn-more",
+        "contents": "您在使用当前工具的时候，遇到任何问题都可以在[Github Issues](https://github.com/Serverless-Devs/Serverless-Devs/issues)上面找到我们，也欢迎您和我们一起共建该项目。\n[访问代码仓库](https://github.com/Serverless-Devs/Serverless-Devs)"
       }
     ],
     "commands": [
