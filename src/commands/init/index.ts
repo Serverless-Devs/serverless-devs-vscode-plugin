@@ -107,10 +107,27 @@ export async function init() {
         _.set(appParams, "access", state.pickItem.value);
       }
     }
-    core.loadApplication(appParams).then(() => {
-      ext.localResource.refresh();
-      vscode.window.showInformationMessage("Thanks for using Serverless-Devs");
-    });
+    vscode.window.withProgress(
+      {
+        location: vscode.ProgressLocation.Notification,
+      },
+      async (progress, token) => {
+        progress.report({
+          message: `Downloading: ${template.value}...`,
+        });
+        const appPath = await core.loadApplication(appParams);
+        progress.report({
+          message: `Downloaded: ${template.value}`,
+        });
+        ext.localResource.refresh();
+        await core.sleep(1000);
+        progress.report({
+          message: `Thanks for using Serverless-Devs`,
+        });
+        await core.sleep(1000);
+        return appPath;
+      }
+    );
   }
 
   function shouldResume() {
