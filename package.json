@@ -14,7 +14,8 @@
     "onView:localResource",
     "onCommand:serverless-devs.config",
     "onCommand:catCoding.start",
-    "onCommand:serverless-devs.helloWorld"
+    "onCommand:serverless-devs.helloWorld",
+    "onCommand:serverless-devs.deploy"
   ],
   "contributes": {
     "views": {
@@ -110,6 +111,7 @@
       {
         "command": "serverless-devs.deploy",
         "title": "deploy",
+        "category": "Serverless-Devs",
         "icon": {
           "light": "media/light/deploy.svg",
           "dark": "media/dark/deploy.svg"
@@ -117,6 +119,13 @@
       }
     ],
     "menus": {
+      "editor/context": [
+        {
+          "when": "editorFocus",
+          "command": "serverless-devs.deploy",
+          "group": "navigation"
+        }
+      ],
       "editor/title": [
         {
           "command": "serverless-devs.deploy",
