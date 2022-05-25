@@ -106,9 +106,23 @@
         "command": "catCoding.start",
         "title": "Start new cat coding session",
         "category": "Serverless-Devs"
+      },
+      {
+        "command": "serverless-devs.deploy",
+        "title": "deploy",
+        "icon": {
+          "light": "media/light/deploy.svg",
+          "dark": "media/dark/deploy.svg"
+        }
       }
     ],
     "menus": {
+      "editor/title": [
+        {
+          "command": "serverless-devs.deploy",
+          "group": "navigation"
+        }
+      ],
       "view/title": [
         {
           "command": "serverless-devs.config",

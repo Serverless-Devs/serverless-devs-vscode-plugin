@@ -5,6 +5,7 @@ import { ext } from "./extensionVariables";
 import { LocalResource } from "./local-resource";
 import { init } from "./commands/init";
 import { config } from "./commands/config";
+import { deploy } from "./commands/deploy";
 import { TestView } from "./local-resource/testView";
 import { testWebview } from "./local-resource/testWebview";
 import { statusBarItem } from "./status/statusBarItem";
@@ -27,6 +28,11 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand("serverless-devs.config", () => config())
   );
 
+  // s deploy
+  context.subscriptions.push(
+    vscode.commands.registerCommand("serverless-devs.deploy", () => deploy())
+  );
+
   ext.localResource = new LocalResource();
   const localResourceTreeView = vscode.window.createTreeView("localResource", {
     treeDataProvider: ext.localResource,
@@ -42,7 +48,6 @@ export function activate(context: vscode.ExtensionContext) {
   testWebview(context);
   statusBarItem(context);
   // app-center webview
-  activeAppCenterWebview(context);
   context.subscriptions.push(
     vscode.commands.registerCommand("serverless-devs.helloWorld", () => {
       activeAppCenterWebview(context);
@@ -51,7 +56,7 @@ export function activate(context: vscode.ExtensionContext) {
   localResourceTreeView.onDidChangeVisibility(({ visible }) => {
     if (visible) {
       // vscode.commands.executeCommand("catCoding.start");
-      vscode.commands.executeCommand("serverless-devs.helloWorld");
+      // vscode.commands.executeCommand("serverless-devs.helloWorld");
     }
   });
 }

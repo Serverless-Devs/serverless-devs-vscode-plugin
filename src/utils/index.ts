@@ -14,6 +14,7 @@ export function setEnvs(key: string, value: string) {
 }
 
 export async function getYaml() {
+  if (!ext.cwd) return;
   const spath = path.join(ext.cwd, "s.yaml");
   return await core.getYamlContent(spath);
 }
