@@ -132,6 +132,18 @@
           "group": "navigation"
         }
       ],
+      "editor/title/context": [
+        {
+          "command": "serverless-devs.deploy",
+          "group": "navigation"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "serverless-devs.deploy",
+          "group": "navigation"
+        }
+      ],
       "view/title": [
         {
           "command": "serverless-devs.config",
