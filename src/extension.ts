@@ -23,6 +23,7 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand("serverless-devs.init", () => init())
   );
+
   // s config add
   context.subscriptions.push(
     vscode.commands.registerCommand("serverless-devs.config", () => config())
@@ -33,32 +34,22 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand("serverless-devs.deploy", () => deploy())
   );
 
-  ext.localResource = new LocalResource();
-  const localResourceTreeView = vscode.window.createTreeView("localResource", {
-    treeDataProvider: ext.localResource,
-  });
-
   context.subscriptions.push(
-    vscode.commands.registerCommand("serverless-devs.refresh", () => {
-      ext.localResource.refresh();
+    vscode.commands.registerCommand("serverless-devs.set", () => {
+      activeAppCenterWebview(context);
     })
   );
 
   new TestView(context);
   testWebview(context);
   statusBarItem(context);
+
   // app-center webview
   context.subscriptions.push(
     vscode.commands.registerCommand("serverless-devs.helloWorld", () => {
       activeAppCenterWebview(context);
     })
   );
-  localResourceTreeView.onDidChangeVisibility(({ visible }) => {
-    if (visible) {
-      // vscode.commands.executeCommand("catCoding.start");
-      // vscode.commands.executeCommand("serverless-devs.helloWorld");
-    }
-  });
 }
 
 // this method is called when your extension is deactivated

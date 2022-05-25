@@ -11,8 +11,9 @@
   ],
   "main": "./out/extension.js",
   "activationEvents": [
-    "onView:localResource",
+    "onView:quick-start",
     "onCommand:serverless-devs.config",
+    "onCommand:serverless-devs.set",
     "onCommand:catCoding.start",
     "onCommand:serverless-devs.helloWorld",
     "onCommand:serverless-devs.deploy"
@@ -20,10 +21,6 @@
   "contributes": {
     "views": {
       "Serverless-Devs-explorer": [
-        {
-          "id": "localResource",
-          "name": "local resource"
-        },
         {
           "id": "quick-start",
           "name": "快速开始"
@@ -55,10 +52,6 @@
     },
     "viewsWelcome": [
       {
-        "view": "localResource",
-        "contents": "some text found [learn more](https://www.npmjs.com/).\n[Open a Folder](command:vscode.openFolder)\n[Add Account](command:serverless-devs.config)\n[Create Application](command:serverless-devs.init)"
-      },
-      {
         "view": "quick-start",
         "contents": "快速开始你的Serverless之旅\n[添加一组密钥信息](command:serverless-devs.config)\n[创建一个应用](command:serverless-devs.init)\n除此之外，您可以可以快速通过[快速上手](https://docs.serverless-devs.com/serverless-devs/quick_start)进行更多的图文案例的参考和学习。"
       },
@@ -88,6 +81,15 @@
         "icon": {
           "light": "media/light/plus.svg",
           "dark": "media/dark/plus.svg"
+        }
+      },
+      {
+        "command": "serverless-devs.set",
+        "title": "设置",
+        "category": "Serverless-Devs",
+        "icon": {
+          "light": "media/light/set.svg",
+          "dark": "media/dark/set.svg"
         }
       },
       {
@@ -146,25 +148,14 @@
       ],
       "view/title": [
         {
-          "command": "serverless-devs.config",
-          "when": "view == localResource"
+          "command": "serverless-devs.init",
+          "group": "navigation@1",
+          "when": "view == quick-start"
         },
         {
-          "command": "serverless-devs.refresh",
-          "group": "navigation",
-          "when": "view == localResource"
-        },
-        {
-          "command": "serverless-devs.init",
-          "group": "navigation",
-          "when": "view == localResource"
-        }
-      ],
-      "view/item/context": [
-        {
-          "command": "serverless-devs.init",
-          "when": "view == localResource && viewItem != local",
-          "group": "inline"
+          "command": "serverless-devs.set",
+          "group": "navigation@2",
+          "when": "view == quick-start"
         }
       ]
     }
