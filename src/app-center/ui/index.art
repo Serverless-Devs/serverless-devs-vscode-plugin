@@ -19,7 +19,7 @@
     CLI、Serverless
     Desktop等），我们可能会采集部分数据，进行分析，也感谢您对我们的支持。当然，如果您不想参与到我们的改善计划，您也可以在下面手动关闭。
   </div>
-  <vscode-checkbox id="analysis" checked={{analysis === 'enable'}} style="margin-top: 8px">
+  <vscode-checkbox id="analysis" checked={{analysis === 'enable'}} style="margin-top: 8px; font-size: 16px;">
     数据收集
   </vscode-checkbox>
    <h2 style="margin-top: 36px">默认工具工作空间配置</h2>
@@ -33,4 +33,10 @@
     <vscode-button appearance="secondary" style="margin-left: 16px">配置默认路径</vscode-button>
     <vscode-button appearance="secondary" style="margin-left: 16px">管理工作空间</vscode-button>
   </div>
+  <vscode-link 
+    style="margin-top: 36px; font-size: 16px;" 
+    href="https://github.com/Serverless-Devs/Serverless-Devs/issues"
+  >
+    问题反馈
+  </vscode-link>
 </body>
