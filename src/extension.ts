@@ -46,8 +46,8 @@ export function activate(context: vscode.ExtensionContext) {
 
   // app-center webview
   context.subscriptions.push(
-    vscode.commands.registerCommand("serverless-devs.helloWorld", () => {
-      activeAppCenterWebview(context);
+    vscode.commands.registerCommand("serverless-devs.helloWorld", async () => {
+      await activeAppCenterWebview(context);
     })
   );
 }

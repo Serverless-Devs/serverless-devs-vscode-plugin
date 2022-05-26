@@ -3,13 +3,12 @@ const vscode = acquireVsCodeApi();
 window.addEventListener("load", main);
 
 function main() {
-  const howdyButton = document.getElementById("howdy");
-  howdyButton.addEventListener("click", handleHowdyClick);
-}
-
-function handleHowdyClick() {
-  vscode.postMessage({
-    type: "hello",
-    message: "Hey there partner! 🤠",
-  });
+  // 数据收集
+  const analysis = document.getElementById("analysis");
+  analysis.onclick = function (e) {
+    vscode.postMessage({
+      type: "analysis",
+      checked: e.target.checked,
+    });
+  };
 }

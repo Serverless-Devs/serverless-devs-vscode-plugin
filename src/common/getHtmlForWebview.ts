@@ -1,21 +1,23 @@
 import * as vscode from "vscode";
 import * as path from "path";
 import { getUri } from "../utils";
-import * as core from "@serverless-devs/core";
-const { fse } = core;
+const template = require("art-template");
 
 export function getHtmlForWebview(
   entryName: string,
   context: vscode.ExtensionContext,
-  webview: vscode.Webview
+  webview: vscode.Webview,
+  config: { [key: string]: any } = {}
 ) {
-  const indexHtml = path.join(
+  const indexArt = path.join(
     context.extensionPath,
     "src",
     entryName,
     "ui",
-    "index.html"
+    "index.art"
   );
+  const indexHtml = template(indexArt, config);
+
   const toolkitUri = getUri(webview, context.extensionUri, [
     "node_modules",
     "@vscode",
@@ -40,7 +42,7 @@ export function getHtmlForWebview(
         <script type="module" src="${toolkitUri}"></script>
         <script type="module" src="${mainUri}"></script>
       </head>
-      ${fse.readFileSync(indexHtml, "utf-8")}
+      ${indexHtml}
     </html>
   `;
 }
