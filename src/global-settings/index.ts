@@ -3,13 +3,12 @@ import { getHtmlForWebview } from "../common";
 import * as event from "./event";
 import * as core from "@serverless-devs/core";
 
-// init app-center webview
-let appCenterWebviewPanel: vscode.WebviewPanel | undefined;
+let globalSettingsWebviewPanel: vscode.WebviewPanel | undefined;
 export async function activeAppCenterWebview(context: vscode.ExtensionContext) {
-  if (appCenterWebviewPanel) {
-    appCenterWebviewPanel.reveal();
+  if (globalSettingsWebviewPanel) {
+    globalSettingsWebviewPanel.reveal();
   } else {
-    appCenterWebviewPanel = vscode.window.createWebviewPanel(
+    globalSettingsWebviewPanel = vscode.window.createWebviewPanel(
       "Serverless-Devs",
       "设置 - Serverless-Devs",
       vscode.ViewColumn.One,
@@ -19,10 +18,10 @@ export async function activeAppCenterWebview(context: vscode.ExtensionContext) {
       }
     );
     async function updateWebview() {
-      appCenterWebviewPanel.webview.html = getHtmlForWebview(
-        "app-center",
+      globalSettingsWebviewPanel.webview.html = getHtmlForWebview(
+        "global-settings",
         context,
-        appCenterWebviewPanel.webview,
+        globalSettingsWebviewPanel.webview,
         {
           analysis: await core.getSetConfig("analysis"),
           workspace: core.getRootHome(),
@@ -30,17 +29,17 @@ export async function activeAppCenterWebview(context: vscode.ExtensionContext) {
       );
     }
     await updateWebview();
-    appCenterWebviewPanel.iconPath = vscode.Uri.parse(
+    globalSettingsWebviewPanel.iconPath = vscode.Uri.parse(
       "https://img.alicdn.com/imgextra/i4/O1CN01AvqMOu1sYpY1j8xaI_!!6000000005779-2-tps-574-204.png"
     );
-    appCenterWebviewPanel.webview.onDidReceiveMessage(
+    globalSettingsWebviewPanel.webview.onDidReceiveMessage(
       (val) => handleMessage(val, updateWebview),
       undefined,
       context.subscriptions
     );
-    appCenterWebviewPanel.onDidDispose(
+    globalSettingsWebviewPanel.onDidDispose(
       () => {
-        appCenterWebviewPanel = undefined;
+        globalSettingsWebviewPanel = undefined;
       },
       null,
       context.subscriptions

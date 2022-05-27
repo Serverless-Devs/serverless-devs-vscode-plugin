@@ -9,7 +9,7 @@ import { deploy } from "./commands/deploy";
 import { TestView } from "./local-resource/testView";
 import { testWebview } from "./local-resource/testWebview";
 import { statusBarItem } from "./status/statusBarItem";
-import { activeAppCenterWebview } from "./app-center";
+import { activeAppCenterWebview } from "./global-settings";
 
 export function activate(context: vscode.ExtensionContext) {
   ext.context = context;
@@ -44,7 +44,7 @@ export function activate(context: vscode.ExtensionContext) {
   testWebview(context);
   statusBarItem(context);
 
-  // app-center webview
+  // global-settings webview
   context.subscriptions.push(
     vscode.commands.registerCommand("serverless-devs.helloWorld", async () => {
       await activeAppCenterWebview(context);
