@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import { getHtmlForWebview } from "../common";
-import { analysis } from "./event";
+import * as event from "./event";
 import * as core from "@serverless-devs/core";
 
 // init app-center webview
@@ -18,20 +18,23 @@ export async function activeAppCenterWebview(context: vscode.ExtensionContext) {
         retainContextWhenHidden: true,
       }
     );
-    appCenterWebviewPanel.webview.html = getHtmlForWebview(
-      "app-center",
-      context,
-      appCenterWebviewPanel.webview,
-      {
-        analysis: await core.getSetConfig("analysis"),
-        workspace: core.getRootHome(),
-      }
-    );
+    async function updateWebview() {
+      appCenterWebviewPanel.webview.html = getHtmlForWebview(
+        "app-center",
+        context,
+        appCenterWebviewPanel.webview,
+        {
+          analysis: await core.getSetConfig("analysis"),
+          workspace: core.getRootHome(),
+        }
+      );
+    }
+    await updateWebview();
     appCenterWebviewPanel.iconPath = vscode.Uri.parse(
       "https://img.alicdn.com/imgextra/i4/O1CN01AvqMOu1sYpY1j8xaI_!!6000000005779-2-tps-574-204.png"
     );
     appCenterWebviewPanel.webview.onDidReceiveMessage(
-      handleMessage,
+      (val) => handleMessage(val, updateWebview),
       undefined,
       context.subscriptions
     );
@@ -45,10 +48,21 @@ export async function activeAppCenterWebview(context: vscode.ExtensionContext) {
   }
 }
 
-async function handleMessage(params: { type: string; [key: string]: any }) {
+async function handleMessage(
+  params: { type: string; [key: string]: any },
+  updateWebview: () => Promise<void>
+) {
   switch (params.type) {
     case "analysis":
-      await analysis(params);
+      await event.analysis(params);
+      return;
+    case "resetWorkspace":
+      await event.resetWorkspace();
+      await updateWebview();
+      return;
+    case "mangeWorkspace":
+      await event.mangeWorkspace();
+      await updateWebview();
       return;
   }
 }
