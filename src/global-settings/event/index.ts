@@ -15,5 +15,17 @@ export async function resetWorkspace() {
 }
 
 export async function mangeWorkspace() {
-  //  TODO:
+  const options: vscode.OpenDialogOptions = {
+    canSelectFolders: true,
+    canSelectFiles: false,
+    canSelectMany: false,
+    openLabel: "Open",
+    defaultUri: vscode.Uri.file(core.getRootHome()),
+  };
+  const selectFolderUri = await vscode.window.showOpenDialog(options);
+  if (selectFolderUri) {
+    const { fsPath } = selectFolderUri[0];
+    core.setConfig("workspace", fsPath);
+    vscode.window.showInformationMessage("Setup succeeded");
+  }
 }
