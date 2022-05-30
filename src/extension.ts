@@ -6,6 +6,7 @@ import { DevsTree } from "./local-resource";
 import { init } from "./commands/init";
 import { config } from "./commands/config";
 import { deploy } from "./commands/deploy";
+import { MarkYaml } from "./commands/mark-yaml";
 import { testWebview } from "./local-resource/testWebview";
 import { statusBarItem } from "./status/statusBarItem";
 import { activeGlobalSettingsWebview } from "./global-settings";
@@ -32,10 +33,19 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand("serverless-devs.deploy", () => deploy())
   );
+  // 标记Yaml文件到工作空间
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      "serverless-devs.yaml",
+      async (uri: vscode.Uri) => {
+        await new MarkYaml(uri).init();
+      }
+    )
+  );
 
   context.subscriptions.push(
-    vscode.commands.registerCommand("serverless-devs.set", async () => {
-      await activeGlobalSettingsWebview(context);
+    vscode.commands.registerCommand("serverless-devs.set", () => {
+      activeGlobalSettingsWebview(context);
     })
   );
 

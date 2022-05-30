@@ -21,7 +21,7 @@ interface QuickPickParameters<T extends QuickPickItem> {
   activeItem?: T;
   placeholder: string;
   buttons?: QuickInputButton[];
-  shouldResume: () => Thenable<boolean>;
+  shouldResume?: () => Thenable<boolean>;
 }
 
 interface InputBoxParameters {
@@ -32,7 +32,7 @@ interface InputBoxParameters {
   prompt: string;
   validate: (value: string) => Promise<string | undefined>;
   buttons?: QuickInputButton[];
-  shouldResume: () => Thenable<boolean>;
+  shouldResume?: () => Thenable<boolean>;
 }
 
 export class MultiStepInput {

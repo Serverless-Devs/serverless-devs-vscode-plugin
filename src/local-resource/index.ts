@@ -1,21 +1,15 @@
 import * as vscode from "vscode";
+import * as path from "path";
+import { ext } from "../extensionVariables";
 
 export class DevsTree {
   constructor(context: vscode.ExtensionContext) {
     const view = vscode.window.createTreeView("devs-tree", {
       treeDataProvider: aNodeWithIdTreeDataProvider(),
-      showCollapseAll: false,
+      showCollapseAll: true,
     });
     context.subscriptions.push(view);
-    vscode.commands.registerCommand("testView.changeTitle", async () => {
-      const title = await vscode.window.showInputBox({
-        prompt: "Type the new title for the Test View",
-        placeHolder: view.title,
-      });
-      if (title) {
-        view.title = title;
-      }
-    });
+    view.title = `${path.basename(ext.cwd)}(Serverless Devs)`;
   }
 }
 
