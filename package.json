@@ -15,7 +15,6 @@
     "onCommand:serverless-devs.config",
     "onCommand:serverless-devs.set",
     "onCommand:catCoding.start",
-    "onCommand:serverless-devs.helloWorld",
     "onCommand:serverless-devs.deploy"
   ],
   "contributes": {
@@ -65,11 +64,6 @@
       }
     ],
     "commands": [
-      {
-        "command": "serverless-devs.helloWorld",
-        "title": "helloWorld",
-        "category": "Serverless-Devs"
-      },
       {
         "command": "serverless-devs.config",
         "title": "Add Account",
