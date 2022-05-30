@@ -11,7 +11,7 @@
   ],
   "main": "./out/extension.js",
   "activationEvents": [
-    "onView:quick-start",
+    "onView:devs-tree",
     "onCommand:serverless-devs.config",
     "onCommand:serverless-devs.set",
     "onCommand:catCoding.start",
@@ -36,8 +36,8 @@
       ],
       "explorer": [
         {
-          "id": "testView",
-          "name": "Serverless-Devs Test View"
+          "id": "devs-tree",
+          "name": "Serverless Devs"
         }
       ]
     },
@@ -99,11 +99,6 @@
           "light": "media/light/refresh.svg",
           "dark": "media/dark/refresh.svg"
         }
-      },
-      {
-        "command": "testView.changeTitle",
-        "title": "Change Title",
-        "category": "Serverless-Devs"
       },
       {
         "command": "catCoding.start",

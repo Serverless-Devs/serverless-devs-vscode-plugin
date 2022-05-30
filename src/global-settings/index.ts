@@ -4,7 +4,9 @@ import * as event from "./event";
 import * as core from "@serverless-devs/core";
 
 let globalSettingsWebviewPanel: vscode.WebviewPanel | undefined;
-export async function activeAppCenterWebview(context: vscode.ExtensionContext) {
+export async function activeGlobalSettingsWebview(
+  context: vscode.ExtensionContext
+) {
   if (globalSettingsWebviewPanel) {
     globalSettingsWebviewPanel.reveal();
   } else {

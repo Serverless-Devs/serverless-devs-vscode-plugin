@@ -2,7 +2,6 @@ import * as vscode from "vscode";
 import { MultiStepInput } from "../../common";
 import * as core from "@serverless-devs/core";
 import * as path from "path";
-import { ext } from "../../extensionVariables";
 import { setArgs } from "../../utils";
 import { IMultiStepInputState as State } from "../../interface";
 const { lodash: _ } = core;
@@ -70,7 +69,6 @@ export async function config() {
     }
     const { $alias, ...rest } = tmp;
     await core.setKnownCredential(rest, $alias);
-    ext.localResource.refresh();
     vscode.window.showInformationMessage(
       `Add ${$alias} configuration successfully.`
     );

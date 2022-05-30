@@ -1,35 +1,111 @@
 import * as vscode from "vscode";
-import * as path from "path";
-import * as core from "@serverless-devs/core";
-import { LocalTreeItem } from "./item";
-import { AbstractTreeProvider } from "../common";
-import { getYaml } from "../utils";
-import { ProviderResult } from "vscode";
 
-export class LocalResource extends AbstractTreeProvider<LocalTreeItem> {
-  constructor() {
-    super();
-  }
-
-  getParent(element: LocalTreeItem): ProviderResult<LocalTreeItem> {
-    throw new Error("Method not implemented.");
-  }
-
-  async getChildren(element?: LocalTreeItem): Promise<LocalTreeItem[]> {
-    const accessPath = path.join(core.getRootHome(), "access.yaml");
-    const accessData = await core.getYamlContent(accessPath);
-    if (accessData) {
-      const yamlData = await getYaml();
-      if (yamlData) {
-        const result = [];
-        const { services } = yamlData;
-        for (const key in services) {
-          result.push(
-            new LocalTreeItem(key, "", vscode.TreeItemCollapsibleState.None)
-          );
-        }
-        return Promise.resolve(result);
+export class DevsTree {
+  constructor(context: vscode.ExtensionContext) {
+    const view = vscode.window.createTreeView("devs-tree", {
+      treeDataProvider: aNodeWithIdTreeDataProvider(),
+      showCollapseAll: false,
+    });
+    context.subscriptions.push(view);
+    vscode.commands.registerCommand("testView.changeTitle", async () => {
+      const title = await vscode.window.showInputBox({
+        prompt: "Type the new title for the Test View",
+        placeHolder: view.title,
+      });
+      if (title) {
+        view.title = title;
       }
+    });
+  }
+}
+
+const tree = {
+  a: {
+    aa: {
+      aaa: {
+        aaaa: {
+          aaaaa: {
+            aaaaaa: {},
+          },
+        },
+      },
+    },
+    ab: {},
+  },
+  b: {
+    ba: {},
+    bb: {},
+  },
+};
+const nodes = {};
+
+function aNodeWithIdTreeDataProvider(): vscode.TreeDataProvider<{
+  key: string;
+}> {
+  return {
+    getChildren: (element: { key: string }): { key: string }[] => {
+      return getChildren(element ? element.key : undefined).map((key) =>
+        getNode(key)
+      );
+    },
+    getTreeItem: (element: { key: string }): vscode.TreeItem => {
+      const treeItem = getTreeItem(element.key);
+      treeItem.id = element.key;
+      return treeItem;
+    },
+    getParent: ({ key }: { key: string }): { key: string } => {
+      const parentKey = key.substring(0, key.length - 1);
+      return parentKey ? new Key(parentKey) : void 0;
+    },
+  };
+}
+
+function getChildren(key: string): string[] {
+  if (!key) {
+    return Object.keys(tree);
+  }
+  const treeElement = getTreeElement(key);
+  if (treeElement) {
+    return Object.keys(treeElement);
+  }
+  return [];
+}
+
+function getTreeItem(key: string): vscode.TreeItem {
+  const treeElement = getTreeElement(key);
+  // An example of how to use codicons in a MarkdownString in a tree item tooltip.
+  const tooltip = new vscode.MarkdownString(`$(zap) Tooltip for ${key}`, true);
+  return {
+    label: /**vscode.TreeItemLabel**/ <any>{
+      label: key,
+      highlights: key.length > 1 ? [[key.length - 2, key.length - 1]] : void 0,
+    },
+    tooltip,
+    collapsibleState:
+      treeElement && Object.keys(treeElement).length
+        ? vscode.TreeItemCollapsibleState.Collapsed
+        : vscode.TreeItemCollapsibleState.None,
+  };
+}
+
+function getTreeElement(element): any {
+  let parent = tree;
+  for (let i = 0; i < element.length; i++) {
+    parent = parent[element.substring(0, i + 1)];
+    if (!parent) {
+      return null;
     }
   }
+  return parent;
+}
+
+function getNode(key: string): { key: string } {
+  if (!nodes[key]) {
+    nodes[key] = new Key(key);
+  }
+  return nodes[key];
+}
+
+class Key {
+  constructor(readonly key: string) {}
 }

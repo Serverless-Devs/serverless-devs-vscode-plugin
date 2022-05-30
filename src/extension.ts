@@ -2,14 +2,13 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
 import { ext } from "./extensionVariables";
-import { LocalResource } from "./local-resource";
+import { DevsTree } from "./local-resource";
 import { init } from "./commands/init";
 import { config } from "./commands/config";
 import { deploy } from "./commands/deploy";
-import { TestView } from "./local-resource/testView";
 import { testWebview } from "./local-resource/testWebview";
 import { statusBarItem } from "./status/statusBarItem";
-import { activeAppCenterWebview } from "./global-settings";
+import { activeGlobalSettingsWebview } from "./global-settings";
 
 export function activate(context: vscode.ExtensionContext) {
   ext.context = context;
@@ -35,21 +34,15 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   context.subscriptions.push(
-    vscode.commands.registerCommand("serverless-devs.set", () => {
-      activeAppCenterWebview(context);
+    vscode.commands.registerCommand("serverless-devs.set", async () => {
+      await activeGlobalSettingsWebview(context);
     })
   );
 
-  new TestView(context);
+  new DevsTree(context);
+
   testWebview(context);
   statusBarItem(context);
-
-  // global-settings webview
-  context.subscriptions.push(
-    vscode.commands.registerCommand("serverless-devs.helloWorld", async () => {
-      await activeAppCenterWebview(context);
-    })
-  );
 }
 
 // this method is called when your extension is deactivated
