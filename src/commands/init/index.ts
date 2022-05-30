@@ -1,10 +1,9 @@
 import * as vscode from "vscode";
 import { MultiStepInput } from "../../common";
-import { getYaml } from "../../utils";
 import * as core from "@serverless-devs/core";
 import { ext } from "../../extensionVariables";
 import { IMultiStepInputState as State } from "../../interface";
-const { lodash: _, fse } = core;
+const { lodash: _ } = core;
 
 const title = "Init Serverless Devs Application";
 
@@ -81,6 +80,7 @@ export async function init() {
       registry,
       source: template.value,
       target: "./",
+      //webview下 应该是选择的路径
       name: ext.cwd,
       parameters: {},
     };
@@ -118,12 +118,7 @@ export async function init() {
         progress.report({
           message: `Downloaded: ${template.value}`,
         });
-        ext.localResource.refresh();
-        await core.sleep(1000);
-        progress.report({
-          message: `Thanks for using Serverless-Devs`,
-        });
-        await core.sleep(1000);
+        vscode.commands.executeCommand("vscode.openFolder", appPath);
         return appPath;
       }
     );
@@ -134,18 +129,6 @@ export async function init() {
     return new Promise<boolean>((resolve, reject) => {
       // noop
     });
-  }
-  if (!ext.cwd) {
-    vscode.window.showErrorMessage("Please open a workspace");
-    return;
-  }
-
-  const hasYaml = await getYaml();
-  if (hasYaml) {
-    vscode.window.showErrorMessage(
-      "A Serverless-Devs project is detected in the current workspace, Please open a new workspace"
-    );
-    return;
   }
   await collectInputs();
 }
