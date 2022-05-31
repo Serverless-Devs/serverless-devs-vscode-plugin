@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import * as core from "@serverless-devs/core";
 import * as fs from "fs";
+import { ext } from "../../extensionVariables";
 
 export class MarkYaml {
   constructor(private uri: vscode.Uri) {
@@ -27,15 +28,9 @@ export class MarkYaml {
       },
     });
     const yamlData = await core.getYamlContent(fsPath);
-    const { edition, name, access, ...rest } = yamlData;
-    const newYamlData = {
-      edition,
-      name,
-      access,
-      alias: answer,
-      ...rest,
-    };
-    const doc = core.modifyYaml(newYamlData, fs.readFileSync(fsPath, "utf-8"));
+    yamlData.alias = answer;
+    const doc = core.modifyYaml(yamlData, fs.readFileSync(fsPath, "utf-8"));
     fs.writeFileSync(fsPath, doc, "utf-8");
+    ext.localResource.refresh();
   }
 }

@@ -4,6 +4,7 @@ import * as core from "@serverless-devs/core";
 import { ext } from "../../extensionVariables";
 import { IMultiStepInputState as State } from "../../interface";
 const { lodash: _ } = core;
+import { AutoMark } from "./autoMark";
 
 const title = "Init Serverless Devs Application";
 
@@ -118,7 +119,8 @@ export async function init() {
         progress.report({
           message: `Downloaded: ${template.value}`,
         });
-        vscode.commands.executeCommand("vscode.openFolder", appPath);
+        // 默认标记s.yaml/yml文件为默认环境
+        new AutoMark(appPath);
         return appPath;
       }
     );

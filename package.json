@@ -12,6 +12,7 @@
   "main": "./out/extension.js",
   "activationEvents": [
     "onView:local-resource",
+    "onCommand:serverless-devs.init",
     "onCommand:serverless-devs.config",
     "onCommand:serverless-devs.set",
     "onCommand:serverless-devs.deploy"
@@ -149,6 +150,11 @@
           "command": "serverless-devs.set",
           "group": "navigation@2",
           "when": "view == quick-start"
+        },
+        {
+          "command": "serverless-devs.refresh",
+          "when": "view == local-resource",
+          "group": "navigation"
         }
       ]
     }
