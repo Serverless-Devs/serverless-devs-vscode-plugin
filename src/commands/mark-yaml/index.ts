@@ -1,7 +1,6 @@
 import * as vscode from "vscode";
 import * as core from "@serverless-devs/core";
-import * as path from "path";
-const { fse: fs } = core;
+import * as fs from "fs";
 
 export class MarkYaml {
   constructor(private uri: vscode.Uri) {
@@ -27,12 +26,16 @@ export class MarkYaml {
         return name.length === 0 ? "value cannot be empty." : undefined;
       },
     });
-    const vscodePath = path.join(path.dirname(fsPath), ".s", ".vscode.json");
-    if (!fs.existsSync(vscodePath)) {
-      fs.writeFileSync(vscodePath, "{}");
-    }
-    const vscodeJson = fs.readJSONSync(vscodePath);
-    vscodeJson[fsPath] = answer;
-    fs.writeJSONSync(vscodePath, vscodeJson);
+    const yamlData = await core.getYamlContent(fsPath);
+    const { edition, name, access, ...rest } = yamlData;
+    const newYamlData = {
+      edition,
+      name,
+      access,
+      alias: answer,
+      ...rest,
+    };
+    const doc = core.modifyYaml(newYamlData, fs.readFileSync(fsPath, "utf-8"));
+    fs.writeFileSync(fsPath, doc, "utf-8");
   }
 }
