@@ -156,6 +156,13 @@
           "when": "view == local-resource",
           "group": "navigation"
         }
+      ],
+      "view/item/context": [
+        {
+          "command": "serverless-devs.deploy",
+          "when": "view == local-resource",
+          "group": "inline"
+        }
       ]
     }
   },

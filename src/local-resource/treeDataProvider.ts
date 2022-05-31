@@ -59,6 +59,7 @@ export class LocalResourceTreeDataProvider
           itemData.label = `${yamlData.alias}(${fileName})`;
           itemData.id = fileName;
           itemData.icon = "box.svg";
+          itemData.command = "s deploy";
           itemData.initialCollapsibleState =
             vscode.TreeItemCollapsibleState.Collapsed;
           const services = yamlData.services;
@@ -66,6 +67,7 @@ export class LocalResourceTreeDataProvider
             const serviceData = new ItemData();
             serviceData.label = service;
             serviceData.id = `${fileName}-${service}`;
+            serviceData.command = `s ${service} deploy`;
             serviceData.icon = "box.svg";
             itemData.children.push(serviceData);
           }

@@ -9,7 +9,7 @@ export class ItemData {
 
   tooltip = "";
 
-  command;
+  command = "";
 
   contextValue = "";
 
@@ -31,9 +31,6 @@ export class TreeItem extends vscode.TreeItem {
   ) {
     super(itemData.label, collapsibleState);
 
-    if (itemData.command) {
-      this.command = itemData.command;
-    }
     if (itemData.description) {
       this.description = itemData.description;
     }

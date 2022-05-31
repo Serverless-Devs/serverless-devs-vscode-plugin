@@ -1,9 +1,10 @@
 import * as vscode from "vscode";
 import * as path from "path";
 import { ext } from "../../extensionVariables";
+import { ItemData } from "../../local-resource/treeItem";
 import * as core from "@serverless-devs/core";
 
-export async function deploy() {
+export async function deploy(itemData: ItemData) {
   vscode.window.showInformationMessage("this message from deploy");
   const spath = path.join(ext.cwd, "s.yaml");
   const hasYaml = await core.getYamlContent(spath);
@@ -12,6 +13,6 @@ export async function deploy() {
       `deploy from Serverless Devs`
     );
     terminal.show();
-    terminal.sendText("s deploy");
+    terminal.sendText(itemData.command);
   }
 }

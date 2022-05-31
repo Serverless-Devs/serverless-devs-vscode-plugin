@@ -30,7 +30,9 @@ export function activate(context: vscode.ExtensionContext) {
 
   // s deploy
   context.subscriptions.push(
-    vscode.commands.registerCommand("serverless-devs.deploy", () => deploy())
+    vscode.commands.registerCommand("serverless-devs.deploy", (itemData) =>
+      deploy(itemData)
+    )
   );
   // 标记Yaml文件到工作空间
   context.subscriptions.push(
