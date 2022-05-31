@@ -11,10 +11,9 @@
   ],
   "main": "./out/extension.js",
   "activationEvents": [
-    "onView:devs-tree",
+    "onView:local-resource",
     "onCommand:serverless-devs.config",
     "onCommand:serverless-devs.set",
-    "onCommand:catCoding.start",
     "onCommand:serverless-devs.deploy"
   ],
   "contributes": {
@@ -35,7 +34,7 @@
       ],
       "explorer": [
         {
-          "id": "devs-tree",
+          "id": "local-resource",
           "name": "Serverless Devs"
         }
       ]
@@ -93,11 +92,6 @@
           "light": "media/light/refresh.svg",
           "dark": "media/dark/refresh.svg"
         }
-      },
-      {
-        "command": "catCoding.start",
-        "title": "Start new cat coding session",
-        "category": "Serverless-Devs"
       },
       {
         "command": "serverless-devs.deploy",

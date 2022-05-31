@@ -1,105 +1,105 @@
 import * as vscode from "vscode";
 import * as path from "path";
 import { ext } from "../extensionVariables";
+import { ItemData, TreeItem } from "./TreeItem";
 
-export class DevsTree {
+export class LocalResource {
   constructor(context: vscode.ExtensionContext) {
-    const view = vscode.window.createTreeView("devs-tree", {
-      treeDataProvider: aNodeWithIdTreeDataProvider(),
-      showCollapseAll: true,
+    const view = vscode.window.createTreeView("local-resource", {
+      treeDataProvider: new LocalResourceTreeDataProvider(context),
+      showCollapseAll: false,
     });
     context.subscriptions.push(view);
     view.title = `${path.basename(ext.cwd)}(Serverless Devs)`;
   }
 }
-
-const tree = {
-  a: {
-    aa: {
-      aaa: {
-        aaaa: {
-          aaaaa: {
-            aaaaaa: {},
-          },
-        },
+const yamlData = [
+  {
+    alias: "开发环境",
+    services: [
+      {
+        label: "a1",
       },
-    },
-    ab: {},
+      {
+        label: "a2",
+      },
+      {
+        label: "a3",
+      },
+    ],
   },
-  b: {
-    ba: {},
-    bb: {},
+  {
+    alias: "生产环境",
+    services: [
+      {
+        label: "b1",
+      },
+      {
+        label: "b2",
+      },
+      {
+        label: "b3",
+      },
+    ],
   },
-};
-const nodes = {};
+];
 
-function aNodeWithIdTreeDataProvider(): vscode.TreeDataProvider<{
-  key: string;
-}> {
-  return {
-    getChildren: (element: { key: string }): { key: string }[] => {
-      return getChildren(element ? element.key : undefined).map((key) =>
-        getNode(key)
+class LocalResourceTreeDataProvider
+  implements vscode.TreeDataProvider<ItemData>
+{
+  constructor(private extensionContext: vscode.ExtensionContext) {}
+  private _onDidChangeTreeData: vscode.EventEmitter<ItemData | undefined> =
+    new vscode.EventEmitter<ItemData | undefined>();
+  refresh(): void {
+    this._onDidChangeTreeData.fire(undefined);
+  }
+
+  getTreeItem(p: ItemData): TreeItem {
+    let treeItem: TreeItem;
+    if (p.children.length) {
+      treeItem = new TreeItem(
+        p,
+        p.initialCollapsibleState,
+        this.extensionContext
       );
-    },
-    getTreeItem: (element: { key: string }): vscode.TreeItem => {
-      const treeItem = getTreeItem(element.key);
-      treeItem.id = element.key;
-      return treeItem;
-    },
-    getParent: ({ key }: { key: string }): { key: string } => {
-      const parentKey = key.substring(0, key.length - 1);
-      return parentKey ? new Key(parentKey) : void 0;
-    },
-  };
-}
-
-function getChildren(key: string): string[] {
-  if (!key) {
-    return Object.keys(tree);
-  }
-  const treeElement = getTreeElement(key);
-  if (treeElement) {
-    return Object.keys(treeElement);
-  }
-  return [];
-}
-
-function getTreeItem(key: string): vscode.TreeItem {
-  const treeElement = getTreeElement(key);
-  // An example of how to use codicons in a MarkdownString in a tree item tooltip.
-  const tooltip = new vscode.MarkdownString(`$(zap) Tooltip for ${key}`, true);
-  return {
-    label: /**vscode.TreeItemLabel**/ <any>{
-      label: key,
-      highlights: key.length > 1 ? [[key.length - 2, key.length - 1]] : void 0,
-    },
-    tooltip,
-    collapsibleState:
-      treeElement && Object.keys(treeElement).length
-        ? vscode.TreeItemCollapsibleState.Collapsed
-        : vscode.TreeItemCollapsibleState.None,
-  };
-}
-
-function getTreeElement(element): any {
-  let parent = tree;
-  for (let i = 0; i < element.length; i++) {
-    parent = parent[element.substring(0, i + 1)];
-    if (!parent) {
-      return null;
+    } else {
+      treeItem = new TreeItem(
+        p,
+        vscode.TreeItemCollapsibleState.None,
+        this.extensionContext
+      );
     }
+    return treeItem;
   }
-  return parent;
-}
 
-function getNode(key: string): { key: string } {
-  if (!nodes[key]) {
-    nodes[key] = new Key(key);
+  async getChildren(element: ItemData): Promise<ItemData[]> {
+    let itemDataList: ItemData[] = [];
+    if (element) {
+      itemDataList = element.children;
+    } else {
+      itemDataList = this.transformYamlData(yamlData);
+    }
+    return itemDataList;
   }
-  return nodes[key];
-}
 
-class Key {
-  constructor(readonly key: string) {}
+  transformYamlData(yamlData: any) {
+    const itemDataList: ItemData[] = [];
+    yamlData.forEach((item) => {
+      const itemData = new ItemData();
+      itemData.label = item.alias;
+      itemData.id = item.alias;
+      itemData.icon = "box.svg";
+      itemData.initialCollapsibleState =
+        vscode.TreeItemCollapsibleState.Collapsed;
+      itemData.children = item.services.map((service) => {
+        const serviceData = new ItemData();
+        serviceData.label = service.label;
+        serviceData.id = service.label;
+        serviceData.icon = "box.svg";
+        return serviceData;
+      });
+      itemDataList.push(itemData);
+    });
+    return itemDataList;
+  }
 }

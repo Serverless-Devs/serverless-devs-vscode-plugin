@@ -2,12 +2,11 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
 import { ext } from "./extensionVariables";
-import { DevsTree } from "./local-resource";
+import { LocalResource } from "./local-resource";
 import { init } from "./commands/init";
 import { config } from "./commands/config";
 import { deploy } from "./commands/deploy";
 import { MarkYaml } from "./commands/mark-yaml";
-import { testWebview } from "./local-resource/testWebview";
 import { statusBarItem } from "./status/statusBarItem";
 import { activeGlobalSettingsWebview } from "./global-settings";
 
@@ -49,9 +48,7 @@ export function activate(context: vscode.ExtensionContext) {
     })
   );
 
-  new DevsTree(context);
-
-  testWebview(context);
+  new LocalResource(context);
   statusBarItem(context);
 }
 
