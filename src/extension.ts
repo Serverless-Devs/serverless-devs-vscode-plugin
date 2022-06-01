@@ -51,8 +51,8 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand(
       "serverless-devs.goToFile",
-      (filePath: string) => {
-        goToFile(filePath);
+      (filePath: string, flowName: string) => {
+        goToFile(filePath, flowName);
       }
     )
   );
