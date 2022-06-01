@@ -6,7 +6,8 @@ import { LocalResource } from "./local-resource";
 import { init } from "./commands/init";
 import { config } from "./commands/config";
 import { deploy } from "./commands/deploy";
-import { MarkYaml } from "./commands/mark-yaml";
+import { markYaml } from "./commands/mark-yaml";
+import { goToFile } from "./commands/go-to-file";
 import { statusBarItem } from "./status/statusBarItem";
 import { activeGlobalSettingsWebview } from "./global-settings";
 
@@ -17,17 +18,14 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.workspace.workspaceFolders.length > 0
       ? vscode.workspace.workspaceFolders[0].uri.fsPath
       : undefined;
-
   // s init
   context.subscriptions.push(
     vscode.commands.registerCommand("serverless-devs.init", () => init())
   );
-
   // s config add
   context.subscriptions.push(
     vscode.commands.registerCommand("serverless-devs.config", () => config())
   );
-
   // s deploy
   context.subscriptions.push(
     vscode.commands.registerCommand("serverless-devs.deploy", (itemData) =>
@@ -38,16 +36,25 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand(
       "serverless-devs.yaml",
-      async (uri: vscode.Uri) => {
-        await new MarkYaml(uri).init();
+      (uri: vscode.Uri) => {
+        markYaml(uri);
       }
     )
   );
-
+  // 设置中心
   context.subscriptions.push(
     vscode.commands.registerCommand("serverless-devs.set", () => {
       activeGlobalSettingsWebview(context);
     })
+  );
+  // 打开文件
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      "serverless-devs.goToFile",
+      (filePath: string) => {
+        goToFile(filePath);
+      }
+    )
   );
 
   new LocalResource(context);

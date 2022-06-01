@@ -3,7 +3,7 @@ import * as core from "@serverless-devs/core";
 import * as path from "path";
 import * as fs from "fs";
 import { ext } from "../extensionVariables";
-import { ItemData, TreeItem } from "./TreeItem";
+import { ItemData, TreeItem } from "../common";
 
 export class LocalResourceTreeDataProvider
   implements vscode.TreeDataProvider<ItemData>
@@ -59,7 +59,7 @@ export class LocalResourceTreeDataProvider
           itemData.label = `${yamlData.alias}(${fileName})`;
           itemData.id = fileName;
           itemData.icon = "box.svg";
-          itemData.command = "s deploy";
+          itemData.scommand = "s deploy";
           itemData.initialCollapsibleState =
             vscode.TreeItemCollapsibleState.Collapsed;
           const services = yamlData.services;
@@ -67,8 +67,13 @@ export class LocalResourceTreeDataProvider
             const serviceData = new ItemData();
             serviceData.label = service;
             serviceData.id = `${fileName}-${service}`;
-            serviceData.command = `s ${service} deploy`;
-            serviceData.icon = "box.svg";
+            serviceData.scommand = `s ${service} deploy`;
+            (serviceData.command = {
+              command: "serverless-devs.goToFile",
+              title: "Go to file",
+              arguments: [filePath],
+            }),
+              (serviceData.icon = "box.svg");
             itemData.children.push(serviceData);
           }
           itemDataList.push(itemData);

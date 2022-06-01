@@ -9,7 +9,9 @@ export class ItemData {
 
   tooltip = "";
 
-  command = "";
+  scommand = "";
+
+  command;
 
   contextValue = "";
 
@@ -34,9 +36,15 @@ export class TreeItem extends vscode.TreeItem {
     if (itemData.description) {
       this.description = itemData.description;
     }
+
     if (itemData.tooltip) {
       this.tooltip = itemData.tooltip;
     }
+
+    if (itemData.command) {
+      this.command = itemData.command;
+    }
+
     if (itemData.id) {
       this.id = itemData.id;
     }

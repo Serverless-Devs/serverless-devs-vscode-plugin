@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import * as path from "path";
 import { ext } from "../../extensionVariables";
-import { ItemData } from "../../local-resource/treeItem";
+import { ItemData } from "../../common";
 import * as core from "@serverless-devs/core";
 
 export async function deploy(itemData: ItemData) {
@@ -13,6 +13,6 @@ export async function deploy(itemData: ItemData) {
       `deploy from Serverless Devs`
     );
     terminal.show();
-    terminal.sendText(itemData.command);
+    terminal.sendText(itemData.scommand);
   }
 }
