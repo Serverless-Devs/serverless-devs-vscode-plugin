@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import * as path from "path";
+import * as fs from "fs";
 import { getUri } from "../utils";
-const template = require("art-template");
 
 function getNonce() {
   let text = "";
@@ -19,14 +19,13 @@ export function getHtmlForWebview(
   webview: vscode.Webview,
   config: { [key: string]: any } = {}
 ) {
-  const indexArt = path.join(
+  const indexHtml = path.join(
     context.extensionPath,
     "src",
     entryName,
     "ui",
-    "index.art"
+    "index.html"
   );
-  const indexHtml = template(indexArt, config);
 
   const toolkitUri = getUri(webview, context.extensionUri, [
     "node_modules",
@@ -34,6 +33,11 @@ export function getHtmlForWebview(
     "webview-ui-toolkit",
     "dist",
     "toolkit.js", // A toolkit.min.js file is also available
+  ]);
+
+  const vueUri = getUri(webview, context.extensionUri, [
+    "resources",
+    "vue.min.js",
   ]);
 
   const mainUri = getUri(webview, context.extensionUri, [
@@ -46,6 +50,7 @@ export function getHtmlForWebview(
   // Use a nonce to only allow specific scripts to be run
   const nonce = getNonce();
 
+  // 传入模版的数据挂载到 Vue.prototype.$config 上
   return /*html*/ `
     <!DOCTYPE html>
     <html lang="en">
@@ -53,8 +58,12 @@ export function getHtmlForWebview(
         <meta charset="UTF-8">
 				<meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script nonce="${nonce}" type="module" src="${toolkitUri}"></script>
+        <script src="${vueUri}"></script>
+        <script nonce="${nonce}">
+          Vue.prototype.$config = ${JSON.stringify(config)};
+        </script>
       </head>
-      ${indexHtml}
+      ${fs.readFileSync(indexHtml, "utf-8")}
       <script nonce="${nonce}" src="${mainUri}"></script>
     </html>
   `;

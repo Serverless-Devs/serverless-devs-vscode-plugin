@@ -10,6 +10,7 @@ import { markYaml } from "./commands/mark-yaml";
 import { goToFile } from "./commands/go-to-file";
 import { statusBarItem } from "./status/statusBarItem";
 import { activeGlobalSettingsWebview } from "./global-settings";
+import { activeLocalResourceSettingsWebview } from "./local-resource-settings";
 
 export function activate(context: vscode.ExtensionContext) {
   ext.context = context;
@@ -55,6 +56,13 @@ export function activate(context: vscode.ExtensionContext) {
         goToFile(filePath, flowName);
       }
     )
+  );
+
+  // local resource set
+  context.subscriptions.push(
+    vscode.commands.registerCommand("local-resource.set", () => {
+      activeLocalResourceSettingsWebview(context);
+    })
   );
 
   new LocalResource(context);

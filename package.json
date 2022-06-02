@@ -87,6 +87,15 @@
         }
       },
       {
+        "command": "local-resource.set",
+        "title": "设置",
+        "category": "Serverless-Devs",
+        "icon": {
+          "light": "media/light/set.svg",
+          "dark": "media/dark/set.svg"
+        }
+      },
+      {
         "command": "serverless-devs.refresh",
         "title": "Refresh",
         "icon": {
@@ -159,7 +168,7 @@
       ],
       "view/item/context": [
         {
-          "command": "serverless-devs.deploy",
+          "command": "local-resource.set",
           "when": "view == local-resource",
           "group": "inline"
         }
@@ -189,7 +198,6 @@
   },
   "dependencies": {
     "@serverless-devs/core": "beta",
-    "@vscode/webview-ui-toolkit": "^1.0.0",
-    "art-template": "^4.13.2"
+    "@vscode/webview-ui-toolkit": "^1.0.0"
   }
 }
