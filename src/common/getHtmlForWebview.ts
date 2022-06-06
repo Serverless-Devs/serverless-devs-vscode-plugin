@@ -44,6 +44,13 @@ export function getHtmlForWebview(
     "lodash.min.js",
   ]);
 
+  const codiconsUri = getUri(webview, context.extensionUri, [
+    "node_modules",
+    "@vscode/codicons",
+    "dist",
+    "codicon.css",
+  ]);
+
   const mainUri = getUri(webview, context.extensionUri, [
     "src",
     entryName,
@@ -61,6 +68,7 @@ export function getHtmlForWebview(
       <head>
         <meta charset="UTF-8">
 				<meta name="viewport" content="width=device-width, initial-scale=1.0">
+				<link href="${codiconsUri}" rel="stylesheet" />
         <script nonce="${nonce}" type="module" src="${toolkitUri}"></script>
         <script src="${vueUri}"></script>
         <script src="${lodashUri}"></script>

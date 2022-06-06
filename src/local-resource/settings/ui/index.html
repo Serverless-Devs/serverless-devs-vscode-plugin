@@ -1,31 +1,73 @@
 <div id="app">
   <h1>命令列表</h1>
-  <vscode-data-grid aria-label="Basic">
+  <vscode-data-grid aria-label="Basic" grid-template-columns="20% 20% 20% 40%">
     <vscode-divider></vscode-divider>
     <vscode-data-grid-row row-type="header">
-      <vscode-data-grid-cell align="center" cell-type="columnheader" grid-column="1">添加到快捷栏</vscode-data-grid-cell>
-      <vscode-data-grid-cell align="center" cell-type="columnheader" grid-column="2">命令</vscode-data-grid-cell>
-      <vscode-data-grid-cell align="center" cell-type="columnheader" grid-column="3">选择Icon</vscode-data-grid-cell>
-      <vscode-data-grid-cell align="center" cell-type="columnheader" grid-column="4">自定义参数</vscode-data-grid-cell>
-      <vscode-data-grid-cell align="center" cell-type="columnheader" grid-column="5">操作</vscode-data-grid-cell>
+      <vscode-data-grid-cell
+        align="center"
+        cell-type="columnheader"
+        grid-column="1"
+        >添加到快捷栏</vscode-data-grid-cell
+      >
+      <vscode-data-grid-cell
+        align="center"
+        cell-type="columnheader"
+        grid-column="2"
+        >命令</vscode-data-grid-cell
+      >
+      <vscode-data-grid-cell
+        align="center"
+        cell-type="columnheader"
+        grid-column="3"
+        >选择Icon</vscode-data-grid-cell
+      >
+      <vscode-data-grid-cell cell-type="columnheader" grid-column="4"
+        >自定义参数</vscode-data-grid-cell
+      >
     </vscode-data-grid-row>
     <vscode-divider></vscode-divider>
     <template v-for="item in commands">
       <vscode-data-grid-row>
         <vscode-data-grid-cell grid-column="1" align="center">
-          <vscode-checkbox :checked="item.checked" @change="e=>handleChecked(e, item)"></vscode-checkbox>
+          <vscode-checkbox
+            :checked="item.checked"
+            @change="e=>handleChecked(e, item)"
+          ></vscode-checkbox>
         </vscode-data-grid-cell>
-        <vscode-data-grid-cell grid-column="2" align="center">Cell Data</vscode-data-grid-cell>
-        <vscode-data-grid-cell grid-column="3" align="center">Cell Data</vscode-data-grid-cell>
-        <vscode-data-grid-cell grid-column="4" align="center">
-          <vscode-text-field :value="item.args" @change="e=>handleArgs(e, item)"></vscode-text-field>
-        </vscode-data-grid-cell>
-        <vscode-data-grid-cell grid-column="5" align="center">
-          <vscode-button @click="()=>handleDelete(item)" appearance="secondary">删除</vscode-button>
+        <vscode-data-grid-cell grid-column="2" align="center"
+          >Cell Data</vscode-data-grid-cell
+        >
+        <vscode-data-grid-cell grid-column="3" align="center"
+          >Cell Data</vscode-data-grid-cell
+        >
+        <vscode-data-grid-cell
+          grid-column="4"
+          style="display: flex; flex-wrap: nowrap"
+        >
+          <vscode-text-field
+            style="flex: 1"
+            :value="item.args"
+            @change="e=>handleArgs(e, item)"
+          ></vscode-text-field>
+          <vscode-button
+            v-if="commands.length > 1"
+            style="margin-left: 16px"
+            appearance="icon"
+            @click="()=>handleDelete(item)"
+          >
+            <span class="codicon codicon-trash"></span>
+          </vscode-button>
         </vscode-data-grid-cell>
       </vscode-data-grid-row>
       <vscode-divider></vscode-divider>
     </template>
   </vscode-data-grid>
-  <vscode-button @click="handleAdd" style="margin-top: 16px" appearance="primary">+新增</vscode-button>
+  <vscode-button
+    @click="handleAdd"
+    style="margin-top: 16px"
+    appearance="primary"
+  >
+    新增
+    <span slot="start" class="codicon codicon-add"></span>
+  </vscode-button>
 </div>
