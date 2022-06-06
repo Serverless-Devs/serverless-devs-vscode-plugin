@@ -10,7 +10,7 @@ import { markYaml } from "./commands/mark-yaml";
 import { goToFile } from "./commands/go-to-file";
 import { statusBarItem } from "./status/statusBarItem";
 import { activeGlobalSettingsWebview } from "./global-settings";
-import { activeLocalResourceSettingsWebview } from "./local-resource-settings";
+import { activeLocalResourceSettingsWebview } from "./local-resource/settings";
 
 export function activate(context: vscode.ExtensionContext) {
   ext.context = context;

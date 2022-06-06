@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { getHtmlForWebview } from "../common";
+import { getHtmlForWebview } from "../../common";
 import * as event from "./event";
 import * as core from "@serverless-devs/core";
 
