@@ -14,19 +14,40 @@ new Vue({
     commands: [getDefaultValue()],
   },
   mounted() {
-    console.log(_, "lodash");
+    if (this.$config.commands.length > 0) {
+      this.commands = this.$config.commands;
+    }
+  },
+  watch: {
+    commands: function (val, oldVal) {
+      console.log(val, oldVal);
+      vscode.postMessage({
+        type: "commands",
+        commands: this.commands,
+      });
+    },
   },
   methods: {
     handleAdd() {
-      this.commands.push(getDefaultValue());
-      console.log(this.commands);
+      this.commands = _.concat(this.commands, getDefaultValue());
+    },
+    handleDelete(item) {
+      this.commands = _.filter(this.commands, (obj) => obj.id !== item.id);
     },
     handleChecked(e, item) {
       this.commands = _.map(this.commands, (obj) => {
         if (obj.id === item.id) {
-          item.checked = e.target.checked;
+          obj.checked = e.target.checked;
         }
-        return item;
+        return obj;
+      });
+    },
+    handleArgs(e, item) {
+      this.commands = _.map(this.commands, (obj) => {
+        if (obj.id === item.id) {
+          obj.args = e.target.value;
+        }
+        return obj;
       });
     },
   },

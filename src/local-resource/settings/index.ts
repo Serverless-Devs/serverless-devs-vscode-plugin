@@ -1,7 +1,10 @@
 import * as vscode from "vscode";
+import * as path from "path";
+import * as fs from "fs";
 import { getHtmlForWebview } from "../../common";
 import * as event from "./event";
 import * as core from "@serverless-devs/core";
+import { ext } from "../../extensionVariables";
 
 let localResourceSettingsWebviewPanel: vscode.WebviewPanel | undefined;
 export async function activeLocalResourceSettingsWebview(
@@ -26,8 +29,7 @@ export async function activeLocalResourceSettingsWebview(
         context,
         localResourceSettingsWebviewPanel.webview,
         {
-          analysis,
-          workspace: core.getRootHome(),
+          commands: getCommands(),
         }
       );
     }
@@ -50,13 +52,22 @@ export async function activeLocalResourceSettingsWebview(
   }
 }
 
+function getCommands() {
+  const filePath = path.join(ext.cwd, ".serverless-devs");
+  if (!fs.existsSync(filePath)) {
+    fs.writeFileSync(filePath, JSON.stringify({}));
+  }
+  const data = JSON.parse(fs.readFileSync(filePath, "utf-8"));
+  return Array.isArray(data["quick-commands"]) ? data["quick-commands"] : [];
+}
+
 async function handleMessage(
   params: { type: string; [key: string]: any },
   updateWebview: () => Promise<void>
 ) {
   switch (params.type) {
-    case "analysis":
-      await event.analysis(params);
+    case "commands":
+      await event.handleCommands(params);
       return;
     case "resetWorkspace":
       await event.resetWorkspace();

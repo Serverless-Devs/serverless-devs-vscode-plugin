@@ -17,8 +17,12 @@
         </vscode-data-grid-cell>
         <vscode-data-grid-cell grid-column="2" align="center">Cell Data</vscode-data-grid-cell>
         <vscode-data-grid-cell grid-column="3" align="center">Cell Data</vscode-data-grid-cell>
-        <vscode-data-grid-cell grid-column="4" align="center">Cell Data</vscode-data-grid-cell>
-        <vscode-data-grid-cell grid-column="5" align="center">Cell Data</vscode-data-grid-cell>
+        <vscode-data-grid-cell grid-column="4" align="center">
+          <vscode-text-field :value="item.args" @change="e=>handleArgs(e, item)"></vscode-text-field>
+        </vscode-data-grid-cell>
+        <vscode-data-grid-cell grid-column="5" align="center">
+          <vscode-button @click="()=>handleDelete(item)" appearance="secondary">删除</vscode-button>
+        </vscode-data-grid-cell>
       </vscode-data-grid-row>
       <vscode-divider></vscode-divider>
     </template>
