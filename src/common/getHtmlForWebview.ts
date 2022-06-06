@@ -39,6 +39,10 @@ export function getHtmlForWebview(
     "resources",
     "vue.min.js",
   ]);
+  const lodashUri = getUri(webview, context.extensionUri, [
+    "resources",
+    "lodash.min.js",
+  ]);
 
   const mainUri = getUri(webview, context.extensionUri, [
     "src",
@@ -59,6 +63,7 @@ export function getHtmlForWebview(
 				<meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script nonce="${nonce}" type="module" src="${toolkitUri}"></script>
         <script src="${vueUri}"></script>
+        <script src="${lodashUri}"></script>
         <script nonce="${nonce}">
           Vue.prototype.$config = ${JSON.stringify(config)};
         </script>

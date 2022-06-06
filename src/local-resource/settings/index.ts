@@ -3,14 +3,14 @@ import { getHtmlForWebview } from "../../common";
 import * as event from "./event";
 import * as core from "@serverless-devs/core";
 
-let globalSettingsWebviewPanel: vscode.WebviewPanel | undefined;
+let localResourceSettingsWebviewPanel: vscode.WebviewPanel | undefined;
 export async function activeLocalResourceSettingsWebview(
   context: vscode.ExtensionContext
 ) {
-  if (globalSettingsWebviewPanel) {
-    globalSettingsWebviewPanel.reveal();
+  if (localResourceSettingsWebviewPanel) {
+    localResourceSettingsWebviewPanel.reveal();
   } else {
-    globalSettingsWebviewPanel = vscode.window.createWebviewPanel(
+    localResourceSettingsWebviewPanel = vscode.window.createWebviewPanel(
       "Serverless-Devs",
       "设置 - Serverless-Devs",
       vscode.ViewColumn.One,
@@ -21,10 +21,10 @@ export async function activeLocalResourceSettingsWebview(
     );
     async function updateWebview() {
       const analysis = await core.getSetConfig("analysis");
-      globalSettingsWebviewPanel.webview.html = getHtmlForWebview(
-        "global-settings",
+      localResourceSettingsWebviewPanel.webview.html = getHtmlForWebview(
+        "local-resource/settings",
         context,
-        globalSettingsWebviewPanel.webview,
+        localResourceSettingsWebviewPanel.webview,
         {
           analysis,
           workspace: core.getRootHome(),
@@ -32,17 +32,17 @@ export async function activeLocalResourceSettingsWebview(
       );
     }
     await updateWebview();
-    globalSettingsWebviewPanel.iconPath = vscode.Uri.parse(
+    localResourceSettingsWebviewPanel.iconPath = vscode.Uri.parse(
       "https://img.alicdn.com/imgextra/i4/O1CN01AvqMOu1sYpY1j8xaI_!!6000000005779-2-tps-574-204.png"
     );
-    globalSettingsWebviewPanel.webview.onDidReceiveMessage(
+    localResourceSettingsWebviewPanel.webview.onDidReceiveMessage(
       (val) => handleMessage(val, updateWebview),
       undefined,
       context.subscriptions
     );
-    globalSettingsWebviewPanel.onDidDispose(
+    localResourceSettingsWebviewPanel.onDidDispose(
       () => {
-        globalSettingsWebviewPanel = undefined;
+        localResourceSettingsWebviewPanel = undefined;
       },
       null,
       context.subscriptions
