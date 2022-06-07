@@ -4,10 +4,11 @@ import * as os from "os";
 import * as fs from "fs";
 import * as core from "@serverless-devs/core";
 import { ext } from "../../../extensionVariables";
+import { TEMPLTE_FILE } from "../../../constants";
 
 export async function quickCommandList(params) {
   const { quickCommandList, itemData } = params;
-  const filePath = path.join(ext.cwd, ".serverless-devs");
+  const filePath = path.join(ext.cwd, TEMPLTE_FILE);
   if (!fs.existsSync(filePath)) {
     fs.writeFileSync(filePath, JSON.stringify({}));
   }

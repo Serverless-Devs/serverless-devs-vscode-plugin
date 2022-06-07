@@ -3,6 +3,7 @@ import * as path from "path";
 import * as core from "@serverless-devs/core";
 import * as fs from "fs";
 import { ext } from "../../extensionVariables";
+import { TEMPLTE_FILE } from "../../constants";
 
 export async function markYaml(uri: vscode.Uri) {
   const { fsPath } = uri;
@@ -17,7 +18,7 @@ export async function markYaml(uri: vscode.Uri) {
       },
     });
     const appPath = path.dirname(fsPath);
-    const filePath = path.join(appPath, ".serverless-devs");
+    const filePath = path.join(appPath, TEMPLTE_FILE);
     if (!fs.existsSync(filePath)) {
       fs.writeFileSync(filePath, JSON.stringify({}));
     }

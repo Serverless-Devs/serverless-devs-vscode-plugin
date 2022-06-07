@@ -4,6 +4,7 @@ import * as path from "path";
 import * as fs from "fs";
 import { ext } from "../extensionVariables";
 import { ItemData, TreeItem } from "../common";
+import { TEMPLTE_FILE } from "../constants";
 
 export class LocalResourceTreeDataProvider
   implements vscode.TreeDataProvider<ItemData>
@@ -47,7 +48,7 @@ export class LocalResourceTreeDataProvider
   }
 
   async transformYamlData() {
-    const filePath = path.join(ext.cwd, ".serverless-devs");
+    const filePath = path.join(ext.cwd, TEMPLTE_FILE);
     if (!fs.existsSync(filePath)) return [];
     const data = JSON.parse(fs.readFileSync(filePath, "utf8"));
     const markedYamlList = data["vscode-marked-yamls"];
@@ -59,7 +60,6 @@ export class LocalResourceTreeDataProvider
       itemData.label = `${markedYaml.alias}(${fileName})`;
       itemData.id = `${markedYaml.alias}(${fileName})`;
       itemData.icon = "box.svg";
-      itemData.scommand = "s deploy";
       itemData.spath = markedYaml.path;
       itemData.initialCollapsibleState =
         vscode.TreeItemCollapsibleState.Collapsed;
@@ -75,7 +75,6 @@ export class LocalResourceTreeDataProvider
         const serviceData = new ItemData();
         serviceData.label = service;
         serviceData.id = `${markedYaml.alias}(${fileName}) > ${service}`;
-        serviceData.scommand = `s ${service} deploy`;
         serviceData.spath = markedYaml.path;
         serviceData.command = {
           command: "serverless-devs.goToFile",

@@ -5,7 +5,7 @@ import { ext } from "./extensionVariables";
 import { LocalResource } from "./local-resource";
 import { init } from "./commands/init";
 import { config } from "./commands/config";
-import { deploy } from "./commands/deploy";
+import { custom } from "./commands/custom";
 import { markYaml } from "./commands/mark-yaml";
 import { goToFile } from "./commands/go-to-file";
 import { statusBarItem } from "./status/statusBarItem";
@@ -26,12 +26,6 @@ export function activate(context: vscode.ExtensionContext) {
   // s config add
   context.subscriptions.push(
     vscode.commands.registerCommand("serverless-devs.config", () => config())
-  );
-  // s deploy
-  context.subscriptions.push(
-    vscode.commands.registerCommand("serverless-devs.deploy", (itemData) =>
-      deploy(itemData)
-    )
   );
   // 标记Yaml文件到工作空间
   context.subscriptions.push(
@@ -56,6 +50,39 @@ export function activate(context: vscode.ExtensionContext) {
         goToFile(filePath, flowName);
       }
     )
+  );
+
+  // local resource deploy
+  context.subscriptions.push(
+    vscode.commands.registerCommand("local-resource.deploy", (itemData) => {
+      itemData.scommand =
+        itemData.contextValue === "app"
+          ? "s deploy"
+          : `s ${itemData.label} deploy`;
+      custom(itemData);
+    })
+  );
+
+  // local resource build
+  context.subscriptions.push(
+    vscode.commands.registerCommand("local-resource.build", (itemData) => {
+      itemData.scommand =
+        itemData.contextValue === "app"
+          ? "s build"
+          : `s ${itemData.label} build`;
+      custom(itemData);
+    })
+  );
+
+  // local resource invoke
+  context.subscriptions.push(
+    vscode.commands.registerCommand("local-resource.invoke", (itemData) => {
+      itemData.scommand =
+        itemData.contextValue === "app"
+          ? "s invoke"
+          : `s ${itemData.label} invoke`;
+      custom(itemData);
+    })
   );
 
   // local resource set

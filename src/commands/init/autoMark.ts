@@ -2,11 +2,12 @@ import * as fs from "fs";
 import * as path from "path";
 import * as core from "@serverless-devs/core";
 import { ext } from "../../extensionVariables";
+import { TEMPLTE_FILE } from "../../constants";
 
 export async function autoMark(appPath: string) {
   const spath = getYamlPath(appPath);
   if (await checkYaml(spath)) {
-    const filePath = path.join(appPath, ".serverless-devs");
+    const filePath = path.join(appPath, TEMPLTE_FILE);
     if (!fs.existsSync(filePath)) {
       fs.writeFileSync(filePath, JSON.stringify({}));
     }

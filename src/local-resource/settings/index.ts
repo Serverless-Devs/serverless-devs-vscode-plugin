@@ -6,6 +6,7 @@ import * as event from "./event";
 import * as core from "@serverless-devs/core";
 import { ItemData } from "../../common";
 import { ext } from "../../extensionVariables";
+import { TEMPLTE_FILE } from "../../constants";
 
 let localResourceSettingsWebviewPanel: vscode.WebviewPanel | undefined;
 export async function activeLocalResourceSettingsWebview(
@@ -61,7 +62,7 @@ export async function activeLocalResourceSettingsWebview(
 }
 
 function getQuickCommandList() {
-  const filePath = path.join(ext.cwd, ".serverless-devs");
+  const filePath = path.join(ext.cwd, TEMPLTE_FILE);
   if (!fs.existsSync(filePath)) {
     fs.writeFileSync(filePath, JSON.stringify({}));
   }

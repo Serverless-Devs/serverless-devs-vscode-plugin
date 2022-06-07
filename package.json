@@ -87,6 +87,33 @@
         }
       },
       {
+        "command": "local-resource.deploy",
+        "title": "deploy",
+        "category": "Serverless-Devs",
+        "icon": {
+          "light": "media/light/deploy.svg",
+          "dark": "media/dark/deploy.svg"
+        }
+      },
+      {
+        "command": "local-resource.build",
+        "title": "build",
+        "category": "Serverless-Devs",
+        "icon": {
+          "light": "media/light/project-init.svg",
+          "dark": "media/dark/project-init.svg"
+        }
+      },
+      {
+        "command": "local-resource.invoke",
+        "title": "invoke",
+        "category": "Serverless-Devs",
+        "icon": {
+          "light": "media/light/invoke.svg",
+          "dark": "media/dark/invoke.svg"
+        }
+      },
+      {
         "command": "local-resource.set",
         "title": "设置",
         "category": "Serverless-Devs",
@@ -168,9 +195,24 @@
       ],
       "view/item/context": [
         {
+          "command": "local-resource.deploy",
+          "when": "view == local-resource",
+          "group": "inline@1"
+        },
+        {
+          "command": "local-resource.build",
+          "when": "view == local-resource",
+          "group": "inline@2"
+        },
+        {
+          "command": "local-resource.invoke",
+          "when": "view == local-resource",
+          "group": "inline@3"
+        },
+        {
           "command": "local-resource.set",
           "when": "view == local-resource",
-          "group": "inline"
+          "group": "inline@4"
         }
       ]
     }
