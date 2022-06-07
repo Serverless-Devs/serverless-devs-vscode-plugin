@@ -57,7 +57,7 @@ export class LocalResourceTreeDataProvider
       const fileName = path.basename(markedYaml.path);
       const itemData = new ItemData();
       itemData.label = `${markedYaml.alias}(${fileName})`;
-      itemData.id = fileName;
+      itemData.id = `${markedYaml.alias}(${fileName})`;
       itemData.icon = "box.svg";
       itemData.scommand = "s deploy";
       itemData.spath = markedYaml.path;
@@ -74,7 +74,7 @@ export class LocalResourceTreeDataProvider
       for (const service in services) {
         const serviceData = new ItemData();
         serviceData.label = service;
-        serviceData.id = `${fileName}-${service}`;
+        serviceData.id = `${markedYaml.alias}(${fileName}) > ${service}`;
         serviceData.scommand = `s ${service} deploy`;
         serviceData.spath = markedYaml.path;
         serviceData.command = {

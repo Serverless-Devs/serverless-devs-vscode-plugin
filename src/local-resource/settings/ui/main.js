@@ -15,7 +15,7 @@ new Vue({
     quickCommandList: [getDefaultValue()],
   },
   mounted() {
-    this.title = `${this.$config.itemData.label}命令列表`;
+    this.title = `${this.$config.itemData.id}命令列表`;
     const findObj = _.find(this.$config.quickCommandList, (item) => {
       return item.path === this.$config.itemData.spath;
     });

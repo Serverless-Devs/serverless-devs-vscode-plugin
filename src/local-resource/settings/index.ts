@@ -12,8 +12,25 @@ export async function activeLocalResourceSettingsWebview(
   context: vscode.ExtensionContext,
   itemData: ItemData
 ) {
+  async function updateWebview() {
+    console.log({
+      quickCommandList: getQuickCommandList(),
+      itemData,
+    });
+
+    localResourceSettingsWebviewPanel.webview.html = getHtmlForWebview(
+      "local-resource/settings",
+      context,
+      localResourceSettingsWebviewPanel.webview,
+      {
+        quickCommandList: getQuickCommandList(),
+        itemData,
+      }
+    );
+  }
   if (localResourceSettingsWebviewPanel) {
     localResourceSettingsWebviewPanel.reveal();
+    updateWebview();
   } else {
     localResourceSettingsWebviewPanel = vscode.window.createWebviewPanel(
       "Serverless-Devs",
@@ -24,17 +41,6 @@ export async function activeLocalResourceSettingsWebview(
         retainContextWhenHidden: true,
       }
     );
-    async function updateWebview() {
-      localResourceSettingsWebviewPanel.webview.html = getHtmlForWebview(
-        "local-resource/settings",
-        context,
-        localResourceSettingsWebviewPanel.webview,
-        {
-          quickCommandList: getQuickCommandList(),
-          itemData,
-        }
-      );
-    }
     await updateWebview();
     localResourceSettingsWebviewPanel.iconPath = vscode.Uri.parse(
       "https://img.alicdn.com/imgextra/i4/O1CN01AvqMOu1sYpY1j8xaI_!!6000000005779-2-tps-574-204.png"
