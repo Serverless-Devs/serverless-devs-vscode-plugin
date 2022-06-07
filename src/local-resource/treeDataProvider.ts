@@ -60,6 +60,7 @@ export class LocalResourceTreeDataProvider
       itemData.id = fileName;
       itemData.icon = "box.svg";
       itemData.scommand = "s deploy";
+      itemData.spath = markedYaml.path;
       itemData.initialCollapsibleState =
         vscode.TreeItemCollapsibleState.Collapsed;
       itemData.command = {
@@ -67,6 +68,7 @@ export class LocalResourceTreeDataProvider
         title: "Go to file",
         arguments: [markedYaml.path],
       };
+      itemData.contextValue = "app";
       const yamlData = await core.getYamlContent(markedYaml.path);
       const services = yamlData.services;
       for (const service in services) {
@@ -74,12 +76,14 @@ export class LocalResourceTreeDataProvider
         serviceData.label = service;
         serviceData.id = `${fileName}-${service}`;
         serviceData.scommand = `s ${service} deploy`;
+        serviceData.spath = markedYaml.path;
         serviceData.command = {
           command: "serverless-devs.goToFile",
           title: "Go to file",
           arguments: [markedYaml.path, service],
         };
         serviceData.icon = "box.svg";
+        serviceData.contextValue = "service";
         itemData.children.push(serviceData);
       }
       itemDataList.push(itemData);

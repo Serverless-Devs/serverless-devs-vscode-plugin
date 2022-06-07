@@ -60,8 +60,8 @@ export function activate(context: vscode.ExtensionContext) {
 
   // local resource set
   context.subscriptions.push(
-    vscode.commands.registerCommand("local-resource.set", () => {
-      activeLocalResourceSettingsWebview(context);
+    vscode.commands.registerCommand("local-resource.set", (itemData) => {
+      activeLocalResourceSettingsWebview(context, itemData);
     })
   );
 

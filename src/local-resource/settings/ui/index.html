@@ -1,5 +1,5 @@
 <div id="app">
-  <h1>命令列表</h1>
+  <h1>{{title}}</h1>
   <vscode-data-grid aria-label="Basic" grid-template-columns="20% 20% 20% 40%">
     <vscode-divider></vscode-divider>
     <vscode-data-grid-row row-type="header">
@@ -26,7 +26,7 @@
       >
     </vscode-data-grid-row>
     <vscode-divider></vscode-divider>
-    <template v-for="item in commands">
+    <template v-for="item in quickCommandList">
       <vscode-data-grid-row>
         <vscode-data-grid-cell grid-column="1" align="center">
           <vscode-checkbox
@@ -34,12 +34,21 @@
             @change="e=>handleChecked(e, item)"
           ></vscode-checkbox>
         </vscode-data-grid-cell>
-        <vscode-data-grid-cell grid-column="2" align="center"
-          >Cell Data</vscode-data-grid-cell
-        >
-        <vscode-data-grid-cell grid-column="3" align="center"
-          >Cell Data</vscode-data-grid-cell
-        >
+        <vscode-data-grid-cell grid-column="2" align="center">
+          <vscode-dropdown
+            :value="item.command"
+            @change="e=>handleCommand(e, item)"
+          >
+            <vscode-option>Option Label #1</vscode-option>
+            <vscode-option>Option Label #2</vscode-option>
+            <vscode-option>Option Label #3</vscode-option>
+          </vscode-dropdown>
+        </vscode-data-grid-cell>
+        <vscode-data-grid-cell grid-column="3" align="center">
+          <vscode-button appearance="icon">
+            <span class="codicon codicon-debug-start"></span>
+          </vscode-button>
+        </vscode-data-grid-cell>
         <vscode-data-grid-cell
           grid-column="4"
           style="display: flex; flex-wrap: nowrap"
@@ -50,7 +59,7 @@
             @change="e=>handleArgs(e, item)"
           ></vscode-text-field>
           <vscode-button
-            v-if="commands.length > 1"
+            v-if="quickCommandList.length > 1"
             style="margin-left: 16px"
             appearance="icon"
             @click="()=>handleDelete(item)"

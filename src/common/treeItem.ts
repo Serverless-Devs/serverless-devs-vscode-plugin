@@ -11,6 +11,8 @@ export class ItemData {
 
   scommand = "";
 
+  spath = "";
+
   command;
 
   contextValue = "";

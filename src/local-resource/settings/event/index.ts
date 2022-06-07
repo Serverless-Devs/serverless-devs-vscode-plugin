@@ -5,13 +5,38 @@ import * as fs from "fs";
 import * as core from "@serverless-devs/core";
 import { ext } from "../../../extensionVariables";
 
-export async function handleCommands(params) {
+export async function quickCommandList(params) {
+  const { quickCommandList, itemData } = params;
   const filePath = path.join(ext.cwd, ".serverless-devs");
   if (!fs.existsSync(filePath)) {
     fs.writeFileSync(filePath, JSON.stringify({}));
   }
   const data = JSON.parse(fs.readFileSync(filePath, "utf-8"));
-  data["quick-commands"] = params.commands;
+  if (Array.isArray(data["quick-commands"])) {
+    const findObj = data["quick-commands"].find(
+      (item) => item.path === itemData.spath
+    );
+    if (findObj) {
+      data["quick-commands"] = data["quick-commands"].map((item) => {
+        if (item.path === itemData.spath) {
+          item.data = quickCommandList;
+        }
+        return item;
+      });
+    } else {
+      data["quick-commands"].push({
+        path: itemData.spath,
+        data: quickCommandList,
+      });
+    }
+  } else {
+    data["quick-commands"] = [
+      {
+        path: itemData.spath,
+        data: quickCommandList,
+      },
+    ];
+  }
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
 }
 
