@@ -3,13 +3,16 @@ import * as path from "path";
 import { ext } from "../../extensionVariables";
 import { ItemData } from "../../common";
 import * as core from "@serverless-devs/core";
+import { TERMINAL_NAME } from "../../constants";
 
-let terminal: vscode.Terminal | undefined;
 export async function custom(itemData: ItemData) {
-  // TODO： 使用同一个terminal 连续部署两次存在问题
-  if (!terminal) {
-    terminal = vscode.window.createTerminal("Serverless Devs#1");
+  const terminals = vscode.window.terminals;
+  for (const item of terminals) {
+    if (item.name === TERMINAL_NAME) {
+      item.dispose();
+    }
   }
+  const terminal = vscode.window.createTerminal(TERMINAL_NAME);
   terminal.sendText(itemData.scommand);
   terminal.show();
 }
