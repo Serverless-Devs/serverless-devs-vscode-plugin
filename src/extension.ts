@@ -55,10 +55,7 @@ export function activate(context: vscode.ExtensionContext) {
   // local resource deploy
   context.subscriptions.push(
     vscode.commands.registerCommand("local-resource.deploy", (itemData) => {
-      itemData.scommand =
-        itemData.contextValue === "app"
-          ? "s deploy"
-          : `s ${itemData.label} deploy`;
+      itemData.scommand = "deploy";
       custom(itemData);
     })
   );
@@ -66,10 +63,7 @@ export function activate(context: vscode.ExtensionContext) {
   // local resource build
   context.subscriptions.push(
     vscode.commands.registerCommand("local-resource.build", (itemData) => {
-      itemData.scommand =
-        itemData.contextValue === "app"
-          ? "s build"
-          : `s ${itemData.label} build`;
+      itemData.scommand = "build";
       custom(itemData);
     })
   );
@@ -77,10 +71,7 @@ export function activate(context: vscode.ExtensionContext) {
   // local resource invoke
   context.subscriptions.push(
     vscode.commands.registerCommand("local-resource.invoke", (itemData) => {
-      itemData.scommand =
-        itemData.contextValue === "app"
-          ? "s invoke"
-          : `s ${itemData.label} invoke`;
+      itemData.scommand = "invoke";
       custom(itemData);
     })
   );

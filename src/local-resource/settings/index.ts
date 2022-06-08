@@ -4,7 +4,7 @@ import * as fs from "fs";
 import { getHtmlForWebview } from "../../common";
 import * as event from "./event";
 import * as core from "@serverless-devs/core";
-import { ItemData } from "../../common";
+import { ItemData, getQuickCommandList } from "../../common";
 import { ext } from "../../extensionVariables";
 import { TEMPLTE_FILE } from "../../constants";
 
@@ -14,11 +14,6 @@ export async function activeLocalResourceSettingsWebview(
   itemData: ItemData
 ) {
   async function updateWebview() {
-    console.log({
-      quickCommandList: getQuickCommandList(),
-      itemData,
-    });
-
     localResourceSettingsWebviewPanel.webview.html = getHtmlForWebview(
       "local-resource/settings",
       context,
@@ -59,15 +54,6 @@ export async function activeLocalResourceSettingsWebview(
       context.subscriptions
     );
   }
-}
-
-function getQuickCommandList() {
-  const filePath = path.join(ext.cwd, TEMPLTE_FILE);
-  if (!fs.existsSync(filePath)) {
-    fs.writeFileSync(filePath, JSON.stringify({}));
-  }
-  const data = JSON.parse(fs.readFileSync(filePath, "utf-8"));
-  return Array.isArray(data["quick-commands"]) ? data["quick-commands"] : [];
 }
 
 async function handleMessage(
