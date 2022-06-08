@@ -76,11 +76,10 @@ async function handleMessage(
 ) {
   switch (params.type) {
     case "quickCommandList":
-      await event.quickCommandList(params);
+      await event.writeQuickCommandList(params);
       return;
-    case "resetWorkspace":
-      await event.resetWorkspace();
-      await updateWebview();
+    case "shortcuts":
+      await event.writeShortcuts(params);
       return;
     case "manageWorkspace":
       await event.mangeWorkspace();

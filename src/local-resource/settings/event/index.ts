@@ -6,7 +6,7 @@ import * as core from "@serverless-devs/core";
 import { ext } from "../../../extensionVariables";
 import { TEMPLTE_FILE } from "../../../constants";
 
-export async function quickCommandList(params) {
+export async function writeQuickCommandList(params) {
   const { quickCommandList, itemData } = params;
   const filePath = path.join(ext.cwd, TEMPLTE_FILE);
   if (!fs.existsSync(filePath)) {
@@ -35,6 +35,41 @@ export async function quickCommandList(params) {
       {
         path: itemData.spath,
         data: quickCommandList,
+      },
+    ];
+  }
+  fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+}
+
+export async function writeShortcuts(params) {
+  const { shortcuts, itemData } = params;
+  const filePath = path.join(ext.cwd, TEMPLTE_FILE);
+  if (!fs.existsSync(filePath)) {
+    fs.writeFileSync(filePath, JSON.stringify({}));
+  }
+  const data = JSON.parse(fs.readFileSync(filePath, "utf-8"));
+  if (Array.isArray(data["quick-commands"])) {
+    const findObj = data["quick-commands"].find(
+      (item) => item.path === itemData.spath
+    );
+    if (findObj) {
+      data["quick-commands"] = data["quick-commands"].map((item) => {
+        if (item.path === itemData.spath) {
+          item.shortcuts = shortcuts;
+        }
+        return item;
+      });
+    } else {
+      data["quick-commands"].push({
+        path: itemData.spath,
+        shortcuts,
+      });
+    }
+  } else {
+    data["quick-commands"] = [
+      {
+        path: itemData.spath,
+        shortcuts,
       },
     ];
   }

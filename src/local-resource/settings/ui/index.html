@@ -1,40 +1,88 @@
 <div id="app">
   <h1>{{title}}</h1>
-  <vscode-data-grid aria-label="Basic" grid-template-columns="20% 20% 20% 40%">
+  <div class="flex">
+    <h1>快捷方式操作</h1>
+    <span class="ml8">针对左侧的快捷方式进行自定义配置</span>
+  </div>
+  <vscode-data-grid aria-label="Basic" grid-template-columns="20% 20% 60%">
     <vscode-divider></vscode-divider>
     <vscode-data-grid-row row-type="header">
       <vscode-data-grid-cell
         align="center"
         cell-type="columnheader"
         grid-column="1"
-        >添加到快捷栏</vscode-data-grid-cell
+        >快捷按钮</vscode-data-grid-cell
       >
       <vscode-data-grid-cell
         align="center"
         cell-type="columnheader"
         grid-column="2"
+        >行为配置</vscode-data-grid-cell
+      >
+      <vscode-data-grid-cell
+        cell-type="columnheader"
+        grid-column="3"
+        align="center"
+        >参数配置</vscode-data-grid-cell
+      >
+    </vscode-data-grid-row>
+    <vscode-divider></vscode-divider>
+    <template v-for="item in shortcuts">
+      <vscode-data-grid-row>
+        <vscode-data-grid-cell grid-column="1" class="flex jcc">
+          <span :class="'codicon codicon-'+item.icon"></span>
+        </vscode-data-grid-cell>
+        <vscode-data-grid-cell grid-column="2" class="flex jcc">
+          {{item.command}}
+        </vscode-data-grid-cell>
+        <vscode-data-grid-cell grid-column="3" align="center">
+          <vscode-text-field
+            style="width: 100%"
+            :value="item.args"
+            @change="e=>handleShortcutsArgs(e, item)"
+          ></vscode-text-field>
+        </vscode-data-grid-cell>
+      </vscode-data-grid-row>
+      <vscode-divider></vscode-divider>
+    </template>
+  </vscode-data-grid>
+  <div></div>
+  <div class="flex">
+    <h1>快速操作</h1>
+    <span class="ml8">快速执行自定义指令</span>
+  </div>
+  <vscode-data-grid aria-label="Basic" grid-template-columns="20% 20% 40% 20%">
+    <vscode-divider></vscode-divider>
+    <vscode-data-grid-row row-type="header">
+      <vscode-data-grid-cell
+        align="center"
+        cell-type="columnheader"
+        grid-column="1"
         >命令</vscode-data-grid-cell
       >
       <vscode-data-grid-cell
         align="center"
         cell-type="columnheader"
-        grid-column="3"
-        >选择Icon</vscode-data-grid-cell
+        grid-column="2"
+        >解释</vscode-data-grid-cell
       >
-      <vscode-data-grid-cell cell-type="columnheader" grid-column="4"
-        >自定义参数</vscode-data-grid-cell
+      <vscode-data-grid-cell
+        align="center"
+        cell-type="columnheader"
+        grid-column="3"
+        >参数配置</vscode-data-grid-cell
+      >
+      <vscode-data-grid-cell
+        cell-type="columnheader"
+        grid-column="4"
+        align="center"
+        >执行</vscode-data-grid-cell
       >
     </vscode-data-grid-row>
     <vscode-divider></vscode-divider>
     <template v-for="item in quickCommandList">
       <vscode-data-grid-row>
         <vscode-data-grid-cell grid-column="1" align="center">
-          <vscode-checkbox
-            :checked="item.checked"
-            @change="e=>handleChecked(e, item)"
-          ></vscode-checkbox>
-        </vscode-data-grid-cell>
-        <vscode-data-grid-cell grid-column="2" align="center">
           <vscode-dropdown
             :value="item.command"
             @change="e=>handleCommand(e, item)"
@@ -44,39 +92,23 @@
             <vscode-option>Option Label #3</vscode-option>
           </vscode-dropdown>
         </vscode-data-grid-cell>
-        <vscode-data-grid-cell grid-column="3" align="center">
-          <vscode-button appearance="icon">
-            <span class="codicon codicon-debug-start"></span>
-          </vscode-button>
+        <vscode-data-grid-cell grid-column="2" align="center">
+          desc
         </vscode-data-grid-cell>
-        <vscode-data-grid-cell
-          grid-column="4"
-          style="display: flex; flex-wrap: nowrap"
-        >
+        <vscode-data-grid-cell grid-column="3" align="center">
           <vscode-text-field
-            style="flex: 1"
+            style="width: 100%"
             :value="item.args"
             @change="e=>handleArgs(e, item)"
           ></vscode-text-field>
-          <vscode-button
-            v-if="quickCommandList.length > 1"
-            style="margin-left: 16px"
-            appearance="icon"
-            @click="()=>handleDelete(item)"
-          >
-            <span class="codicon codicon-trash"></span>
+        </vscode-data-grid-cell>
+        <vscode-data-grid-cell grid-column="4" align="center">
+          <vscode-button appearance="icon">
+            <span class="codicon codicon-debug-start"></span>
           </vscode-button>
         </vscode-data-grid-cell>
       </vscode-data-grid-row>
       <vscode-divider></vscode-divider>
     </template>
   </vscode-data-grid>
-  <vscode-button
-    @click="handleAdd"
-    style="margin-top: 16px"
-    appearance="primary"
-  >
-    新增
-    <span slot="start" class="codicon codicon-add"></span>
-  </vscode-button>
 </div>

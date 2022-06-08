@@ -11,19 +11,44 @@ const getDefaultValue = () => ({
 new Vue({
   el: "#app",
   data: {
-    title: "命令列表",
-    quickCommandList: [getDefaultValue()],
+    title: "",
+    shortcuts: [
+      {
+        id: _.uniqueId(),
+        icon: "debug-start",
+        command: "deploy",
+      },
+      {
+        id: _.uniqueId(),
+        icon: "debug-start",
+        command: "build",
+      },
+      {
+        id: _.uniqueId(),
+        icon: "debug-start",
+        command: "invoke",
+      },
+    ],
+    quickCommandList: [getDefaultValue()], //
   },
   mounted() {
-    this.title = `${this.$config.itemData.id}命令列表`;
+    this.title = `${this.$config.itemData.id}`;
     const findObj = _.find(this.$config.quickCommandList, (item) => {
       return item.path === this.$config.itemData.spath;
     });
     if (findObj) {
+      this.shortcuts = findObj.shortcuts;
       this.quickCommandList = findObj.data;
     }
   },
   watch: {
+    shortcuts: function (val, oldVal) {
+      vscode.postMessage({
+        type: "shortcuts",
+        shortcuts: val,
+        itemData: this.$config.itemData,
+      });
+    },
     quickCommandList: function (val, oldVal) {
       vscode.postMessage({
         type: "quickCommandList",
@@ -49,6 +74,14 @@ new Vue({
       this.quickCommandList = _.map(this.quickCommandList, (obj) => {
         if (obj.id === item.id) {
           obj.checked = e.target.checked;
+        }
+        return obj;
+      });
+    },
+    handleShortcutsArgs(e, item) {
+      this.shortcuts = _.map(this.shortcuts, (obj) => {
+        if (obj.id === item.id) {
+          obj.args = e.target.value;
         }
         return obj;
       });
