@@ -80,10 +80,14 @@ new Vue({
     },
     handleOperate(item) {
       const { itemData } = this.$config;
-      const command =
+      let command =
         itemData.contextValue === "app"
-          ? `s ${item.command} ${item.args}`
-          : `s ${itemData.label} ${item.command} ${item.args}`;
+          ? `s ${item.command}`
+          : `s ${itemData.label} ${item.command}`;
+
+      if (item.args) {
+        command = `${command} ${item.args}`;
+      }
       vscode.postMessage({
         type: "handleOperate",
         command,

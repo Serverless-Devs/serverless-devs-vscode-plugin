@@ -14,8 +14,7 @@
     "onView:local-resource",
     "onCommand:serverless-devs.init",
     "onCommand:serverless-devs.config",
-    "onCommand:serverless-devs.set",
-    "onCommand:serverless-devs.deploy"
+    "onCommand:serverless-devs.set"
   ],
   "contributes": {
     "views": {
@@ -140,6 +139,24 @@
         }
       },
       {
+        "command": "serverless-devs.verify",
+        "title": "verify",
+        "category": "Serverless-Devs",
+        "icon": {
+          "light": "media/light/deploy.svg",
+          "dark": "media/dark/deploy.svg"
+        }
+      },
+      {
+        "command": "serverless-devs.edit",
+        "title": "edit",
+        "category": "Serverless-Devs",
+        "icon": {
+          "light": "media/light/edit.svg",
+          "dark": "media/dark/edit.svg"
+        }
+      },
+      {
         "command": "serverless-devs.yaml",
         "title": "标记Yaml到工作空间",
         "category": "Serverless-Devs"
@@ -155,7 +172,13 @@
       ],
       "editor/title": [
         {
-          "command": "serverless-devs.deploy",
+          "command": "serverless-devs.verify",
+          "when": "resourceExtname == .yaml || resourceExtname == .yml",
+          "group": "navigation"
+        },
+        {
+          "command": "serverless-devs.edit",
+          "when": "resourceExtname == .yaml || resourceExtname == .yml",
           "group": "navigation"
         }
       ],

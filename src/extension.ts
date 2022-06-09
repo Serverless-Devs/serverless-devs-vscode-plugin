@@ -11,6 +11,7 @@ import { goToFile } from "./commands/go-to-file";
 import { statusBarItem } from "./status/statusBarItem";
 import { activeGlobalSettingsWebview } from "./global-settings";
 import { activeLocalResourceSettingsWebview } from "./local-resource/settings";
+import { createTerminal } from "./common";
 
 export function activate(context: vscode.ExtensionContext) {
   ext.context = context;
@@ -22,6 +23,18 @@ export function activate(context: vscode.ExtensionContext) {
   // s init
   context.subscriptions.push(
     vscode.commands.registerCommand("serverless-devs.init", () => init())
+  );
+  // s verify
+  context.subscriptions.push(
+    vscode.commands.registerCommand("serverless-devs.verify", () =>
+      createTerminal("s verify")
+    )
+  );
+  // s edit
+  context.subscriptions.push(
+    vscode.commands.registerCommand("serverless-devs.edit", () =>
+      createTerminal("s edit")
+    )
   );
   // s config add
   context.subscriptions.push(
