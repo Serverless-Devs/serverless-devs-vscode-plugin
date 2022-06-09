@@ -4,7 +4,7 @@
     <h1>快捷方式操作</h1>
     <span class="ml8">针对左侧的快捷方式进行自定义配置</span>
   </div>
-  <vscode-data-grid aria-label="Basic" grid-template-columns="20% 20% 60%">
+  <vscode-data-grid aria-label="Basic" grid-template-columns="15% 30% 55%">
     <vscode-divider></vscode-divider>
     <vscode-data-grid-row row-type="header">
       <vscode-data-grid-cell
@@ -35,7 +35,7 @@
         <vscode-data-grid-cell grid-column="2" class="flex jcc">
           {{item.command}}
         </vscode-data-grid-cell>
-        <vscode-data-grid-cell grid-column="3" align="center">
+        <vscode-data-grid-cell grid-column="3" class="flex jcc">
           <vscode-text-field
             style="width: 100%"
             :value="item.args"
@@ -51,7 +51,7 @@
     <h1>快速操作</h1>
     <span class="ml8">快速执行自定义指令</span>
   </div>
-  <vscode-data-grid aria-label="Basic" grid-template-columns="20% 20% 40% 20%">
+  <vscode-data-grid aria-label="Basic" grid-template-columns="15% 30% 40% 15%">
     <vscode-divider></vscode-divider>
     <vscode-data-grid-row row-type="header">
       <vscode-data-grid-cell
@@ -82,27 +82,20 @@
     <vscode-divider></vscode-divider>
     <template v-for="item in quickCommandList">
       <vscode-data-grid-row>
-        <vscode-data-grid-cell grid-column="1" align="center">
-          <vscode-dropdown
-            :value="item.command"
-            @change="e=>handleCommand(e, item)"
-          >
-            <vscode-option>Option Label #1</vscode-option>
-            <vscode-option>Option Label #2</vscode-option>
-            <vscode-option>Option Label #3</vscode-option>
-          </vscode-dropdown>
+        <vscode-data-grid-cell grid-column="1" class="flex jcc">
+          {{item.command}}
         </vscode-data-grid-cell>
-        <vscode-data-grid-cell grid-column="2" align="center">
-          desc
+        <vscode-data-grid-cell grid-column="2" class="flex jcc">
+          {{item.desc}}
         </vscode-data-grid-cell>
-        <vscode-data-grid-cell grid-column="3" align="center">
+        <vscode-data-grid-cell grid-column="3" class="flex jcc">
           <vscode-text-field
             style="width: 100%"
             :value="item.args"
             @change="e=>handleArgs(e, item)"
           ></vscode-text-field>
         </vscode-data-grid-cell>
-        <vscode-data-grid-cell grid-column="4" align="center">
+        <vscode-data-grid-cell grid-column="4" class="flex jcc">
           <vscode-button appearance="icon">
             <span class="codicon codicon-debug-start"></span>
           </vscode-button>

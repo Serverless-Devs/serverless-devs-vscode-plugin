@@ -29,17 +29,22 @@ new Vue({
         command: "invoke",
       },
     ],
-    quickCommandList: [getDefaultValue()], //
+    quickCommandList: [], //
   },
   mounted() {
     this.title = `${this.$config.itemData.id}`;
-    const findObj = _.find(this.$config.quickCommandList, (item) => {
-      return item.path === this.$config.itemData.spath;
-    });
-    if (findObj) {
-      this.shortcuts = findObj.shortcuts;
-      this.quickCommandList = findObj.data;
-    }
+    this.quickCommandList = this.$config.quickCommandList;
+    // const findObj = _.find(this.$config.quickCommandList, (item) => {
+    //   return item.path === this.$config.itemData.spath;
+    // });
+    // if (findObj) {
+    //   if (!_.isEmpty(findObj.shortcuts)) {
+    //     this.shortcuts = findObj.shortcuts;
+    //   }
+    //   if (!_.isEmpty(findObj.data)) {
+    //     this.quickCommandList = findObj.data;
+    //   }
+    // }
   },
   watch: {
     shortcuts: function (val, oldVal) {
@@ -58,26 +63,6 @@ new Vue({
     },
   },
   methods: {
-    handleAdd() {
-      this.quickCommandList = _.concat(
-        this.quickCommandList,
-        getDefaultValue()
-      );
-    },
-    handleDelete(item) {
-      this.quickCommandList = _.filter(
-        this.quickCommandList,
-        (obj) => obj.id !== item.id
-      );
-    },
-    handleChecked(e, item) {
-      this.quickCommandList = _.map(this.quickCommandList, (obj) => {
-        if (obj.id === item.id) {
-          obj.checked = e.target.checked;
-        }
-        return obj;
-      });
-    },
     handleShortcutsArgs(e, item) {
       this.shortcuts = _.map(this.shortcuts, (obj) => {
         if (obj.id === item.id) {
