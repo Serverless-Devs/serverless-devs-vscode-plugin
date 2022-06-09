@@ -1,8 +1,5 @@
-import * as vscode from "vscode";
 import * as path from "path";
-import * as os from "os";
 import * as fs from "fs";
-import * as core from "@serverless-devs/core";
 import { ext } from "../../../extensionVariables";
 import { TEMPLTE_FILE } from "../../../constants";
 

@@ -78,5 +78,16 @@ new Vue({
         return obj;
       });
     },
+    handleOperate(item) {
+      const { itemData } = this.$config;
+      const command =
+        itemData.contextValue === "app"
+          ? `s ${item.command} ${item.args}`
+          : `s ${itemData.label} ${item.command} ${item.args}`;
+      vscode.postMessage({
+        type: "handleOperate",
+        command,
+      });
+    },
   },
 });

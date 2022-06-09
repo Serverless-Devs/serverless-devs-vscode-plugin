@@ -2,7 +2,7 @@ import * as vscode from "vscode";
 import { getHtmlForWebview } from "../../common";
 import * as event from "./event";
 import * as core from "@serverless-devs/core";
-import { ItemData, getQuickCommands } from "../../common";
+import { ItemData, getQuickCommands, createTerminal } from "../../common";
 import { ext } from "../../extensionVariables";
 import { getComponentInfo } from "../../services";
 const { lodash: _ } = core;
@@ -193,6 +193,9 @@ async function handleMessage(params: { type: string; [key: string]: any }) {
       return;
     case "shortcuts":
       await event.writeShortcuts(params);
+      return;
+    case "handleOperate":
+      createTerminal(params.command);
       return;
   }
 }
