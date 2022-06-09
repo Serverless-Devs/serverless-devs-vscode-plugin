@@ -7,7 +7,7 @@ export { getHtmlForWebview } from "./getHtmlForWebview";
 export { MultiStepInput } from "./multiStepInput";
 export { ItemData, TreeItem } from "./treeItem";
 
-export function getQuickCommandList() {
+export function getQuickCommands() {
   const filePath = path.join(ext.cwd, TEMPLTE_FILE);
   if (!fs.existsSync(filePath)) {
     fs.writeFileSync(filePath, JSON.stringify({}));

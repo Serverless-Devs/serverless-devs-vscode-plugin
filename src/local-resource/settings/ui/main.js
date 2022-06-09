@@ -34,17 +34,9 @@ new Vue({
   mounted() {
     this.title = `${this.$config.itemData.id}`;
     this.quickCommandList = this.$config.quickCommandList;
-    // const findObj = _.find(this.$config.quickCommandList, (item) => {
-    //   return item.path === this.$config.itemData.spath;
-    // });
-    // if (findObj) {
-    //   if (!_.isEmpty(findObj.shortcuts)) {
-    //     this.shortcuts = findObj.shortcuts;
-    //   }
-    //   if (!_.isEmpty(findObj.data)) {
-    //     this.quickCommandList = findObj.data;
-    //   }
-    // }
+    if (!_.isEmpty(this.$config.shortcuts)) {
+      this.shortcuts = this.$config.shortcuts;
+    }
   },
   watch: {
     shortcuts: function (val, oldVal) {
@@ -55,9 +47,16 @@ new Vue({
       });
     },
     quickCommandList: function (val, oldVal) {
+      const quickCommandList = _.map(
+        _.filter(val, (item) => item.args),
+        (item) => ({
+          command: item.command,
+          args: item.args,
+        })
+      );
       vscode.postMessage({
         type: "quickCommandList",
-        quickCommandList: val,
+        quickCommandList,
         itemData: this.$config.itemData,
       });
     },
@@ -75,14 +74,6 @@ new Vue({
       this.quickCommandList = _.map(this.quickCommandList, (obj) => {
         if (obj.id === item.id) {
           obj.args = e.target.value;
-        }
-        return obj;
-      });
-    },
-    handleCommand(e, item) {
-      this.quickCommandList = _.map(this.quickCommandList, (obj) => {
-        if (obj.id === item.id) {
-          obj.command = e.target.value;
         }
         return obj;
       });

@@ -2,7 +2,7 @@ import * as vscode from "vscode";
 import { getHtmlForWebview } from "../../common";
 import * as event from "./event";
 import * as core from "@serverless-devs/core";
-import { ItemData } from "../../common";
+import { ItemData, getQuickCommands } from "../../common";
 import { ext } from "../../extensionVariables";
 import { getComponentInfo } from "../../services";
 const { lodash: _ } = core;
@@ -59,22 +59,54 @@ class UpdateWebview {
     );
   }
   async init() {
-    let quickCommandList = [];
+    const tmp: any = {
+      itemData: this.itemData,
+    };
+    const quickCommands = getQuickCommands();
+    const findObj = _.find(
+      quickCommands,
+      (item) => item.path === this.itemData.spath
+    );
     if (this.itemData.contextValue === "app") {
-      quickCommandList = await this.updateWithApp();
+      const quickCommandList = await this.updateWithApp();
+      const app = _.get(findObj, "app");
+      if (app) {
+        for (const commandItem of quickCommandList) {
+          const obj = _.find(
+            app,
+            (item) => item.command === commandItem.command
+          );
+          if (obj) {
+            commandItem.args = obj.args;
+          }
+        }
+      }
+      tmp.quickCommandList = quickCommandList;
     } else {
-      quickCommandList = await this.updateWithService();
+      const quickCommandList = await this.updateWithService();
+      const service = _.get(findObj, this.itemData.label);
+      if (service) {
+        for (const commandItem of quickCommandList) {
+          const obj = _.find(
+            service,
+            (item) => item.command === commandItem.command
+          );
+          if (obj) {
+            commandItem.args = obj.args;
+          }
+        }
+      }
+      tmp.quickCommandList = quickCommandList;
     }
-    console.log(quickCommandList);
-
+    const shortcuts = _.get(findObj, "$shortcuts");
+    if (shortcuts) {
+      tmp.shortcuts = shortcuts;
+    }
     localResourceSettingsWebviewPanel.webview.html = getHtmlForWebview(
       "local-resource/settings",
       this.context,
       localResourceSettingsWebviewPanel.webview,
-      {
-        quickCommandList,
-        itemData: this.itemData,
-      }
+      tmp
     );
   }
   async updateWithApp() {
@@ -121,14 +153,36 @@ class UpdateWebview {
       }
       if (needs.length === commandList.length) {
         item.id = _.uniqueId();
-        item.args = "";
         commonCommand.push(item);
       }
     }
     return commonCommand;
   }
   async updateWithService() {
-    return [];
+    const yamlData = await core.getYamlContent(this.itemData.spath);
+    const componentName = _.get(
+      yamlData,
+      `services.${this.itemData.label}.component`
+    );
+    if (_.isEmpty(componentName)) return [];
+    const commandList = [];
+    const response = await getComponentInfo(componentName);
+    const commands = _.get(response, "commands", {});
+    for (const command in commands) {
+      const ele = commands[command];
+      if (_.isPlainObject(ele)) {
+        for (const key in ele) {
+          commandList.push({
+            command: key,
+            desc: ele[key],
+            id: _.uniqueId(),
+          });
+        }
+      } else {
+        commandList.push({ command, desc: ele, id: _.uniqueId() });
+      }
+    }
+    return commandList;
   }
 }
 

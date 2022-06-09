@@ -8,6 +8,7 @@ import { TEMPLTE_FILE } from "../../../constants";
 
 export async function writeQuickCommandList(params) {
   const { quickCommandList, itemData } = params;
+  const stroreKey = itemData.contextValue === "app" ? "app" : itemData.label;
   const filePath = path.join(ext.cwd, TEMPLTE_FILE);
   if (!fs.existsSync(filePath)) {
     fs.writeFileSync(filePath, JSON.stringify({}));
@@ -20,21 +21,21 @@ export async function writeQuickCommandList(params) {
     if (findObj) {
       data["quick-commands"] = data["quick-commands"].map((item) => {
         if (item.path === itemData.spath) {
-          item.data = quickCommandList;
+          item[stroreKey] = quickCommandList;
         }
         return item;
       });
     } else {
       data["quick-commands"].push({
         path: itemData.spath,
-        data: quickCommandList,
+        [stroreKey]: quickCommandList,
       });
     }
   } else {
     data["quick-commands"] = [
       {
         path: itemData.spath,
-        data: quickCommandList,
+        [stroreKey]: quickCommandList,
       },
     ];
   }
@@ -55,45 +56,23 @@ export async function writeShortcuts(params) {
     if (findObj) {
       data["quick-commands"] = data["quick-commands"].map((item) => {
         if (item.path === itemData.spath) {
-          item.shortcuts = shortcuts;
+          item.$shortcuts = shortcuts;
         }
         return item;
       });
     } else {
       data["quick-commands"].push({
         path: itemData.spath,
-        shortcuts,
+        $shortcuts: shortcuts,
       });
     }
   } else {
     data["quick-commands"] = [
       {
         path: itemData.spath,
-        shortcuts,
+        $shortcuts: shortcuts,
       },
     ];
   }
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
-}
-
-export async function resetWorkspace() {
-  const filePath = path.join(os.homedir(), ".s");
-  core.setConfig("workspace", filePath);
-  vscode.window.showInformationMessage("Setup succeeded");
-}
-
-export async function mangeWorkspace() {
-  const options: vscode.OpenDialogOptions = {
-    canSelectFolders: true,
-    canSelectFiles: false,
-    canSelectMany: false,
-    openLabel: "Open",
-    defaultUri: vscode.Uri.file(core.getRootHome()),
-  };
-  const selectFolderUri = await vscode.window.showOpenDialog(options);
-  if (selectFolderUri) {
-    const { fsPath } = selectFolderUri[0];
-    core.setConfig("workspace", fsPath);
-    vscode.window.showInformationMessage("Setup succeeded");
-  }
 }

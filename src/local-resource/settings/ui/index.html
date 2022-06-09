@@ -20,9 +20,9 @@
         >行为配置</vscode-data-grid-cell
       >
       <vscode-data-grid-cell
+        align="center"
         cell-type="columnheader"
         grid-column="3"
-        align="center"
         >参数配置</vscode-data-grid-cell
       >
     </vscode-data-grid-row>
@@ -40,7 +40,8 @@
             style="width: 100%"
             :value="item.args"
             @change="e=>handleShortcutsArgs(e, item)"
-          ></vscode-text-field>
+          >
+          </vscode-text-field>
         </vscode-data-grid-cell>
       </vscode-data-grid-row>
       <vscode-divider></vscode-divider>
@@ -93,7 +94,8 @@
             style="width: 100%"
             :value="item.args"
             @change="e=>handleArgs(e, item)"
-          ></vscode-text-field>
+          >
+          </vscode-text-field>
         </vscode-data-grid-cell>
         <vscode-data-grid-cell grid-column="4" class="flex jcc">
           <vscode-button appearance="icon">

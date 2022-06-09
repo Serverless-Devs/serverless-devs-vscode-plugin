@@ -1,12 +1,11 @@
 import * as vscode from "vscode";
-import { ItemData, getQuickCommandList } from "../../common";
+import { ItemData, getQuickCommands } from "../../common";
 import * as core from "@serverless-devs/core";
 import { TERMINAL_NAME } from "../../constants";
 const { lodash: _ } = core;
 
 export async function custom(itemData: ItemData) {
-  console.log(itemData);
-  const quickCommandList = getQuickCommandList();
+  const quickCommandList = getQuickCommands();
   const findObj = _.find(
     quickCommandList,
     (item) => item.path === itemData.spath
