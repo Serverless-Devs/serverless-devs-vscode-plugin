@@ -1,6 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
+import * as path from "path";
 import { ext } from "./extensionVariables";
 import { LocalResource } from "./local-resource";
 import { init } from "./commands/init";
@@ -13,7 +14,7 @@ import { activeGlobalSettingsWebview } from "./global-settings";
 import { activeLocalResourceSettingsWebview } from "./local-resource/settings";
 import { createTerminal } from "./common";
 
-export function activate(context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext) {
   ext.context = context;
   ext.cwd =
     vscode.workspace.workspaceFolders &&
@@ -26,15 +27,17 @@ export function activate(context: vscode.ExtensionContext) {
   );
   // s verify
   context.subscriptions.push(
-    vscode.commands.registerCommand("serverless-devs.verify", () =>
-      createTerminal("s verify")
-    )
+    vscode.commands.registerCommand("serverless-devs.verify", (itemData) => {
+      const template = path.relative(ext.cwd, itemData.fsPath);
+      createTerminal(`s verify -t ${template}`);
+    })
   );
   // s edit
   context.subscriptions.push(
-    vscode.commands.registerCommand("serverless-devs.edit", () =>
-      createTerminal("s edit")
-    )
+    vscode.commands.registerCommand("serverless-devs.edit", (itemData) => {
+      const template = path.relative(ext.cwd, itemData.fsPath);
+      createTerminal(`s edit -t ${template}`);
+    })
   );
   // s config add
   context.subscriptions.push(
@@ -96,7 +99,7 @@ export function activate(context: vscode.ExtensionContext) {
     })
   );
 
-  new LocalResource(context);
+  await new LocalResource(context).autoMark();
   statusBarItem(context);
 }
 

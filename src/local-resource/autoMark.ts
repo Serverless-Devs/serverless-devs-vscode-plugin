@@ -1,8 +1,8 @@
 import * as fs from "fs";
 import * as path from "path";
 import * as core from "@serverless-devs/core";
-import { ext } from "../../extensionVariables";
-import { TEMPLTE_FILE } from "../../constants";
+import { ext } from "../extensionVariables";
+import { TEMPLTE_FILE } from "../constants";
 
 export async function autoMark(appPath: string) {
   const spath = getYamlPath(appPath);
