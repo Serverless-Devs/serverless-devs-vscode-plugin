@@ -143,8 +143,8 @@
         "title": "verify",
         "category": "Serverless-Devs",
         "icon": {
-          "light": "media/light/deploy.svg",
-          "dark": "media/dark/deploy.svg"
+          "light": "media/light/verify.svg",
+          "dark": "media/dark/verify.svg"
         }
       },
       {
@@ -154,6 +154,51 @@
         "icon": {
           "light": "media/light/edit.svg",
           "dark": "media/dark/edit.svg"
+        }
+      },
+      {
+        "command": "serverless-devs.home",
+        "title": "Serverless Devs首页",
+        "category": "Serverless-Devs",
+        "icon": {
+          "light": "media/light/home.svg",
+          "dark": "media/dark/home.svg"
+        }
+      },
+      {
+        "command": "serverless-devs.registry",
+        "title": "Serverless Registry 首页",
+        "category": "Serverless-Devs",
+        "icon": {
+          "light": "media/light/registry.svg",
+          "dark": "media/dark/registry.svg"
+        }
+      },
+      {
+        "command": "serverless-devs.github",
+        "title": "Serverless Github repo",
+        "category": "Serverless-Devs",
+        "icon": {
+          "light": "media/light/github.svg",
+          "dark": "media/dark/github.svg"
+        }
+      },
+      {
+        "command": "serverless-devs.group",
+        "title": "钉钉群/社区",
+        "category": "Serverless-Devs",
+        "icon": {
+          "light": "media/light/group.svg",
+          "dark": "media/dark/group.svg"
+        }
+      },
+      {
+        "command": "serverless-devs.issue",
+        "title": "Serverless Github repo issues",
+        "category": "Serverless-Devs",
+        "icon": {
+          "light": "media/light/issue.svg",
+          "dark": "media/dark/issue.svg"
         }
       },
       {
@@ -174,12 +219,32 @@
         {
           "command": "serverless-devs.verify",
           "when": "resourceExtname == .yaml || resourceExtname == .yml",
-          "group": "navigation"
+          "group": "navigation@1"
         },
         {
           "command": "serverless-devs.edit",
           "when": "resourceExtname == .yaml || resourceExtname == .yml",
-          "group": "navigation"
+          "group": "navigation@2"
+        },
+        {
+          "command": "serverless-devs.home",
+          "group": "navigation@3"
+        },
+        {
+          "command": "serverless-devs.registry",
+          "group": "navigation@4"
+        },
+        {
+          "command": "serverless-devs.github",
+          "group": "navigation@5"
+        },
+        {
+          "command": "serverless-devs.group",
+          "group": "navigation@6"
+        },
+        {
+          "command": "serverless-devs.issue",
+          "group": "navigation@7"
         }
       ],
       "editor/title/context": [
@@ -265,6 +330,7 @@
   "dependencies": {
     "@serverless-devs/core": "beta",
     "@vscode/codicons": "^0.0.30",
-    "@vscode/webview-ui-toolkit": "^1.0.0"
+    "@vscode/webview-ui-toolkit": "^1.0.0",
+    "open": "^8.4.0"
   }
 }

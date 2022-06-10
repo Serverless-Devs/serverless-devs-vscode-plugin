@@ -13,6 +13,7 @@ import { statusBarItem } from "./status/statusBarItem";
 import { activeGlobalSettingsWebview } from "./global-settings";
 import { activeLocalResourceSettingsWebview } from "./local-resource/settings";
 import { createTerminal } from "./common";
+import * as open from "open";
 
 export async function activate(context: vscode.ExtensionContext) {
   ext.context = context;
@@ -37,6 +38,31 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand("serverless-devs.edit", (itemData) => {
       const template = path.relative(ext.cwd, itemData.fsPath);
       createTerminal(`s edit -t ${template}`);
+    })
+  );
+  context.subscriptions.push(
+    vscode.commands.registerCommand("serverless-devs.home", () => {
+      open("https://www.serverless-devs.com");
+    })
+  );
+  context.subscriptions.push(
+    vscode.commands.registerCommand("serverless-devs.registry", () => {
+      open("http://www.devsapp.cn/index.html");
+    })
+  );
+  context.subscriptions.push(
+    vscode.commands.registerCommand("serverless-devs.github", () => {
+      open("https://github.com/Serverless-Devs/Serverless-Devs");
+    })
+  );
+  context.subscriptions.push(
+    vscode.commands.registerCommand("serverless-devs.group", () => {
+      open("http://i.serverless-devs.com");
+    })
+  );
+  context.subscriptions.push(
+    vscode.commands.registerCommand("serverless-devs.issue", () => {
+      open("https://github.com/Serverless-Devs/Serverless-Devs/issues");
     })
   );
   // s config add
