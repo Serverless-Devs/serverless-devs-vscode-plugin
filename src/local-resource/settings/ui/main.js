@@ -1,40 +1,71 @@
 const vscode = acquireVsCodeApi();
+
+function getImage(type, isDark) {
+  switch (type) {
+    case "deploy":
+      return isDark
+        ? "https://img.alicdn.com/imgextra/i3/O1CN01ZOhLYo1Rvjo3ZJqZJ_!!6000000002174-55-tps-16-16.svg"
+        : "https://img.alicdn.com/imgextra/i3/O1CN01BtNlJq1w6DLASrvHV_!!6000000006258-55-tps-16-16.svg";
+    case "build":
+      return isDark
+        ? "https://img.alicdn.com/imgextra/i4/O1CN01ZnLmAt1m5AH5TxdCf_!!6000000004902-2-tps-16-16.png"
+        : "https://img.alicdn.com/imgextra/i1/O1CN01VUgjJx1kEfG9jD4vn_!!6000000004652-2-tps-16-16.png";
+
+    case "invoke":
+      return isDark
+        ? "https://img.alicdn.com/imgextra/i4/O1CN017xT3OU22B9Iu1cp5W_!!6000000007081-55-tps-16-16.svg"
+        : "https://img.alicdn.com/imgextra/i4/O1CN01Tno0SH1oJ1UTq1PWB_!!6000000005203-55-tps-16-16.svg";
+  }
+}
+
 new Vue({
   el: "#app",
   data: {
     title: "",
     titleInEditing: "",
     isEditTitle: false,
-    shortcuts: [
-      {
-        id: _.uniqueId(),
-        icon: "debug-start",
-        command: "deploy",
-      },
-      {
-        id: _.uniqueId(),
-        icon: "debug-start",
-        command: "build",
-      },
-      {
-        id: _.uniqueId(),
-        icon: "debug-start",
-        command: "invoke",
-      },
-    ],
+    shortcuts: [],
     quickCommandList: [], //
+    invokePicture: "",
   },
   computed: {
     showEditBtn() {
       return this.$config.itemData.contextValue === "app";
     },
+    extraTitle() {
+      if (this.$config.itemData.contextValue === "app") {
+        return `(${this.$config.itemData.sfilename})`;
+      }
+      return `(${this.$config.itemData.sfilename}) > ${this.$config.itemData.label}`;
+    },
   },
   mounted() {
     this.title = this.titleInEditing = this.$config.itemData.alias;
     this.quickCommandList = this.$config.quickCommandList;
-    if (!_.isEmpty(this.$config.shortcuts)) {
-      this.shortcuts = this.$config.shortcuts;
-    }
+    this.$nextTick(() => {
+      const body = document.getElementById("devsContainer");
+      const isDark = _.includes(body.className, "vscode-dark");
+      this.invokePicture = getImage("invoke", isDark);
+      this.shortcuts = _.isEmpty(this.$config.shortcuts)
+        ? [
+            {
+              id: _.uniqueId(),
+              icon: getImage("deploy", isDark),
+              command: "deploy",
+            },
+            {
+              id: _.uniqueId(),
+              icon: getImage("build", isDark),
+              command: "build",
+            },
+            {
+              id: _.uniqueId(),
+              icon: this.invokePicture,
+              command: "invoke",
+            },
+          ]
+        : this.$config.shortcuts;
+    });
   },
   watch: {
     shortcuts: function (val, oldVal) {

@@ -1,6 +1,6 @@
 <div id="app">
   <div class="flex" v-if="!isEditTitle">
-    <h1>{{title}}({{this.$config.itemData.sfilename}})</h1>
+    <h1>{{title}}{{extraTitle}}</h1>
     <vscode-button
       v-if="showEditBtn"
       @click="isEditTitle=true"
@@ -71,7 +71,7 @@
     <template v-for="item in shortcuts">
       <vscode-data-grid-row>
         <vscode-data-grid-cell grid-column="1" class="flex jcc">
-          <span :class="'codicon codicon-'+item.icon"></span>
+          <img :src="item.icon" />
         </vscode-data-grid-cell>
         <vscode-data-grid-cell grid-column="2" class="flex jcc">
           {{item.command}}
@@ -140,7 +140,7 @@
         </vscode-data-grid-cell>
         <vscode-data-grid-cell grid-column="4" class="flex jcc">
           <vscode-button appearance="icon" @click="()=>handleOperate(item)">
-            <span class="codicon codicon-debug-start"></span>
+            <img :src="invokePicture" />
           </vscode-button>
         </vscode-data-grid-cell>
       </vscode-data-grid-row>

@@ -79,7 +79,9 @@ export class LocalResourceTreeDataProvider
       for (const service in services) {
         const serviceData = new ItemData();
         serviceData.label = service;
+        serviceData.alias = markedYaml.alias;
         serviceData.id = `${markedYaml.alias}(${fileName}) > ${service}`;
+        serviceData.sfilename = fileName;
         serviceData.spath = markedYaml.path;
         serviceData.command = {
           command: "serverless-devs.goToFile",

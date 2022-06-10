@@ -99,8 +99,8 @@
         "title": "build",
         "category": "Serverless-Devs",
         "icon": {
-          "light": "media/light/project-init.svg",
-          "dark": "media/dark/project-init.svg"
+          "light": "media/light/build.svg",
+          "dark": "media/dark/build.svg"
         }
       },
       {
