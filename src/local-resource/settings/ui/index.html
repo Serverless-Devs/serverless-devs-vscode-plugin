@@ -1,5 +1,46 @@
 <div id="app">
-  <h1>{{title}}</h1>
+  <div class="flex" v-if="!isEditTitle">
+    <h1>{{title}}({{this.$config.itemData.sfilename}})</h1>
+    <vscode-button
+      v-if="showEditBtn"
+      @click="isEditTitle=true"
+      appearance="icon"
+      class="ml8"
+      ><span class="codicon codicon-edit"></span
+    ></vscode-button>
+  </div>
+  <vscode-data-grid
+    v-if="isEditTitle"
+    class="mt16"
+    aria-label="Basic"
+    grid-template-columns="45%"
+  >
+    <vscode-data-grid-row>
+      <vscode-data-grid-cell grid-column="1" class="flex jcc p0">
+        <vscode-text-field
+          style="flex: 1"
+          :value="titleInEditing"
+          @change="e=>titleInEditing=e.target.value"
+        >
+        </vscode-text-field>
+        <vscode-button
+          v-if="showEditBtn"
+          @click="handleConfirmTitle"
+          appearance="icon"
+          class="ml8"
+          ><span class="codicon codicon-check"></span
+        ></vscode-button>
+        <vscode-button
+          v-if="showEditBtn"
+          @click="handleCancelTitle"
+          appearance="icon"
+          class="ml8"
+          ><span class="codicon codicon-error"></span
+        ></vscode-button>
+      </vscode-data-grid-cell>
+    </vscode-data-grid-row>
+  </vscode-data-grid>
+
   <div class="flex">
     <h1>快捷方式操作</h1>
     <span class="ml8">针对左侧的快捷方式进行自定义配置</span>

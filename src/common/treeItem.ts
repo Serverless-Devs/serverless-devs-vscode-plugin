@@ -13,6 +13,10 @@ export class ItemData {
 
   spath = "";
 
+  alias = "";
+
+  sfilename = "";
+
   command;
 
   contextValue = "";

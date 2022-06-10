@@ -55,9 +55,15 @@ export class LocalResourceTreeDataProvider
     if (!markedYamlList) return [];
     const itemDataList: ItemData[] = [];
     for (const markedYaml of markedYamlList) {
+      const yamlData = await core.getYamlContent(markedYaml.path);
+      if (!yamlData) {
+        continue;
+      }
       const fileName = path.basename(markedYaml.path);
       const itemData = new ItemData();
       itemData.label = `${markedYaml.alias}(${fileName})`;
+      itemData.alias = markedYaml.alias;
+      itemData.sfilename = fileName;
       itemData.id = `${markedYaml.alias}(${fileName})`;
       itemData.icon = "box.svg";
       itemData.spath = markedYaml.path;
@@ -69,7 +75,6 @@ export class LocalResourceTreeDataProvider
         arguments: [markedYaml.path],
       };
       itemData.contextValue = "app";
-      const yamlData = await core.getYamlContent(markedYaml.path);
       const services = yamlData.services;
       for (const service in services) {
         const serviceData = new ItemData();

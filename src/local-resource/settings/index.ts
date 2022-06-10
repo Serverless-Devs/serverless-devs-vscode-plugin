@@ -197,5 +197,11 @@ async function handleMessage(params: { type: string; [key: string]: any }) {
     case "handleOperate":
       createTerminal(params.command);
       return;
+    case "handleConfirmTitle":
+      event.handleConfirmTitle(params);
+      return;
+    case "empty":
+      vscode.window.showErrorMessage("value cannot be empty.");
+      return;
   }
 }

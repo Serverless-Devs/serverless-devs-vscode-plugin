@@ -1,17 +1,10 @@
 const vscode = acquireVsCodeApi();
-
-const getDefaultValue = () => ({
-  checked: false,
-  command: "",
-  icon: "",
-  args: "",
-  id: _.uniqueId(),
-});
-
 new Vue({
   el: "#app",
   data: {
     title: "",
+    titleInEditing: "",
+    isEditTitle: false,
     shortcuts: [
       {
         id: _.uniqueId(),
@@ -31,8 +24,13 @@ new Vue({
     ],
     quickCommandList: [], //
   },
+  computed: {
+    showEditBtn() {
+      return this.$config.itemData.contextValue === "app";
+    },
+  },
   mounted() {
-    this.title = `${this.$config.itemData.id}`;
+    this.title = this.titleInEditing = this.$config.itemData.alias;
     this.quickCommandList = this.$config.quickCommandList;
     if (!_.isEmpty(this.$config.shortcuts)) {
       this.shortcuts = this.$config.shortcuts;
@@ -62,6 +60,24 @@ new Vue({
     },
   },
   methods: {
+    handleCancelTitle() {
+      this.titleInEditing = this.title;
+      this.isEditTitle = false;
+    },
+    handleConfirmTitle() {
+      if (_.isEmpty(this.titleInEditing)) {
+        return vscode.postMessage({
+          type: "empty",
+        });
+      }
+      this.title = this.titleInEditing;
+      this.isEditTitle = false;
+      vscode.postMessage({
+        type: "handleConfirmTitle",
+        title: this.title,
+        itemData: this.$config.itemData,
+      });
+    },
     handleShortcutsArgs(e, item) {
       this.shortcuts = _.map(this.shortcuts, (obj) => {
         if (obj.id === item.id) {

@@ -4,6 +4,7 @@ import * as core from "@serverless-devs/core";
 import * as fs from "fs";
 import { ext } from "../../extensionVariables";
 import { TEMPLTE_FILE } from "../../constants";
+const { lodash: _ } = core;
 
 export async function markYaml(uri: vscode.Uri) {
   const { fsPath } = uri;
@@ -17,6 +18,7 @@ export async function markYaml(uri: vscode.Uri) {
         return name.length === 0 ? "value cannot be empty." : undefined;
       },
     });
+    if (_.isEmpty(answer)) return;
     const appPath = path.dirname(fsPath);
     const filePath = path.join(appPath, TEMPLTE_FILE);
     if (!fs.existsSync(filePath)) {

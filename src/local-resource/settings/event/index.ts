@@ -1,7 +1,9 @@
 import * as path from "path";
 import * as fs from "fs";
+import * as core from "@serverless-devs/core";
 import { ext } from "../../../extensionVariables";
 import { TEMPLTE_FILE } from "../../../constants";
+const { lodash: _ } = core;
 
 export async function writeQuickCommandList(params) {
   const { quickCommandList, itemData } = params;
@@ -72,4 +74,41 @@ export async function writeShortcuts(params) {
     ];
   }
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+}
+
+export async function handleConfirmTitle(params) {
+  const fsPath = _.get(params, "itemData.spath");
+  const alias = _.get(params, "title");
+  const filePath = path.join(ext.cwd, TEMPLTE_FILE);
+  if (!fs.existsSync(filePath)) {
+    fs.writeFileSync(filePath, JSON.stringify({}));
+  }
+  const data = JSON.parse(fs.readFileSync(filePath, "utf-8"));
+  if (!Array.isArray(data["vscode-marked-yamls"])) {
+    data["vscode-marked-yamls"] = [
+      {
+        path: fsPath,
+        alias,
+      },
+    ];
+  } else {
+    const findObj = data["vscode-marked-yamls"].find(
+      (item) => item.path === fsPath
+    );
+    if (findObj) {
+      data["vscode-marked-yamls"] = data["vscode-marked-yamls"].map((item) => {
+        if (item.path === fsPath) {
+          item.alias = alias;
+        }
+        return item;
+      });
+    } else {
+      data["vscode-marked-yamls"].push({
+        path: fsPath,
+        alias: alias,
+      });
+    }
+  }
+  fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+  ext.localResource.refresh();
 }
