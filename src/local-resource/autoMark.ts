@@ -12,13 +12,13 @@ export async function autoMark(appPath: string) {
       fs.writeFileSync(filePath, JSON.stringify({}));
     }
     const data = JSON.parse(fs.readFileSync(filePath, "utf-8"));
-    if (!Array.isArray(data["vscode-marked-yamls"])) {
-      data["vscode-marked-yamls"] = [];
+    if (!Array.isArray(data["marked-yamls"])) {
+      data["marked-yamls"] = [];
     }
 
-    if (data["vscode-marked-yamls"].length > 0) return;
-    data["vscode-marked-yamls"].push({
-      path: spath,
+    if (data["marked-yamls"].length > 0) return;
+    data["marked-yamls"].push({
+      path: path.relative(ext.cwd, spath),
       alias: "默认环境",
     });
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2));

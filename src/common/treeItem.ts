@@ -15,8 +15,6 @@ export class ItemData {
 
   alias = "";
 
-  sfilename = "";
-
   command;
 
   contextValue = "";

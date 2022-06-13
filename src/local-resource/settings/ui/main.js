@@ -34,9 +34,9 @@ new Vue({
     },
     extraTitle() {
       if (this.$config.itemData.contextValue === "app") {
-        return `(${this.$config.itemData.sfilename})`;
+        return `(${this.$config.itemData.spath})`;
       }
-      return `(${this.$config.itemData.sfilename}) > ${this.$config.itemData.label}`;
+      return `(${this.$config.itemData.spath}) > ${this.$config.itemData.label}`;
     },
   },
   mounted() {

@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+import * as path from "path";
 import { getHtmlForWebview } from "../../common";
 import * as event from "./event";
 import * as core from "@serverless-devs/core";
@@ -110,7 +111,8 @@ class UpdateWebview {
     );
   }
   async updateWithApp() {
-    const yamlData = await core.getYamlContent(this.itemData.spath);
+    const filePath = path.join(ext.cwd, this.itemData.spath);
+    const yamlData = await core.getYamlContent(filePath);
     const services = _.get(yamlData, "services", {});
     // 寻找所有组件的命令
     const commandList = [];
@@ -159,7 +161,8 @@ class UpdateWebview {
     return commonCommand;
   }
   async updateWithService() {
-    const yamlData = await core.getYamlContent(this.itemData.spath);
+    const filePath = path.join(ext.cwd, this.itemData.spath);
+    const yamlData = await core.getYamlContent(filePath);
     const componentName = _.get(
       yamlData,
       `services.${this.itemData.label}.component`
@@ -182,6 +185,9 @@ class UpdateWebview {
         commandList.push({ command, desc: ele, id: _.uniqueId() });
       }
     }
+
+    console.log(commandList);
+
     return commandList;
   }
 }

@@ -19,35 +19,34 @@ export async function markYaml(uri: vscode.Uri) {
       },
     });
     if (_.isEmpty(answer)) return;
-    const appPath = path.dirname(fsPath);
-    const filePath = path.join(appPath, TEMPLTE_FILE);
+    const filePath = path.join(ext.cwd, TEMPLTE_FILE);
     if (!fs.existsSync(filePath)) {
       fs.writeFileSync(filePath, JSON.stringify({}));
     }
     const data = JSON.parse(fs.readFileSync(filePath, "utf-8"));
-    if (!Array.isArray(data["vscode-marked-yamls"])) {
-      data["vscode-marked-yamls"] = [
+    const relativePath = path.relative(ext.cwd, fsPath);
+
+    if (!Array.isArray(data["marked-yamls"])) {
+      data["marked-yamls"] = [
         {
-          path: fsPath,
+          path: relativePath,
           alias: answer,
         },
       ];
     } else {
-      const findObj = data["vscode-marked-yamls"].find(
-        (item) => item.path === fsPath
+      const findObj = data["marked-yamls"].find(
+        (item) => item.path === relativePath
       );
       if (findObj) {
-        data["vscode-marked-yamls"] = data["vscode-marked-yamls"].map(
-          (item) => {
-            if (item.path === fsPath) {
-              item.alias = answer;
-            }
-            return item;
+        data["marked-yamls"] = data["marked-yamls"].map((item) => {
+          if (item.path === relativePath) {
+            item.alias = answer;
           }
-        );
+          return item;
+        });
       } else {
-        data["vscode-marked-yamls"].push({
-          path: fsPath,
+        data["marked-yamls"].push({
+          path: relativePath,
           alias: answer,
         });
       }

@@ -51,20 +51,19 @@ export class LocalResourceTreeDataProvider
     const filePath = path.join(ext.cwd, TEMPLTE_FILE);
     if (!fs.existsSync(filePath)) return [];
     const data = JSON.parse(fs.readFileSync(filePath, "utf8"));
-    const markedYamlList = data["vscode-marked-yamls"];
+    const markedYamlList = data["marked-yamls"];
     if (!markedYamlList) return [];
     const itemDataList: ItemData[] = [];
     for (const markedYaml of markedYamlList) {
-      const yamlData = await core.getYamlContent(markedYaml.path);
+      const markedFilePath = path.join(ext.cwd, markedYaml.path);
+      const yamlData = await core.getYamlContent(markedFilePath);
       if (!yamlData) {
         continue;
       }
-      const fileName = path.basename(markedYaml.path);
       const itemData = new ItemData();
-      itemData.label = `${markedYaml.alias}(${fileName})`;
+      itemData.label = `${markedYaml.alias}(${markedYaml.path})`;
       itemData.alias = markedYaml.alias;
-      itemData.sfilename = fileName;
-      itemData.id = `${markedYaml.alias}(${fileName})`;
+      itemData.id = `${markedYaml.alias}(${markedYaml.path})`;
       itemData.icon = "box.svg";
       itemData.spath = markedYaml.path;
       itemData.initialCollapsibleState =
@@ -72,7 +71,7 @@ export class LocalResourceTreeDataProvider
       itemData.command = {
         command: "serverless-devs.goToFile",
         title: "Go to file",
-        arguments: [markedYaml.path],
+        arguments: [markedFilePath],
       };
       itemData.contextValue = "app";
       const services = yamlData.services;
@@ -80,13 +79,12 @@ export class LocalResourceTreeDataProvider
         const serviceData = new ItemData();
         serviceData.label = service;
         serviceData.alias = markedYaml.alias;
-        serviceData.id = `${markedYaml.alias}(${fileName}) > ${service}`;
-        serviceData.sfilename = fileName;
+        serviceData.id = `${markedYaml.alias}(${markedYaml.path}) > ${service}`;
         serviceData.spath = markedYaml.path;
         serviceData.command = {
           command: "serverless-devs.goToFile",
           title: "Go to file",
-          arguments: [markedYaml.path, service],
+          arguments: [markedFilePath, service],
         };
         serviceData.icon = "box.svg";
         serviceData.contextValue = "service";
