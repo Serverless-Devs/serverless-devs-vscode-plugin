@@ -1,23 +1,5 @@
 const vscode = acquireVsCodeApi();
 
-function getImage(type, isDark) {
-  switch (type) {
-    case "deploy":
-      return isDark
-        ? "https://img.alicdn.com/imgextra/i3/O1CN01ZOhLYo1Rvjo3ZJqZJ_!!6000000002174-55-tps-16-16.svg"
-        : "https://img.alicdn.com/imgextra/i3/O1CN01BtNlJq1w6DLASrvHV_!!6000000006258-55-tps-16-16.svg";
-    case "build":
-      return isDark
-        ? "https://img.alicdn.com/imgextra/i4/O1CN01ZnLmAt1m5AH5TxdCf_!!6000000004902-2-tps-16-16.png"
-        : "https://img.alicdn.com/imgextra/i1/O1CN01VUgjJx1kEfG9jD4vn_!!6000000004652-2-tps-16-16.png";
-
-    case "invoke":
-      return isDark
-        ? "https://img.alicdn.com/imgextra/i4/O1CN017xT3OU22B9Iu1cp5W_!!6000000007081-55-tps-16-16.svg"
-        : "https://img.alicdn.com/imgextra/i4/O1CN01Tno0SH1oJ1UTq1PWB_!!6000000005203-55-tps-16-16.svg";
-  }
-}
-
 new Vue({
   el: "#app",
   data: {
@@ -26,7 +8,6 @@ new Vue({
     isEditTitle: false,
     shortcuts: [],
     quickCommandList: [], //
-    invokePicture: "",
   },
   computed: {
     showEditBtn() {
@@ -38,34 +19,41 @@ new Vue({
       }
       return `(${this.$config.itemData.spath}) > ${this.$config.itemData.label}`;
     },
+    deployPicture() {
+      return this.$config.$theme === "dark"
+        ? "https://img.alicdn.com/imgextra/i3/O1CN01ZOhLYo1Rvjo3ZJqZJ_!!6000000002174-55-tps-16-16.svg"
+        : "https://img.alicdn.com/imgextra/i3/O1CN01BtNlJq1w6DLASrvHV_!!6000000006258-55-tps-16-16.svg";
+    },
+    buildPicture() {
+      return this.$config.$theme === "dark"
+        ? "https://img.alicdn.com/imgextra/i4/O1CN01ZnLmAt1m5AH5TxdCf_!!6000000004902-2-tps-16-16.png"
+        : "https://img.alicdn.com/imgextra/i1/O1CN01VUgjJx1kEfG9jD4vn_!!6000000004652-2-tps-16-16.png";
+    },
+    invokePicture() {
+      return this.$config.$theme === "dark"
+        ? "https://img.alicdn.com/imgextra/i4/O1CN017xT3OU22B9Iu1cp5W_!!6000000007081-55-tps-16-16.svg"
+        : "https://img.alicdn.com/imgextra/i4/O1CN01Tno0SH1oJ1UTq1PWB_!!6000000005203-55-tps-16-16.svg";
+    },
   },
   mounted() {
     this.title = this.titleInEditing = this.$config.itemData.alias;
     this.quickCommandList = this.$config.quickCommandList;
-    this.$nextTick(() => {
-      const body = document.getElementById("devsContainer");
-      const isDark = _.includes(body.className, "vscode-dark");
-      this.invokePicture = getImage("invoke", isDark);
-      this.shortcuts = _.isEmpty(this.$config.shortcuts)
-        ? [
-            {
-              id: _.uniqueId(),
-              icon: getImage("deploy", isDark),
-              command: "deploy",
-            },
-            {
-              id: _.uniqueId(),
-              icon: getImage("build", isDark),
-              command: "build",
-            },
-            {
-              id: _.uniqueId(),
-              icon: this.invokePicture,
-              command: "invoke",
-            },
-          ]
-        : this.$config.shortcuts;
-    });
+    this.shortcuts = _.isEmpty(this.$config.shortcuts)
+      ? [
+          {
+            id: _.uniqueId(),
+            command: "deploy",
+          },
+          {
+            id: _.uniqueId(),
+            command: "build",
+          },
+          {
+            id: _.uniqueId(),
+            command: "invoke",
+          },
+        ]
+      : this.$config.shortcuts;
   },
   watch: {
     shortcuts: function (val, oldVal) {
@@ -91,6 +79,9 @@ new Vue({
     },
   },
   methods: {
+    getPicture(command) {
+      return this[`${command}Picture`];
+    },
     handleCancelTitle() {
       this.titleInEditing = this.title;
       this.isEditTitle = false;

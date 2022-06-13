@@ -43,6 +43,17 @@ export async function activeLocalResourceSettingsWebview(
       context.subscriptions
     );
   }
+  // 监听主题变化
+  vscode.window.onDidChangeActiveColorTheme(({ kind }) => {
+    new UpdateWebview(context, itemData).init({ $theme: getTheme(kind) });
+  });
+}
+
+function getTheme(kind: vscode.ColorThemeKind) {
+  const isLigth =
+    kind === vscode.ColorThemeKind.Light ||
+    kind === vscode.ColorThemeKind.HighContrastLight;
+  return isLigth ? "light" : "dark";
 }
 
 class UpdateWebview {
@@ -59,10 +70,14 @@ class UpdateWebview {
       }
     );
   }
-  async init() {
-    const tmp: any = {
-      itemData: this.itemData,
-    };
+  async init(params = {}) {
+    const tmp: any = _.assign(
+      { $theme: getTheme(vscode.window.activeColorTheme.kind) },
+      params,
+      {
+        itemData: this.itemData,
+      }
+    );
     const quickCommands = getQuickCommands();
     const findObj = _.find(
       quickCommands,
@@ -185,9 +200,6 @@ class UpdateWebview {
         commandList.push({ command, desc: ele, id: _.uniqueId() });
       }
     }
-
-    console.log(commandList);
-
     return commandList;
   }
 }

@@ -94,7 +94,7 @@ export function getHtmlForWebview(
           Vue.prototype.$config = ${JSON.stringify(config)};
         </script>
       </head>
-      <body id="devsContainer">
+      <body>
         ${fs.readFileSync(indexHtml, "utf-8")}
       </body>
       <script nonce="${nonce}" src="${mainUri}"></script>
