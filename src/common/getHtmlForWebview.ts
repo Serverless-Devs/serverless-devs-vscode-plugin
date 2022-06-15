@@ -19,43 +19,6 @@ export function getHtmlForWebview(
   webview: vscode.Webview,
   config: { [key: string]: any } = {}
 ) {
-  const codiconsUri = getUri(webview, context.extensionUri, [
-    "node_modules",
-    "@vscode/codicons",
-    "dist",
-    "codicon.css",
-  ]);
-  const commonUri = getUri(webview, context.extensionUri, [
-    "resources",
-    "common.css",
-  ]);
-  const toolkitUri = getUri(webview, context.extensionUri, [
-    "node_modules",
-    "@vscode",
-    "webview-ui-toolkit",
-    "dist",
-    "toolkit.js", // A toolkit.min.js file is also available
-  ]);
-  // Use a nonce to only allow specific scripts to be run
-  const nonce = getNonce();
-  if (config.$loading) {
-    return /*html*/ `
-    <!DOCTYPE html>
-    <html lang="en">
-      <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="${codiconsUri}" rel="stylesheet" />
-        <link href="${commonUri}" rel="stylesheet" />
-        <script nonce="${nonce}" type="module" src="${toolkitUri}"></script>
-      </head>
-      <body class="loading">
-        <vscode-progress-ring></vscode-progress-ring>
-        <div class="ml8">Loading...</div>
-      </body>
-    </html>
-  `;
-  }
   const indexHtml = path.join(
     context.extensionPath,
     "src",
@@ -63,20 +26,48 @@ export function getHtmlForWebview(
     "ui",
     "index.html"
   );
+
+  const toolkitUri = getUri(webview, context.extensionUri, [
+    "node_modules",
+    "@vscode",
+    "webview-ui-toolkit",
+    "dist",
+    "toolkit.js", // A toolkit.min.js file is also available
+  ]);
+
   const vueUri = getUri(webview, context.extensionUri, [
     "resources",
     "vue.min.js",
   ]);
+
   const lodashUri = getUri(webview, context.extensionUri, [
     "resources",
     "lodash.min.js",
   ]);
+
+  const codiconsUri = getUri(webview, context.extensionUri, [
+    "node_modules",
+    "@vscode/codicons",
+    "dist",
+    "codicon.css",
+  ]);
+
+  const customCssUri = getUri(webview, context.extensionUri, [
+    "src",
+    entryName,
+    "ui",
+    "index.css"
+  ]);
+
   const mainUri = getUri(webview, context.extensionUri, [
     "src",
     entryName,
     "ui",
     "main.js",
   ]);
+
+  // Use a nonce to only allow specific scripts to be run
+  const nonce = getNonce();
 
   // 传入模版的数据挂载到 Vue.prototype.$config 上
   return /*html*/ `
@@ -86,7 +77,7 @@ export function getHtmlForWebview(
         <meta charset="UTF-8">
 				<meta name="viewport" content="width=device-width, initial-scale=1.0">
 				<link href="${codiconsUri}" rel="stylesheet" />
-				<link href="${commonUri}" rel="stylesheet" />
+        <link href="${customCssUri}" rel="stylesheet" />
         <script nonce="${nonce}" type="module" src="${toolkitUri}"></script>
         <script src="${vueUri}"></script>
         <script src="${lodashUri}"></script>
@@ -94,9 +85,7 @@ export function getHtmlForWebview(
           Vue.prototype.$config = ${JSON.stringify(config)};
         </script>
       </head>
-      <body>
-        ${fs.readFileSync(indexHtml, "utf-8")}
-      </body>
+      ${fs.readFileSync(indexHtml, "utf-8")}
       <script nonce="${nonce}" src="${mainUri}"></script>
     </html>
   `;
