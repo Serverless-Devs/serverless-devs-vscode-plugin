@@ -14,6 +14,7 @@ import { activeGlobalSettingsWebview } from "./global-settings";
 import { activeLocalResourceSettingsWebview } from "./local-resource/settings";
 import { createTerminal } from "./common";
 import * as open from "open";
+import { activaAddKeyWebviewPanel } from "./add-key";
 
 export async function activate(context: vscode.ExtensionContext) {
   ext.context = context;
@@ -67,8 +68,13 @@ export async function activate(context: vscode.ExtensionContext) {
   );
   // s config add
   context.subscriptions.push(
-    vscode.commands.registerCommand("serverless-devs.config", () => config())
+    vscode.commands.registerCommand("serverless-devs.config", () => {
+      activaAddKeyWebviewPanel(context);
+    })
   );
+  // context.subscriptions.push(
+  //   vscode.commands.registerCommand("serverless-devs.config", () => config())
+  // );
   // 标记Yaml文件到工作空间
   context.subscriptions.push(
     vscode.commands.registerCommand(
