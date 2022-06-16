@@ -6,7 +6,9 @@
 
     <div style="margin-top: 16px;">
         <div style="margin-top: 8px">
-            <span style="margin-right: 16px;line-height: 26px;">请选择服务商</span>
+            <div style="width: 110px;display: inline-block;margin-right: 16px;">
+                <span>请选择服务商</span>
+            </div>
             <vscode-dropdown ref="providerDropdown" @change="getProviderPickValue()">
                 <vscode-option>请选择您的云厂商</vscode-option>
                 <vscode-option v-model="pickProvider" v-for="item in providerItems" :value="item.value">{{ item.label }}
@@ -14,13 +16,21 @@
             </vscode-dropdown>
         </div>
         <div style="margin-top: 8px">
-            <span style="margin-right: 16px;line-height: 26px;">密钥别名</span>
-            <vscode-text-field></vscode-text-field>
+            <div style="width: 110px;display: inline-block;margin-right: 16px;">
+                <span>密钥别名</span>
+            </div>
+            <div style="display: inline-block;">
+                <vscode-text-field></vscode-text-field>
+            </div>
         </div>
 
         <div v-for="key in pickProvider" style="margin-top: 8px">
-            <span style="margin-right: 16px;line-height: 26px;">{{ key }}</span>
-            <vscode-text-field></vscode-text-field>
+            <div style="width: 110px;display: inline-block;margin-right: 16px;">
+                <span>{{ key }}</span>
+            </div>
+            <div style="display: inline-block;">
+                <vscode-text-field></vscode-text-field>
+            </div>
         </div>
 
 
