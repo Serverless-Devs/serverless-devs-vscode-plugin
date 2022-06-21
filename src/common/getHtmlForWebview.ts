@@ -107,7 +107,7 @@ export function getHtmlForWebview(
       <body>
         ${fs.readFileSync(indexHtml, "utf-8")}
       </body>
-      <script nonce="${nonce}" src="${mainUri}"></script>
+      <script nonce="${nonce}" type="module" src="${mainUri}"></script>
     </html>
   `;
 }

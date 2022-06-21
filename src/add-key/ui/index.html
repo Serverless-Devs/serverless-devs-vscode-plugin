@@ -11,9 +11,11 @@
             </div>
             <vscode-dropdown ref="providerDropdown" @change="getProviderPickValue()">
                 <vscode-option>请选择您的云厂商</vscode-option>
-                <vscode-option v-model="pickProvider" v-for="item in providerItems" :value="item.value">{{ item.label }}
+                <vscode-option v-for="item in providerItems" :value="item.value">{{ item.label }}
                 </vscode-option>
             </vscode-dropdown>
+            <a
+                href="https://docs.serverless-devs.com/serverless-devs/quick_start#%E5%AF%86%E9%92%A5%E9%85%8D%E7%BD%AE">密钥信息获取指引</a>
         </div>
         <div style="margin-top: 8px">
             <div style="width: 110px;display: inline-block;margin-right: 16px;">
@@ -24,14 +26,30 @@
             </div>
         </div>
 
-        <div v-for="key in pickProvider" style="margin-top: 8px">
+        <div v-for="key in pickProviderKeys" style="margin-top: 8px">
             <div style="width: 110px;display: inline-block;margin-right: 16px;">
                 <span>{{ key }}</span>
             </div>
             <div style="display: inline-block;">
-                <vscode-text-field></vscode-text-field>
+                <vscode-text-field @input="normalKV(key, $event)"></vscode-text-field>
             </div>
         </div>
-
+        <div v-if="pickProvider === 'custom'">
+            <div v-for="(item, i) in customKeyValue">
+                <div style="margin-top:8px">
+                    <div style="width: 110px;display: inline-block;margin-right: 16px;">
+                        <span>键值对</span>
+                    </div>
+                    <vscode-text-field @input="customKV(i, $event)" placeholder="示例:'key':'value'"></vscode-text-field>
+                    <vscode-button @click="addKvPair()" appearance="icon" aria-label="Confirm">
+                        <span class="codicon codicon-add"></span>
+                    </vscode-button>
+                    <vscode-button @click="subKvPair(i)" v-if="i > 0" appearance="icon" aria-label="Confirm">
+                        <span class="codicon codicon-chrome-minimize"></span>
+                    </vscode-button>
+                </div>
+            </div>
+        </div>
+        <vscode-button @click="submitCredential()">增加</vscode-button>
 
     </div>
