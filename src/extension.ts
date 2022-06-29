@@ -9,7 +9,6 @@ import { config } from "./commands/config";
 import { custom } from "./commands/custom";
 import { markYaml } from "./commands/mark-yaml";
 import { goToFile } from "./commands/go-to-file";
-import { statusBarItem } from "./status/statusBarItem";
 import { activeGlobalSettingsWebview } from "./global-settings";
 import { activeLocalResourceSettingsWebview } from "./local-resource/settings";
 import { createTerminal } from "./common";
@@ -126,7 +125,6 @@ export async function activate(context: vscode.ExtensionContext) {
   );
 
   await new LocalResource(context).autoMark();
-  statusBarItem(context);
 }
 
 // this method is called when your extension is deactivated
