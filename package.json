@@ -1,7 +1,9 @@
 {
-  "name": "devs-vscode",
-  "displayName": "devs-vscode",
-  "description": "",
+  "name": "serverless-devs",
+  "publisher": "serverless-devs",
+  "displayName": "serverless-devs",
+  "description": "Serverless-Devs extension. Lets you develop your serverless application within VSCode.",
+  "repository": "https://github.com/Serverless-Devs/serverless-devs-vscode-plugin",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.65.0"
@@ -328,9 +330,10 @@
     "typescript": "^4.5.5"
   },
   "dependencies": {
-    "@serverless-devs/core": "beta",
+    "@serverless-devs/core": "latest",
     "@vscode/codicons": "^0.0.30",
     "@vscode/webview-ui-toolkit": "^1.0.0",
-    "open": "^8.4.0"
+    "open": "^8.4.0",
+    "react": "^18.2.0"
   }
 }
