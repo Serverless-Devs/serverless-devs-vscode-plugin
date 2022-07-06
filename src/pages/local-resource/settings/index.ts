@@ -1,11 +1,11 @@
 import * as vscode from "vscode";
 import * as path from "path";
-import { getHtmlForWebview } from "../../common";
+import { getHtmlForWebview } from "../../../common";
 import * as event from "./event";
 import * as core from "@serverless-devs/core";
-import { ItemData, getQuickCommands, createTerminal } from "../../common";
-import { ext } from "../../extensionVariables";
-import { getComponentInfo } from "../../services";
+import { ItemData, getQuickCommands, createTerminal } from "../../../common";
+import { ext } from "../../../extensionVariables";
+import { getComponentInfo } from "../../../services";
 const { lodash: _ } = core;
 
 let localResourceSettingsWebviewPanel: vscode.WebviewPanel | undefined;
