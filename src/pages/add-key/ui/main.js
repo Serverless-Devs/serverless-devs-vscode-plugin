@@ -1,5 +1,3 @@
-import * as core from "@serverless-devs/core";
-
 const vscode = acquireVsCodeApi();
 
 new Vue({
@@ -52,20 +50,22 @@ new Vue({
     async submitCredential() {
       if ( this.pickProvider === "alibaba") {
         try {
-          const data = await core.getAccountId(this.normalKeyValue);
+          const data = await core.getAccountId(this.normalKeyValue); 
           this.normalKeyValue.AccountID = data.AccountId;
           const {...rest } = this.normalKeyValue;
           await core.setKnownCredential(rest, this.pickProvider);
         } catch (error) {
-          console.log(1111);
           return;
         }
       } else {
         const {...rest } = this.pickProvider === "custom" ? 
           this.customKeyValue : this.normalKeyValue;
-        await core.setKnownCredential(rest, this.pickProvider);
+        vscode.postMessage({
+          command: 'setCredential',
+          rest: rest,
+          provider: this.pickProvider
+        });
       }
-      console.log(`Add ${this.pickProvider} configuration successfully.`)
     }
   },
   watch: {
@@ -74,3 +74,4 @@ new Vue({
     }
   }
 });
+

@@ -3,18 +3,18 @@
 import * as vscode from "vscode";
 import * as path from "path";
 import { ext } from "./extensionVariables";
-import { LocalResource } from "./local-resource";
+import { LocalResource } from "./pages/local-resource";
 import { init } from "./commands/init";
 import { config } from "./commands/config";
 import { custom } from "./commands/custom";
 import { markYaml } from "./commands/mark-yaml";
 import { goToFile } from "./commands/go-to-file";
 import { statusBarItem } from "./status/statusBarItem";
-import { activeGlobalSettingsWebview } from "./global-settings";
-import { activeLocalResourceSettingsWebview } from "./local-resource/settings";
+import { activeGlobalSettingsWebview } from "./pages/global-settings";
+import { activeLocalResourceSettingsWebview } from "./pages/local-resource/settings";
 import { createTerminal } from "./common";
 import * as open from "open";
-import { activaAddKeyWebviewPanel } from "./add-key";
+import { activaAddKeyWebviewPanel } from "./pages/add-key";
 
 export async function activate(context: vscode.ExtensionContext) {
   ext.context = context;
@@ -23,7 +23,7 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.workspace.workspaceFolders.length > 0
       ? vscode.workspace.workspaceFolders[0].uri.fsPath
       : undefined;
-  // s init
+  // s init 
   context.subscriptions.push(
     vscode.commands.registerCommand("serverless-devs.init", () => init())
   );

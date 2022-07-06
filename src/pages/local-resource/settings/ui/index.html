@@ -71,7 +71,7 @@
     <template v-for="item in shortcuts">
       <vscode-data-grid-row>
         <vscode-data-grid-cell grid-column="1" class="flex jcc">
-          <img :src="getPicture(item.command)" />
+          <img :src="getPicture(item.command)"/>
         </vscode-data-grid-cell>
         <vscode-data-grid-cell grid-column="2" class="flex jcc">
           {{item.command}}

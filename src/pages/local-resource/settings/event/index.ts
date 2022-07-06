@@ -1,8 +1,8 @@
 import * as path from "path";
 import * as fs from "fs";
 import * as core from "@serverless-devs/core";
-import { ext } from "../../../extensionVariables";
-import { TEMPLTE_FILE } from "../../../constants";
+import { ext } from "../../../../extensionVariables";
+import { TEMPLTE_FILE } from "../../../../constants";
 const { lodash: _ } = core;
 
 export async function writeQuickCommandList(params) {

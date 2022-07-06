@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import * as path from "path";
-import { ext } from "../extensionVariables";
+import { ext } from "../../extensionVariables";
 import { LocalResourceTreeDataProvider } from "./treeDataProvider";
 import { autoMark } from "./autoMark";
 

@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { getHtmlForWebview } from "../common";
+import { getHtmlForWebview } from "../../common";
 import * as core from "@serverless-devs/core";
 const { lodash: _ } = core;
 
@@ -42,5 +42,19 @@ export async function activaAddKeyWebviewPanel(
             null,
             context.subscriptions
         );
+        addKeyWebviewPanel.webview.onDidReceiveMessage(message => {
+            switch (message.command) {
+                case 'setCredential':
+                    core.setKnownCredential(message.rest, message.provider);
+                    vscode.window.showInformationMessage(
+                        `Add ${this.pickProvider} configuration successfully.`);
+                    return;
+                case 'getAccountId':
+                    const data = core.getAccountId(this.normalKeyValue);
+                    addKeyWebviewPanel.webview.postMessage({
+                        
+                    })
+            }
+        }, undefined, context.subscriptions);
     }
 }

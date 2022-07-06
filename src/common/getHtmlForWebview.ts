@@ -69,18 +69,21 @@ export function getHtmlForWebview(
   const indexHtml = path.join(
     context.extensionPath,
     "src",
+    "pages",
     entryName,
     "ui",
     "index.html"
   );
   const mainUri = getUri(webview, context.extensionUri, [
     "src",
+    "pages",
     entryName,
     "ui",
     "main.js",
   ]);
   const customCssUri = getUri(webview, context.extensionUri, [
     "src",
+    "pages",
     entryName,
     "ui",
     "index.css"
