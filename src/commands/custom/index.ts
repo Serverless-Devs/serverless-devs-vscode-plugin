@@ -10,8 +10,8 @@ export async function custom(itemData: ItemData) {
   );
   let command =
     itemData.contextValue === "app"
-      ? `s ${itemData.scommand}`
-      : `s ${itemData.label} ${itemData.scommand}`;
+      ? `s ${itemData.scommand} -t ${itemData.spath}`
+      : `s ${itemData.label} ${itemData.scommand} -t ${itemData.spath}`;
   if (findObj) {
     command = `${command} -t ${findObj.path}`;
     const argsObj = _.find(
