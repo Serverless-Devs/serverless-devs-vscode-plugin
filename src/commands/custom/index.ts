@@ -13,11 +13,12 @@ export async function custom(itemData: ItemData) {
       ? `s ${itemData.scommand}`
       : `s ${itemData.label} ${itemData.scommand}`;
   if (findObj) {
+    command = `${command} -t ${findObj.path}`;
     const argsObj = _.find(
       findObj.$shortcuts,
       (item) => item.command === itemData.scommand
     );
-    if (argsObj) {
+    if (argsObj.args) {
       command = `${command} ${argsObj.args}`;
     }
   }
