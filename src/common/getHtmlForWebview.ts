@@ -101,7 +101,7 @@ export function getHtmlForWebview(
         <link href="${customCssUri}" rel="stylesheet" />
 
         <script nonce="${nonce}" type="module" src="${toolkitUri}"></script>
-        <script src="${vueUri}"></script>
+        <script src="${vueUri}" ></script>
         <script src="${lodashUri}"></script>
         <script nonce="${nonce}">
           Vue.prototype.$config = ${JSON.stringify(config)};

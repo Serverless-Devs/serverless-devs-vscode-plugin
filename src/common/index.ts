@@ -28,3 +28,4 @@ export function createTerminal(command: string) {
   terminal.sendText(command);
   terminal.show();
 }
+

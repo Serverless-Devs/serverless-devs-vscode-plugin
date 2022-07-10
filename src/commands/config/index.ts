@@ -35,7 +35,6 @@ export async function config() {
   async function pickSolution(input: MultiStepInput, state: Partial<State>) {
     const tmp: any = {};
     const pickValue = state.pickItem.value;
-    console.log(pickValue);
     const keyList = _.get(core.CONFIG_ACCESS, pickValue);
     if (pickValue === "custom") {
       await handleCustom(tmp, input, state);
@@ -60,6 +59,7 @@ export async function config() {
     if (pickValue === "alibaba") {
       try {
         const data: any = await core.getAccountId(tmp);
+        console.log(data);
         tmp.AccountID = data.AccountId;
       } catch (error) {
         vscode.window.showErrorMessage(

@@ -13,7 +13,7 @@ import { activeGlobalSettingsWebview } from "./pages/global-settings";
 import { activeLocalResourceSettingsWebview } from "./pages/local-resource/settings";
 import { createTerminal } from "./common";
 import * as open from "open";
-import { activaAddKeyWebviewPanel } from "./pages/add-key";
+import { activaCredentialWebviewPanel } from "./pages/credential-management";
 
 export async function activate(context: vscode.ExtensionContext) {
   ext.context = context;
@@ -68,7 +68,7 @@ export async function activate(context: vscode.ExtensionContext) {
   // s config add
   context.subscriptions.push(
     vscode.commands.registerCommand("serverless-devs.config", () => {
-      activaAddKeyWebviewPanel(context);
+      activaCredentialWebviewPanel(context);
     })
   );
   // context.subscriptions.push(
