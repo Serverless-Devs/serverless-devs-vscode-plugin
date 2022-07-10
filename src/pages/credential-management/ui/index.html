@@ -1,0 +1,82 @@
+<div id="app">
+    <div class="flex">
+        <h1>密钥管理</h1>
+        <span class="ml8">本地密钥信息的管理</span>
+    </div>
+
+    <div v-if="status === 1" class="mt16">
+        <div class="add-form">
+            <div class="mt8 add-item flex">
+                <span class="add-item-text">请选择服务商</span>
+                <div class="add-item-input">
+                    <vscode-dropdown ref="providerDropdown" @change="getProviderPickValue()" style="width: 166px;">
+                        <vscode-option>请选择您的云厂商</vscode-option>
+                        <vscode-option v-for="item in providerItems" :value="item.value">{{ item.label }}
+                        </vscode-option>
+                    </vscode-dropdown>
+                    <a
+                        href="https://docs.serverless-devs.com/serverless-devs/quick_start#%E5%AF%86%E9%92%A5%E9%85%8D%E7%BD%AE">密钥信息获取指引</a>
+                </div>
+            </div>
+            <div class="mt8 add-item flex">
+                <span class="add-item-text">密钥别名</span>
+                <div class="add-item-input">
+                    <vscode-text-field @input="setAlias($event)"></vscode-text-field>
+                </div>
+            </div>
+            <div v-for="key in pickProviderKeys" class="mt8 add-item flex">
+                <span class="add-item-text">{{ key }}</span>
+                <div class="add-item-input">
+                    <vscode-text-field @input="normalKV(key, $event)"></vscode-text-field>
+                </div>
+            </div>
+            <div v-if="pickProvider === 'custom'">
+                <div v-for="(item, i) in customKeyValue" class="mt8 add-item flex">
+                    <div class="add-item-text">
+                        <span>键值对</span>
+                    </div>
+                    <div class="add-item-input">
+                        <vscode-text-field @input="customKV(i, $event, 'key')" placeholder="键名" class="key mr8">
+                        </vscode-text-field>
+                        <vscode-text-field @input="customKV(i, $event, 'value')" placeholder="密钥值" class="value mr8">
+                        </vscode-text-field>
+                    </div>
+                    <vscode-button @click="addKvPair()" appearance="icon" aria-add-item="Confirm">
+                        <span class="codicon codicon-add"></span>
+                    </vscode-button>
+                    <vscode-button @click="subKvPair(i)" v-if="i > 0" appearance="icon" aria-add-item="Confirm">
+                        <span class="codicon codicon-chrome-minimize"></span>
+                    </vscode-button>
+                </div>
+            </div>
+            <div class="btn-group mt16">
+                <vscode-button @click="submitCredential()" class="mr16">增加</vscode-button>
+                <vscode-button @click="changeStatus('goback')">返回</vscode-button>
+            </div>
+        </div>
+
+
+    </div>
+    <div v-else-if="status === 0" class="mt16 credential">
+        <div v-for="(item, alias) in credentialAll" class="card mb16 mr16">
+            <div class="card-title">
+                <span>{{ alias }}</span>
+                <vscode-button class="delete-btn" @click="deleteCredential(alias)" appearance="icon" aria-add-item="Confirm">
+                    <span class="codicon codicon-chrome-close"></span>
+                </vscode-button>
+            </div>
+            <vscode-divider></vscode-divider>
+            <div class="card-body">
+                <span class="info" v-for="(value, key) in item">{{ key }}:{{ value }}</span>
+            </div>
+        </div>
+        <div class="card">
+            <vscode-button @click="changeStatus('add')" class="add-btn" appearance="icon" aria-add-item="Confirm">
+                <span class="codicon codicon-add"></span>
+            </vscode-button>
+        </div>
+    </div>
+    <div v-else-if="status === 2" class="mt16">
+    </div>
+
+</div>
