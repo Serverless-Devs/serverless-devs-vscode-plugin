@@ -44,37 +44,52 @@ export async function activaCredentialWebviewPanel(
             null,
             context.subscriptions
         );
-        credentialWebviewPanel.webview.onDidReceiveMessage(async message => {
-            switch (message.command) {
-                case 'getCredential':
-                    const data = await getCredentialWithAll();
-                    for (let i in data) {
-                        for (let j in data[i]) {
-                            data[i][j] = mark(data[i][j]);
-                        }
-                    }
-                    credentialWebviewPanel.webview.postMessage({
-                        data: data
-                    });
-                    break;
-                case 'deleteCredential':
-                    deleteCredentialByAccess(message.alias);
-                    vscode.window.showInformationMessage(
-                        `Delete ${message.alias} configuration successfully.`);
-                    break;
-                case 'setCredential':
-                    const { ...rest } = message.kvPairs;
-                    if (message.pickProvider === 'alibaba') {
-                        core.getAccountId(message.kvPairs).then(
-                            result => {
-                                message.rest.AccountId = result['AccountId'];
-                            }
-                        );
-                    }
-                    core.setKnownCredential(rest, message.alias);
-                    vscode.window.showInformationMessage(
-                        `Add ${message.alias} configuration successfully.`);
+        credentialWebviewPanel.webview.onDidReceiveMessage(
+            (message) => {
+                handleMessage(message);
             }
-        }, undefined, context.subscriptions);
+            , undefined,
+            context.subscriptions);
+    }
+}
+
+
+async function handleMessage(
+    message: any
+) {
+    switch (message.command) {
+        case 'getCredential':
+            const data = await getCredentialWithAll();
+            for (let i in data) {
+                for (let j in data[i]) {
+                    data[i][j] = mark(data[i][j]);
+                }
+            }
+            credentialWebviewPanel.webview.postMessage({
+                data: data
+            });
+            break;
+        case 'deleteCredential':
+            try {
+                deleteCredentialByAccess(message.alias);
+                vscode.window.showInformationMessage(
+                    `Delete ${message.alias} configuration successfully.`);
+            } catch (e) {
+                vscode.window.showInformationMessage(
+                    `Delete ${message.alias} configuration failed.`);
+            }
+            break;
+        case 'setCredential':
+            const { ...rest } = message.kvPairs;
+            if (message.pickProvider === 'alibaba') {
+                core.getAccountId(message.kvPairs).then(
+                    result => {
+                        message.rest.AccountId = result['AccountId'];
+                    }
+                );
+            }
+            core.setKnownCredential(rest, message.alias);
+            vscode.window.showInformationMessage(
+                `Add ${message.alias} configuration successfully.`);
     }
 }
