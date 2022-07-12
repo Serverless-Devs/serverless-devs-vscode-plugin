@@ -13,7 +13,6 @@ export async function custom(itemData: ItemData) {
       ? `s ${itemData.scommand} -t ${itemData.spath}`
       : `s ${itemData.label} ${itemData.scommand} -t ${itemData.spath}`;
   if (findObj) {
-    command = `${command} -t ${findObj.path}`;
     const argsObj = _.find(
       findObj.$shortcuts,
       (item) => item.command === itemData.scommand
