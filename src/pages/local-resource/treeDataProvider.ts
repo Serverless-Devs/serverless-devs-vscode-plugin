@@ -2,9 +2,9 @@ import * as vscode from "vscode";
 import * as core from "@serverless-devs/core";
 import * as path from "path";
 import * as fs from "fs";
-import { ext } from "../extensionVariables";
-import { ItemData, TreeItem } from "../common";
-import { TEMPLTE_FILE } from "../constants";
+import { ext } from "../../extensionVariables";
+import { ItemData, TreeItem } from "../../common";
+import { TEMPLTE_FILE } from "../../constants";
 
 export class LocalResourceTreeDataProvider
   implements vscode.TreeDataProvider<ItemData>

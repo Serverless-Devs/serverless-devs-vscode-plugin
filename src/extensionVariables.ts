@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { LocalResourceTreeDataProvider } from "./local-resource/treeDataProvider";
+import { LocalResourceTreeDataProvider } from "./pages/local-resource/treeDataProvider";
 
 export namespace ext {
   export let context: vscode.ExtensionContext;

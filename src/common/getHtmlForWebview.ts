@@ -29,6 +29,14 @@ export function getHtmlForWebview(
     "resources",
     "common.css",
   ]);
+  const vueUri = getUri(webview, context.extensionUri, [
+    "resources",
+    "vue.min.js",
+  ]);
+  const lodashUri = getUri(webview, context.extensionUri, [
+    "resources",
+    "lodash.min.js",
+  ]);
   const toolkitUri = getUri(webview, context.extensionUri, [
     "node_modules",
     "@vscode",
@@ -56,26 +64,29 @@ export function getHtmlForWebview(
     </html>
   `;
   }
+
+  // ui路径下自定义部分
   const indexHtml = path.join(
     context.extensionPath,
     "src",
+    "pages",
     entryName,
     "ui",
     "index.html"
   );
-  const vueUri = getUri(webview, context.extensionUri, [
-    "resources",
-    "vue.min.js",
-  ]);
-  const lodashUri = getUri(webview, context.extensionUri, [
-    "resources",
-    "lodash.min.js",
-  ]);
   const mainUri = getUri(webview, context.extensionUri, [
     "src",
+    "pages",
     entryName,
     "ui",
     "main.js",
+  ]);
+  const customCssUri = getUri(webview, context.extensionUri, [
+    "src",
+    "pages",
+    entryName,
+    "ui",
+    "index.css"
   ]);
 
   // 传入模版的数据挂载到 Vue.prototype.$config 上
@@ -84,11 +95,13 @@ export function getHtmlForWebview(
     <html lang="en">
       <head>
         <meta charset="UTF-8">
-				<meta name="viewport" content="width=device-width, initial-scale=1.0">
-				<link href="${codiconsUri}" rel="stylesheet" />
-				<link href="${commonUri}" rel="stylesheet" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="${codiconsUri}" rel="stylesheet" />
+        <link href="${commonUri}" rel="stylesheet" />
+        <link href="${customCssUri}" rel="stylesheet" />
+
         <script nonce="${nonce}" type="module" src="${toolkitUri}"></script>
-        <script src="${vueUri}"></script>
+        <script src="${vueUri}" ></script>
         <script src="${lodashUri}"></script>
         <script nonce="${nonce}">
           Vue.prototype.$config = ${JSON.stringify(config)};
@@ -97,7 +110,7 @@ export function getHtmlForWebview(
       <body>
         ${fs.readFileSync(indexHtml, "utf-8")}
       </body>
-      <script nonce="${nonce}" src="${mainUri}"></script>
+      <script nonce="${nonce}" type="module" src="${mainUri}"></script>
     </html>
   `;
 }

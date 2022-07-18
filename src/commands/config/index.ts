@@ -59,6 +59,7 @@ export async function config() {
     if (pickValue === "alibaba") {
       try {
         const data: any = await core.getAccountId(tmp);
+        console.log(data);
         tmp.AccountID = data.AccountId;
       } catch (error) {
         vscode.window.showErrorMessage(
