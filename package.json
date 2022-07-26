@@ -1,8 +1,10 @@
 {
-  "name": "devs-vscode",
-  "displayName": "devs-vscode",
-  "description": "",
-  "version": "0.0.1",
+  "name": "serverless-devs",
+  "publisher": "serverless-devs",
+  "displayName": "serverless-devs",
+  "description": "Serverless-Devs extension. Lets you develop your serverless application within VSCode.",
+  "repository": "https://github.com/Serverless-Devs/serverless-devs-vscode-plugin",
+  "version": "0.0.3",
   "engines": {
     "vscode": "^1.65.0"
   },
@@ -14,7 +16,8 @@
     "onView:local-resource",
     "onCommand:serverless-devs.init",
     "onCommand:serverless-devs.config",
-    "onCommand:serverless-devs.set"
+    "onCommand:serverless-devs.set",
+    "onCommand:create.pick"
   ],
   "contributes": {
     "views": {
@@ -51,7 +54,7 @@
     "viewsWelcome": [
       {
         "view": "quick-start",
-        "contents": "快速开始你的Serverless之旅\n[密钥管理](command:serverless-devs.config)\n[创建一个应用](command:serverless-devs.init)\n除此之外，您可以可以快速通过[快速上手](https://docs.serverless-devs.com/serverless-devs/quick_start)进行更多的图文案例的参考和学习。"
+        "contents": "快速开始你的Serverless之旅\n[密钥管理](command:serverless-devs.config)\n[创建一个应用](command:create.pick)\n除此之外，您可以可以快速通过[快速上手](https://docs.serverless-devs.com/serverless-devs/quick_start)进行更多的图文案例的参考和学习。"
       },
       {
         "view": "dev-docs",
@@ -64,8 +67,17 @@
     ],
     "commands": [
       {
+        "command": "create.pick",
+        "title": "Choose how to create app"
+      },
+      {
         "command": "serverless-devs.config",
         "title": "Add Account",
+        "category": "Serverless-Devs"
+      },
+      {
+        "command": "create.registry",
+        "title": "Init Serverless Devs Application",
         "category": "Serverless-Devs"
       },
       {
@@ -247,17 +259,7 @@
           "group": "navigation@7"
         }
       ],
-      "editor/title/context": [
-        {
-          "command": "serverless-devs.deploy",
-          "group": "navigation"
-        }
-      ],
       "explorer/context": [
-        {
-          "command": "serverless-devs.deploy",
-          "group": "navigation"
-        },
         {
           "command": "serverless-devs.yaml",
           "when": "resourceExtname == .yaml || resourceExtname == .yml",
@@ -328,9 +330,10 @@
     "typescript": "^4.5.5"
   },
   "dependencies": {
-    "@serverless-devs/core": "beta",
+    "@serverless-devs/core": "latest",
     "@vscode/codicons": "^0.0.30",
     "@vscode/webview-ui-toolkit": "^1.0.0",
+    "node-fetch": "^2.6.7",
     "open": "^8.4.0"
   }
 }

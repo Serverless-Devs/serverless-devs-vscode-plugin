@@ -14,7 +14,9 @@ import { activeGlobalSettingsWebview } from "./pages/global-settings";
 import { activeLocalResourceSettingsWebview } from "./pages/local-resource/settings";
 import { createTerminal } from "./common";
 import * as open from "open";
-import { activaCredentialWebviewPanel } from "./pages/credential-management";
+import { activeCredentialWebviewPanel } from "./pages/credential-management";
+import { activeApplicationWebviewPanel } from "./pages/registry";
+import { pickCreateMethod } from "./common/createApp";
 
 export async function activate(context: vscode.ExtensionContext) {
   ext.context = context;
@@ -26,6 +28,9 @@ export async function activate(context: vscode.ExtensionContext) {
   // s init 
   context.subscriptions.push(
     vscode.commands.registerCommand("serverless-devs.init", () => init())
+  );
+  context.subscriptions.push(
+    vscode.commands.registerCommand('create.pick', () => pickCreateMethod(context))
   );
   // s verify
   context.subscriptions.push(
@@ -66,15 +71,19 @@ export async function activate(context: vscode.ExtensionContext) {
       open("https://github.com/Serverless-Devs/Serverless-Devs/issues");
     })
   );
-  // s config add
+  // s config add,get and delete
   context.subscriptions.push(
     vscode.commands.registerCommand("serverless-devs.config", () => {
-      activaCredentialWebviewPanel(context);
+      activeCredentialWebviewPanel(context);
     })
   );
-  // context.subscriptions.push(
-  //   vscode.commands.registerCommand("serverless-devs.config", () => config())
-  // );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand("serverless-devs.app", () => {
+      activeApplicationWebviewPanel(context);
+    })
+  );
+
   // 标记Yaml文件到工作空间
   context.subscriptions.push(
     vscode.commands.registerCommand(
@@ -132,7 +141,6 @@ export async function activate(context: vscode.ExtensionContext) {
   );
 
   await new LocalResource(context).autoMark();
-  statusBarItem(context);
 }
 
 // this method is called when your extension is deactivated

@@ -10,14 +10,14 @@ export async function custom(itemData: ItemData) {
   );
   let command =
     itemData.contextValue === "app"
-      ? `s ${itemData.scommand}`
-      : `s ${itemData.label} ${itemData.scommand}`;
+      ? `s ${itemData.scommand} -t ${itemData.spath}`
+      : `s ${itemData.label} ${itemData.scommand} -t ${itemData.spath}`;
   if (findObj) {
     const argsObj = _.find(
       findObj.$shortcuts,
       (item) => item.command === itemData.scommand
     );
-    if (argsObj) {
+    if (argsObj.args) {
       command = `${command} ${argsObj.args}`;
     }
   }

@@ -7,12 +7,13 @@ const { lodash: _ } = core;
 
 let credentialWebviewPanel: vscode.WebviewPanel | undefined;
 
-export async function activaCredentialWebviewPanel(
+export async function activeCredentialWebviewPanel(
     context: vscode.ExtensionContext
 ) {
     if (credentialWebviewPanel) {
         credentialWebviewPanel.reveal();
     } else {
+
         credentialWebviewPanel = vscode.window.createWebviewPanel(
             "Serverless-Devs",
             "新增密钥 - Serverless-Devs",
