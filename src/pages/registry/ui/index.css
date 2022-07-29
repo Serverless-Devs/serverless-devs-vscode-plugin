@@ -93,7 +93,8 @@
     margin: 120px auto 0;
 }
 
-.init .config .config-item {
+.init .config .config-item,
+.init .config .config-item vscode-dropdown {
     width: 250px;
     margin-bottom: 15px;
 }
@@ -104,6 +105,6 @@
     bottom: 100px;
 }
 
-.init .init-buttons vscode-button:first-child {
-    margin-right: 15px;
+.init .init-buttons vscode-button {
+    margin-right: 10px;
 }

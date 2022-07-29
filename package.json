@@ -333,6 +333,7 @@
     "@serverless-devs/core": "latest",
     "@vscode/codicons": "^0.0.30",
     "@vscode/webview-ui-toolkit": "^1.0.0",
+    "art-template": "^4.13.2",
     "node-fetch": "^2.6.7",
     "open": "^8.4.0"
   }

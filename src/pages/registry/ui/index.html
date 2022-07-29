@@ -1,80 +1,93 @@
 <div id="app">
-    <div class="nav">
-        <div class="left">
-            <h1 class="title">创建应用</h1>
-            <span class="ml8">通过模板或registry创建新的应用</span>
-        </div>
-        <div class="right">
-            <vscode-text-field>
-                <span slot="end" class="codicon codicon-search"></span>
-            </vscode-text-field>
-        </div>
+  <div class="nav">
+    <div class="left">
+      <h1 class="title">创建应用</h1>
+      <span class="ml8">通过模板或registry创建新的应用</span>
     </div>
-    <div class="app-panel" v-if="pageStatus === 'search'">
-        <vscode-panels aria-label="Default">
-            <vscode-panel-tab id="tab-1">推荐应用</vscode-panel-tab>
-            <vscode-panel-tab id="tab-2">全部应用</vscode-panel-tab>
-            <vscode-panel-view id="view-1">
-                暂无
-            </vscode-panel-view>
-            <vscode-panel-view id="view-2">
-                <div class="app-area">
-                    <div class="app-items mr16">
-                        <ul>
-                            <li v-for="i in applicationList" class="app-card">
-                                <div class="head">
-                                    <span class="title">{{ i.package }}</span>
-                                    <div style="display: inline-block;">
-                                        <i class="codicon codicon-arrow-circle-down" style=""></i><span
-                                            style="margin-left: 2px;">{{ i.download }}</span>
-                                    </div>
-                                </div>
-                                <div class="detail">
-                                    {{ i.description }}
-                                </div>
-                                <div class="app-buttons">
-                                    <vscode-button @click="openUrl(i.package)">查看详情</vscode-button>
-                                    <vscode-button @click="switchStatus('init', i.package)">立即部署</vscode-button>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="condition-filter">
-                        <div class="ranking">
-                            <vscode-dropdown style="width: 150px;" @change="sortBySelected(event)">
-                                <vscode-option>按时间排序</vscode-option>
-                                <vscode-option>按下载量排序</vscode-option>
-                            </vscode-dropdown>
-                        </div>
-                        <div class="category">
-                            <p>分类</p>
-                            <ul class="list">
-                                <li class="list-item" @click="filterAppList('category', i)" v-for="i in categoryList">
-                                    {{ i }}</li>
-                            </ul>
-                        </div>
-                    </div>
+    <div class="right">
+      <vscode-text-field>
+        <span slot="end" class="codicon codicon-search"></span>
+      </vscode-text-field>
+    </div>
+  </div>
+  <div class="app-panel" v-if="pageStatus === 'search'">
+    <vscode-panels aria-label="Default">
+      <vscode-panel-tab id="tab-1">推荐应用</vscode-panel-tab>
+      <vscode-panel-tab id="tab-2">全部应用</vscode-panel-tab>
+      <vscode-panel-view id="view-1">
+        暂无
+      </vscode-panel-view>
+      <vscode-panel-view id="view-2">
+        <div class="app-area">
+          <div class="app-items mr16">
+            <ul>
+              <li v-for="i in applicationList" class="app-card">
+                <div class="head">
+                  <span class="title">{{ i.package }}</span>
+                  <div style="display: inline-block;">
+                    <i class="codicon codicon-arrow-circle-down" style=""></i><span
+                      style="margin-left: 2px;">{{ i.download }}</span>
+                  </div>
                 </div>
-            </vscode-panel-view>
-        </vscode-panels>
-    </div>
-    <div class="init" v-else-if="pageStatus === 'init' ">
-        <div class="config">
-            <vscode-text-field class="config-item" @change="setConfigItem('dirName',event)">应用名称(目录名称)</vscode-text-field>
-            <vscode-text-field class="config-item" :value="configItems.path" @click="setInitPath()">
-                初始化路径
-                <span slot="end" class="codicon codicon-file-submodule"></span>
-            </vscode-text-field>
-            <div class="config-item">
-                <p style="margin: 0;">选择密钥</p>
-                <vscode-dropdown style="width: 250px;" @change="setConfigItem('access',event)">
-                    <vscode-option v-for="i in $config.aliasList" >{{ i }}</vscode-option>
-                </vscode-dropdown>
+                <div class="detail">
+                  {{ i.description }}
+                </div>
+                <div class="app-buttons">
+                  <vscode-button @click="openUrl(i.package)">查看详情</vscode-button>
+                  <vscode-button @click="switchStatus('init', i.package)">立即部署</vscode-button>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div class="condition-filter">
+            <div class="ranking">
+              <vscode-dropdown style="width: 150px;" @change="sortBySelected(event)">
+                <vscode-option>按时间排序</vscode-option>
+                <vscode-option>按下载量排序</vscode-option>
+              </vscode-dropdown>
             </div>
+            <div class="category">
+              <p>分类</p>
+              <ul class="list">
+                <li class="list-item" @click="filterAppList('category', i)" v-for="i in categoryList">
+                  {{ i }}</li>
+              </ul>
+            </div>
+          </div>
         </div>
-        <div class="init-buttons">
-            <vscode-button @click="switchStatus('search')">上一步</vscode-button>
-            <vscode-button @click="submit()">创建</vscode-button>
+      </vscode-panel-view>
+    </vscode-panels>
+  </div>
+  <div class="init" v-else-if="pageStatus === 'init' ">
+    <div class="config">
+      <vscode-text-field class="config-item" @change="setConfigItem('dirName',event)">应用名称(目录名称)
+      </vscode-text-field>
+      <vscode-text-field class="config-item" :value="configItems.path" @click="setInitPath()">
+        初始化路径
+        <span slot="end" class="codicon codicon-file-submodule"></span>
+      </vscode-text-field>
+      <div class="config-item">
+        <p style="margin: 0;">选择密钥</p>
+        <vscode-dropdown @change="setConfigItem('access',event)">
+          <vscode-option v-for="i in $config.aliasList">{{ i }}</vscode-option>
+        </vscode-dropdown>
+      </div>
+      <div v-for="config in requireConfig">
+        <vscode-text-field class="config-item" v-if="!config.choices" @change="fillConfig(config.name, event)">
+          {{ config.title }}
+        </vscode-text-field>
+        <div class="config-item" v-else>
+          <p style="margin: 0;">{{ config.title }}</p>
+          <vscode-dropdown @change="fillConfig(config.name, event)">
+            <vscode-option v-for="choice in config.choices">{{ choice }}</vscode-option>
+          </vscode-dropdown>
         </div>
+      </div>
     </div>
+    <div class="init-buttons">
+      <vscode-button @click="switchStatus('search')">上一步</vscode-button>
+      <vscode-button @click="downloadApp()">下载应用</vscode-button>
+      <vscode-button @click="applyConfigToLocal()">创建</vscode-button>
+    </div>
+  </div>
 </div>
