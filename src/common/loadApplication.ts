@@ -5,7 +5,7 @@ import * as rimraf from 'rimraf';
 import { RegistryEnum } from '@serverless-devs/core/dist/common/constant';
 import parse from '@serverless-devs/core/dist/common/load/parse';
 import request from '@serverless-devs/core/dist/common/request';
-import yaml from 'js-yaml';
+import * as yaml from 'js-yaml';
 import { downloadRequest, getYamlContent, setConfig, zip } from '@serverless-devs/core';
 var artTemplate = require('art-template');
 
@@ -57,7 +57,7 @@ async function isYamlFile(filePath: string) {
 class LoadApplication {
   private config: IParams;
   private publishYamlData: any;
-  private applicationPath: any;
+  public applicationPath: any;
   constructor(config: IParams) {
     this.config = config;
   }
@@ -132,15 +132,21 @@ class LoadApplication {
   async setSconfigToLocal(requireConfig: any) {
     const spath = getYamlPath(this.applicationPath, 's');
     let result: any = {};
+    const tempObj: any = { appName: this.config.appName, access: this.config.access};
     if (this.config.access) {result.access = this.config.access;}
     requireConfig.forEach(element => {
       result[element.name] = element.input;
     });
+    result = {
+      ...result,
+      ...tempObj
+    };
     artTemplate.defaults.extname = path.extname(spath);
     let newData = artTemplate(spath, result);
+    console.log(newData);
     fs.writeFileSync(spath, newData, 'utf-8');
     await isYamlFile(spath);
-    newData = parse({ appName: this.config.appName }, newData);
+    newData = parse({ appName: this.config.appName, access: this.config.access}, newData);
     fs.writeFileSync(spath, newData, 'utf-8');
   }
 }

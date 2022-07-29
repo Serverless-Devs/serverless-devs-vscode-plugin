@@ -98,6 +98,9 @@ async function handleMessage(
       break;
     case 'applyConfigToLocal':
       applicationInstance.setSconfigToLocal(message.requireConfig);
+      const newWindow = !!vscode.workspace.rootPath;
+      if (newWindow) {applicationWebviewPanel.dispose();}
+      vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.file(applicationInstance.applicationPath), newWindow);
       break;
   }
 }
