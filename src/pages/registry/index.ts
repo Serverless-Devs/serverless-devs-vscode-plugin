@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { getHtmlForWebview } from '../../common';
+import { getHtmlForWebview, updateWebview } from '../../common';
 import loadApplication from '../../common/loadApplication';
 import * as core from "@serverless-devs/core";
 import * as open from "open";
@@ -26,24 +26,16 @@ export async function activeApplicationWebviewPanel(
         retainContextWhenHidden: true
       }
     );
-    async function updateWebview() {
-      const categoryFetch = await fetch(attrList['category']['url']);
-      const providerFetch = await fetch(attrList['provider']['url']);
-      const applicationFetch = await fetch(attrList['application']['url']);
-      applicationWebviewPanel.webview.html = getHtmlForWebview(
-        "registry",
-        context,
-        applicationWebviewPanel.webview,
-        {
-          categoryList: await categoryFetch.json(),
-          providerList: await providerFetch.json(),
-          applicationList: await applicationFetch.json(),
-          aliasList: await core.getCredentialAliasList(),
-          defaultPath: core.getRootHome().slice(0, core.getRootHome().lastIndexOf('/'))
-        }
-      );
-    }
-    await updateWebview();
+    const categoryFetch = await fetch(attrList['category']['url']);
+    const providerFetch = await fetch(attrList['provider']['url']);
+    const applicationFetch = await fetch(attrList['application']['url']);
+    await updateWebview(applicationWebviewPanel, 'registry', context, {
+      categoryList: await categoryFetch.json(),
+      providerList: await providerFetch.json(),
+      applicationList: await applicationFetch.json(),
+      aliasList: await core.getCredentialAliasList(),
+      defaultPath: core.getRootHome().slice(0, core.getRootHome().lastIndexOf('/'))
+    });
     applicationWebviewPanel.iconPath = vscode.Uri.parse(
       "https://img.alicdn.com/imgextra/i4/O1CN01AvqMOu1sYpY1j8xaI_!!6000000005779-2-tps-574-204.png"
     );
@@ -99,7 +91,7 @@ async function handleMessage(
     case 'applyConfigToLocal':
       applicationInstance.setSconfigToLocal(message.requireConfig);
       const newWindow = !!vscode.workspace.rootPath;
-      if (newWindow) {applicationWebviewPanel.dispose();}
+      if (newWindow) { applicationWebviewPanel.dispose(); }
       vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.file(applicationInstance.applicationPath), newWindow);
       break;
   }

@@ -4,12 +4,12 @@
         <span class="ml8">本地密钥信息的管理</span>
     </div>
 
-    <div v-if="status === 1" class="mt16">
+    <div v-if="status === 'add'" class="mt16">
         <div class="add-form">
             <div class="mt8 add-item flex">
                 <span class="add-item-text">请选择服务商</span>
                 <div class="add-item-input">
-                    <vscode-dropdown ref="providerDropdown" @change="getProviderPickValue()" style="width: 166px;">
+                    <vscode-dropdown ref="providerDropdown" @change="getProviderPickValue(event)" style="width: 166px;">
                         <vscode-option>请选择您的云厂商</vscode-option>
                         <vscode-option v-for="item in providerItems" :value="item.value">{{ item.label }}
                         </vscode-option>
@@ -51,13 +51,13 @@
             </div>
             <div class="btn-group mt16">
                 <vscode-button @click="submitCredential()" class="mr16">增加</vscode-button>
-                <vscode-button @click="changeStatus('goback')">返回</vscode-button>
+                <vscode-button @click="status = 'management'">返回</vscode-button>
             </div>
         </div>
 
 
     </div>
-    <div v-else-if="status === 0" class="mt16 credential">
+    <div v-else-if="status === 'management'" class="mt16 credential">
         <div v-for="(item, alias) in credentialAll" class="card mb16 mr16">
             <div class="card-title">
                 <span>{{ alias }}</span>
@@ -71,12 +71,9 @@
             </div>
         </div>
         <div class="card">
-            <vscode-button @click="changeStatus('add')" class="add-btn" appearance="icon" aria-add-item="Confirm">
+            <vscode-button @click="status = 'add'" class="add-btn" appearance="icon" aria-add-item="Confirm">
                 <span class="codicon codicon-add"></span>
             </vscode-button>
         </div>
     </div>
-    <div v-else-if="status === 2" class="mt16">
-    </div>
-
 </div>

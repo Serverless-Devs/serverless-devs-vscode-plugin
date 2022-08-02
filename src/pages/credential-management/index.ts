@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { getHtmlForWebview } from "../../common";
+import { getHtmlForWebview, updateWebview } from "../../common";
 import * as core from "@serverless-devs/core";
 import { rest, result } from "lodash";
 import { deleteCredentialByAccess, getCredentialWithAll, mark } from "../../common/credential";
@@ -13,7 +13,6 @@ export async function activeCredentialWebviewPanel(
   if (credentialWebviewPanel) {
     credentialWebviewPanel.reveal();
   } else {
-
     credentialWebviewPanel = vscode.window.createWebviewPanel(
       "Serverless-Devs",
       "新增密钥 - Serverless-Devs",
@@ -23,18 +22,12 @@ export async function activeCredentialWebviewPanel(
         retainContextWhenHidden: true
       }
     );
-    async function updateWebview() {
-      credentialWebviewPanel.webview.html = getHtmlForWebview(
-        "credential-management",
-        context,
-        credentialWebviewPanel.webview,
-        {
-          items: core.CONFIG_PROVIDERS,
-          configAccessList: core.CONFIG_ACCESS
-        }
-      );
-    }
-    await updateWebview();
+    await updateWebview(credentialWebviewPanel, 'credential-management', context, {
+      items: core.CONFIG_PROVIDERS,
+      configAccessList: core.CONFIG_ACCESS,
+      data: await getCredentialWithAll()
+    });
+
     credentialWebviewPanel.iconPath = vscode.Uri.parse(
       "https://img.alicdn.com/imgextra/i4/O1CN01AvqMOu1sYpY1j8xaI_!!6000000005779-2-tps-574-204.png"
     );
@@ -47,7 +40,7 @@ export async function activeCredentialWebviewPanel(
     );
     credentialWebviewPanel.webview.onDidReceiveMessage(
       (message) => {
-        handleMessage(message);
+        handleMessage(context, message);
       }
       , undefined,
       context.subscriptions);
@@ -56,25 +49,29 @@ export async function activeCredentialWebviewPanel(
 
 
 async function handleMessage(
+  context: vscode.ExtensionContext,
   message: any
 ) {
   switch (message.command) {
     case 'getCredential':
       const data = await getCredentialWithAll();
-      for (let i in data) {
-        for (let j in data[i]) {
-          data[i][j] = mark(data[i][j]);
-        }
-      }
       credentialWebviewPanel.webview.postMessage({
         data: data
       });
       break;
     case 'deleteCredential':
       try {
-        deleteCredentialByAccess(message.alias);
         vscode.window.showInformationMessage(
-          `Delete ${message.alias} configuration successfully.`);
+          `Delete ${message.alias} configuration successfully.`, '确认删除', '取消').then(result => {
+            if (result === '确认删除') {
+              deleteCredentialByAccess(message.alias);
+              updateWebview(credentialWebviewPanel, 'credential-management', context, {
+                items: core.CONFIG_PROVIDERS,
+                configAccessList: core.CONFIG_ACCESS
+              });
+            }
+          }
+          );
       } catch (e) {
         vscode.window.showInformationMessage(
           `Delete ${message.alias} configuration failed.`);

@@ -5,62 +5,43 @@ new Vue({
   data: {
     pickProvider: '',
     alias: '',
-    providerItems: [],
-    accessList: [],
-    status: 0,
+    //当前状态
+    status: 'management',
     pickProviderKeys: [],
     normalKeyValue: {},
     customKeyValue: [{
       key: '',
-      value: ''
+      value: '',
     }],
     credentialAll: {}
   },
   created() {
-    this.getProviderItems();
-    this.getAccessList();
-    this.changeStatus();
+    this.credentialAll = this.$config.data;
+  },
+  computed: {
+    providerItems() {
+      return this.$config.items;
+    },
+    accessList() {
+      return this.$config.configAccessList;
+    }
   },
   methods: {
-    getProviderItems() {
-      this.providerItems = this.$config.items;
-    },
-    getAccessList() {
-      this.accessList = this.$config.configAccessList;
-    },
-    changeStatus(action) {
-      vscode.postMessage({
-        command: 'getCredential',
-      });
-      window.addEventListener('message', event => {
-        if (action === 'goback') {
-          this.status = 0;
-        } else if (action === 'add') {
-          this.status = 1;
-        } else {
-          this.status = event.data.data ? 0 : 1;
-        }
-        this.credentialAll = event.data.data;
-      });
-    },
     deleteCredential(alias) {
       vscode.postMessage({
         command: 'deleteCredential',
         alias: alias
       });
-      this.credentialAll = _.omit(this.credentialAll, alias);
     },
-    getProviderPickValue() {
-      this.$nextTick(() => {
-        this.pickProvider = this.$refs.providerDropdown.currentValue;
-        this.pickProviderKeys = _.get(this.accessList, this.$refs.providerDropdown.currentValue);
-      });
+    getProviderPickValue(event) {
+      this.pickProvider = event.target.value;
+      this.pickProviderKeys = _.get(this.accessList, event.target.value);
       this.normalKeyValue = {};
     },
     addKvPair() {
       this.customKeyValue.push({
         key: '',
-        value: ''
+        value: '',
       });
     },
     subKvPair(index) {

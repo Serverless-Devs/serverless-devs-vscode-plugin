@@ -129,6 +129,7 @@ class LoadApplication {
       return promptList;
     }
   }
+  
   async setSconfigToLocal(requireConfig: any) {
     const spath = getYamlPath(this.applicationPath, 's');
     let result: any = {};
