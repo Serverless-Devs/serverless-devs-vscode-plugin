@@ -58,13 +58,14 @@ class LoadApplication {
   private config: IParams;
   private publishYamlData: any;
   public applicationPath: any;
-  constructor(config: IParams) {
+  private method: string;
+  constructor(config: IParams, method?: string) {
     this.config = config;
+    this.method = method;
   }
 
   async loadServerless() {
-    const source = `./${this.config.source}`;
-    const [provider, appName] = source.split('/');
+    const appName = this.config.source;
     if (!appName) return;
     let zipball_url: string;
     const result = await request(`${RegistryEnum.serverless}/${appName}/releases`);
@@ -73,21 +74,21 @@ class LoadApplication {
     const applicationPath = path.resolve(this.config.target, this.config.appName);
     return this.handleDecompressFile({
       zipball_url,
-      applicationPath,
-      appName
+      applicationPath
     });
   }
 
-  async handleDecompressFile({ zipball_url, applicationPath, appName }) {
+  async handleDecompressFile({ zipball_url, applicationPath }) {
     const isExists = this.checkFileExists(applicationPath);
+    let typeWord: string = (this.method === 'template') ? 'devsapp-package' : 'package';
     if (!isExists) return applicationPath;
     const temporaryPath = `${applicationPath}${new Date().getTime()}`;
     await downloadRequest(zipball_url, temporaryPath, {
       extract: true,
     });
-    const publishYamlData = await getYamlContent(path.join(temporaryPath, 'package/publish.yaml'));
+    const publishYamlData = await getYamlContent(path.join(temporaryPath, typeWord, '/publish.yaml'));
     if (publishYamlData) {
-      fs.copySync(`${temporaryPath}/package/src`, applicationPath);
+      fs.copySync(`${temporaryPath}/${typeWord}/src`, applicationPath);
       rimraf.sync(temporaryPath);
       this.publishYamlData = publishYamlData;
       this.applicationPath = applicationPath;
@@ -118,36 +119,35 @@ class LoadApplication {
       );
       rangeList = sortBy(filterRangeList, (o) => o['x-range']);
       for (const item of rangeList) {
-        promptList.push( {
+        promptList.push({
           title: item.title,
           type: item.type,
           name: item._key,
           default: item.default,
-          choices: item.enum || undefined 
+          choices: item.enum || undefined
         });
       }
       return promptList;
     }
   }
-  
-  async setSconfigToLocal(requireConfig: any) {
+
+  async setSconfigToLocal(configItems: any) {
     const spath = getYamlPath(this.applicationPath, 's');
     let result: any = {};
-    const tempObj: any = { appName: this.config.appName, access: this.config.access};
-    if (this.config.access) {result.access = this.config.access;}
-    requireConfig.forEach(element => {
-      result[element.name] = element.input;
-    });
+    const tempObj: any = { appName: this.config.appName, access: this.config.access };
+    if (this.config.access) { result.access = this.config.access; }
+    for (let i in configItems) {
+      result[i] = configItems[i];
+    }
     result = {
       ...result,
       ...tempObj
     };
     artTemplate.defaults.extname = path.extname(spath);
     let newData = artTemplate(spath, result);
-    console.log(newData);
     fs.writeFileSync(spath, newData, 'utf-8');
     await isYamlFile(spath);
-    newData = parse({ appName: this.config.appName, access: this.config.access}, newData);
+    newData = parse({ appName: this.config.appName, access: this.config.access }, newData);
     fs.writeFileSync(spath, newData, 'utf-8');
   }
 }

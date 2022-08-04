@@ -3,36 +3,80 @@ const vscode = acquireVsCodeApi();
 new Vue({
   el: "#app",
   data: {
-    categoryCondition: '',
-    providerCondition: '',
     pageStatus: 'search',
-    selectedApp: '',
+    keyword: '',
     applicationList: {},
+    originalApplicationList: {},
+    aliasList: {},
+    categoryListRes: {},
     requireConfig: {},
+    currentAppParams: {},
+    paramRequired: {},
     configItems: {
       'access': '',
       'path': '',
       'dirName': ''
     },
-    
-
   },
   created() {
-    this.applicationList = this.$config.applicationList.Response;
+    document.getElementById('app').style.display = 'none';
     this.configItems.path = this.$config.defaultPath;
-    console.log(this.$config.defaultPath);
+    vscode.postMessage({
+      command: 'requestData'
+    });
+  },
+  mounted() {
+    window.addEventListener('message', this.onMessage);
   },
   computed: {
+    // 加条'全部'选项
     categoryList: function () {
       return {
         0: '全部',
-        ...this.$config.categoryList
+        ...this.categoryListRes
       };
     },
   },
   methods: {
+    onMessage(event) {
+      switch (event.data.command) {
+        case 'responseData':
+          this.aliasList = event.data.aliasList;
+          this.originalApplicationList = event.data.applicationList.Response;
+          this.applicationList = this.originalApplicationList;
+          this.categoryListRes = event.data.categoryList;
+          document.getElementById('app').style.display = 'block';
+          document.getElementById('appLoading').style.display = 'none';
+          break;
+
+        case 'getParams':
+          this.currentAppParams = event.data.params.properties;
+          this.paramRequired = event.data.params.required;
+          for (const i in this.currentAppParams) {
+            this.configItems[i] = this.currentAppParams[i]['default'];
+          }
+          break;
+
+        case 'updatePath':
+          this.configItems.path = event.data.path;
+          break;
+      }
+    },
+    updateKeyword(event) {
+      this.keyword = event.target.currentValue;
+    },
+    search() {
+      const keyword = this.keyword;
+      if (keyword === '') {
+        this.applicationList = this.originalApplicationList;
+      }else {
+        this.applicationList = _.filter(this.originalApplicationList, function(o) {
+          return o.package.indexOf(keyword) > -1;
+        });
+      }
+    },
     sortBySelected(event) {
-      this.applicationList = _.orderBy(this.$config.applicationList.Response, function (item) {
+      this.applicationList = _.orderBy(this.originalApplicationList, function (item) {
         const selected = event.target.currentValue;
         if (selected === '按时间排序') {
           return -item.version.published_at;
@@ -42,8 +86,18 @@ new Vue({
       });
     },
     switchStatus(status, appname) {
+      if (status === 'init') {
+        vscode.postMessage({
+          command: 'getParams',
+          selectedApp: appname,
+        });
+        this.configItems['access'] = this.aliasList[0];
+        this.configItems['path'] = this.$config.defaultPath;
+        this.configItems['dirName'] = appname;
+      }
       this.pageStatus = status;
       this.selectedApp = appname;
+      console.log( this.configItems);
     },
     filterAppList(type, val) {
       if (type === "category" && val !== "全部") {
@@ -60,37 +114,26 @@ new Vue({
         appName: appName
       });
     },
-    setConfigItem(k, v) {
-      this.configItems[k] = v.target.currentValue;
+    isRequire(name){
+      return this.paramRequired.indexOf(name) > -1;
+    },
+    setConfigItem(name, event) {
+      if (event.target.currentValue.length === 0) {
+        this.configItems[name] = this.currentAppParams[name]['default'];
+      } else {
+        this.configItems[name] = event.target.currentValue;
+      }
     },
     setInitPath() {
       vscode.postMessage({
         command: 'setInitPath',
       });
-      window.addEventListener('message', event => {
-        this.configItems.path = event.data.path;
-      });
     },
-    downloadApp() {
+    initApplication() {
       vscode.postMessage({
-        command: 'downloadApp',
+        command: 'initApplication',
         selectedApp: this.selectedApp,
-        configItems: this.configItems
-      });
-      window.addEventListener('message', event => {
-        this.requireConfig = event.data.requireConfig;
-      });
-    },
-    fillConfig(key, event) {
-      this.requireConfig.forEach(e => {
-        if (e.name === key) {
-          e.input = event.target.currentValue;
-        }
-      });
-    },
-    applyConfigToLocal() {
-      vscode.postMessage({
-        command: 'applyConfigToLocal',
+        configItems: this.configItems,
         requireConfig: this.requireConfig
       });
     }

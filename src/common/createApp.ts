@@ -15,6 +15,10 @@ export const attrList = {
     "application": {
         "url": "https://registry.devsapp.cn/package/search",
         "id": "applicationlist"
+    },
+    "params": {
+        "url": "https://registry.devsapp.cn/package/param",
+        "id": "appParams"
     }
 };
 
@@ -25,7 +29,7 @@ export async function pickCreateMethod(context: vscode.ExtensionContext) {
 
     vscode.window.showInformationMessage(`通过${result}创建应用.`);
     if (result === "模板") {
-        await init();
+        await init(context);
     } else if (result === "Registry") {
         activeApplicationWebviewPanel(context);
     }

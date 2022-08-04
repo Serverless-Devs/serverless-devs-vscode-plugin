@@ -27,7 +27,7 @@ export async function activate(context: vscode.ExtensionContext) {
       : undefined;
   // s init 
   context.subscriptions.push(
-    vscode.commands.registerCommand("serverless-devs.init", () => init())
+    vscode.commands.registerCommand("serverless-devs.init", () => init(context))
   );
   context.subscriptions.push(
     vscode.commands.registerCommand('create.pick', () => pickCreateMethod(context))

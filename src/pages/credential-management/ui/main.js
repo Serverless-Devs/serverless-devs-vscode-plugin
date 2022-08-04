@@ -13,10 +13,17 @@ new Vue({
       key: '',
       value: '',
     }],
-    credentialAll: {}
+    credentialAll: {},
+    statusTable: {}
   },
   created() {
     this.credentialAll = this.$config.data;
+    _.forEach(this.credentialAll, (val, key) => {
+      this.statusTable[key] = false;
+    });
+  },
+  mounted() {
+    window.addEventListener('message', this.onMessage);
   },
   computed: {
     providerItems() {
@@ -24,9 +31,18 @@ new Vue({
     },
     accessList() {
       return this.$config.configAccessList;
-    }
+    },
   },
   methods: {
+    mark(source) {
+      const str = `${source.slice(0, 4)}******${source.slice(-4)}`;
+      return str;
+    },
+    updateHideStatus(alias) {
+      const status = this.statusTable[alias];
+      this.statusTable = _.omit(this.statusTable, alias);
+      this.statusTable[alias] = !status;
+    },
     deleteCredential(alias) {
       vscode.postMessage({
         command: 'deleteCredential',
@@ -44,7 +60,7 @@ new Vue({
         value: '',
       });
     },
-    subKvPair(index) {
+    delKvPair(index) {
       this.customKeyValue.splice(index, 1);
     },
     setAlias(event) {
@@ -72,11 +88,17 @@ new Vue({
         provider: this.pickProvider,
         alias: this.alias
       });
-    }
-  },
-  watch: {
-    credentialAll: function (newVal, oldVal) {
-      console.log(newVal);
+      this.status = 'management';
+    },
+    onMessage(event) {
+      switch (event.data.command) {
+        case 'deleted':
+          this.credentialAll = _.omit(this.credentialAll, event.data.alias);
+          break;
+        case 'added':
+          this.credentialAll[event.data.alias] = event.data.kvPairs;
+          break;
+      }
     }
   }
 });

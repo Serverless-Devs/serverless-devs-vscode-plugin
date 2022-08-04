@@ -65,9 +65,9 @@ async function handleMessage(
           `Delete ${message.alias} configuration successfully.`, '确认删除', '取消').then(result => {
             if (result === '确认删除') {
               deleteCredentialByAccess(message.alias);
-              updateWebview(credentialWebviewPanel, 'credential-management', context, {
-                items: core.CONFIG_PROVIDERS,
-                configAccessList: core.CONFIG_ACCESS
+              credentialWebviewPanel.webview.postMessage({
+                command: 'deleted',
+                alias: message.alias
               });
             }
           }
@@ -89,5 +89,11 @@ async function handleMessage(
       core.setKnownCredential(rest, message.alias);
       vscode.window.showInformationMessage(
         `Add ${message.alias} configuration successfully.`);
+      credentialWebviewPanel.webview.postMessage({
+        command: 'added',
+        alias: message.alias,
+        kvPairs: message.kvPairs
+      });
+
   }
 }

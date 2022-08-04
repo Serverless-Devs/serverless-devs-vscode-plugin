@@ -21,14 +21,10 @@ export const getCredentialWithAll = async () => {
             const info = await core.getCredential(access);
             res[info.Alias] = omit(info, 'Alias');
         }
-        for (let i in res) {
-            for (let j in data[i]) {
-                res[i][j] = mark(res[i][j]);
-            }
-        }
         return res;
     }
 };
+
 export const deleteCredentialByAccess = async (access: string) => {
     const filePath = path.join(core.getRootHome(), 'access.yaml');
     const accessFileInfo = await core.getYamlContent(filePath);

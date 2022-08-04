@@ -1,23 +1,22 @@
+<div class="loader" id="appLoading">Loading...</div>
 <div id="app">
   <div class="nav">
     <div class="left">
       <h1 class="title">创建应用</h1>
-      <span class="ml8">通过模板或registry创建新的应用</span>
+      <span class="ml8">通过registry创建新的应用</span>
     </div>
     <div class="right">
-      <vscode-text-field>
-        <span slot="end" class="codicon codicon-search"></span>
+      <vscode-text-field @input="updateKeyword(event)">
+        <span slot="end" class="codicon codicon-search search" @click="search()"></span>
       </vscode-text-field>
     </div>
   </div>
   <div class="app-panel" v-if="pageStatus === 'search'">
     <vscode-panels aria-label="Default">
-      <vscode-panel-tab id="tab-1">推荐应用</vscode-panel-tab>
-      <vscode-panel-tab id="tab-2">全部应用</vscode-panel-tab>
+
+      <vscode-panel-tab id="tab-1">全部应用</vscode-panel-tab>
+      <vscode-panel-tab id="tab-2">推荐应用</vscode-panel-tab>
       <vscode-panel-view id="view-1">
-        暂无
-      </vscode-panel-view>
-      <vscode-panel-view id="view-2">
         <div class="app-area">
           <div class="app-items mr16">
             <ul>
@@ -33,8 +32,8 @@
                   {{ i.description }}
                 </div>
                 <div class="app-buttons">
-                  <vscode-button @click="openUrl(i.package)">查看详情</vscode-button>
-                  <vscode-button @click="switchStatus('init', i.package)">立即部署</vscode-button>
+                  <vscode-button @click="openUrl(i.package)" appearance="secondary">查看详情</vscode-button>
+                  <vscode-button @click="switchStatus('init', i.package)">立即创建</vscode-button>
                 </div>
               </li>
             </ul>
@@ -56,38 +55,48 @@
           </div>
         </div>
       </vscode-panel-view>
+      <vscode-panel-view id="view-2">
+        暂无
+      </vscode-panel-view>
     </vscode-panels>
   </div>
   <div class="init" v-else-if="pageStatus === 'init' ">
     <div class="config">
-      <vscode-text-field class="config-item" @change="setConfigItem('dirName',event)">应用名称(目录名称)
+      <vscode-text-field class="config-item" @change="setConfigItem('dirName',event)"
+        :placeholder="configItems['dirName']">
+        <span class="red-star">*&nbsp;</span>应用名称(目录名称)
       </vscode-text-field>
       <vscode-text-field class="config-item" :value="configItems.path" @click="setInitPath()">
-        初始化路径
+        <span class="red-star">*&nbsp;</span>初始化路径
         <span slot="end" class="codicon codicon-file-submodule"></span>
       </vscode-text-field>
       <div class="config-item">
-        <p style="margin: 0;">选择密钥</p>
+        <p style="margin: 0;"><span class="red-star">*&nbsp;</span>选择密钥</p>
         <vscode-dropdown @change="setConfigItem('access',event)">
           <vscode-option v-for="i in $config.aliasList">{{ i }}</vscode-option>
         </vscode-dropdown>
       </div>
-      <div v-for="config in requireConfig">
-        <vscode-text-field class="config-item" v-if="!config.choices" @change="fillConfig(config.name, event)">
-          {{ config.title }}
+      <div v-for="(param, name) in currentAppParams">
+        <vscode-text-field class="config-item" v-if="!param.enum" @change="setConfigItem(name, event)"
+          :placeholder="param.default">
+          <span class="red-star" v-if="isRequire(name)">*&nbsp;</span>{{ param.title }}
         </vscode-text-field>
-        <div class="config-item" v-else>
-          <p style="margin: 0;">{{ config.title }}</p>
-          <vscode-dropdown @change="fillConfig(config.name, event)">
-            <vscode-option v-for="choice in config.choices">{{ choice }}</vscode-option>
+        <div class=" config-item" v-else>
+          <p style="margin: 0;">
+            <span class="red-star" v-if="isRequire(name)">*&nbsp;</span>{{ param.title }}
+          </p>
+          <vscode-dropdown @change="setConfigItem(name, event)">
+            <template v-for="item in param.enum">
+              <vscode-option v-if="item === param.default" selected>{{ item }}</vscode-option>
+              <vscode-option v-else>{{ item }}</vscode-option>
+            </template>
           </vscode-dropdown>
         </div>
       </div>
     </div>
     <div class="init-buttons">
-      <vscode-button @click="switchStatus('search')">上一步</vscode-button>
-      <vscode-button @click="downloadApp()">下载应用</vscode-button>
-      <vscode-button @click="applyConfigToLocal()">创建</vscode-button>
+      <vscode-button @click="switchStatus('search')" appearance="secondary">上一步</vscode-button>
+      <vscode-button @click="initApplication()">创建</vscode-button>
     </div>
   </div>
 </div>

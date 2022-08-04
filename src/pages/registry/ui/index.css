@@ -3,15 +3,21 @@
     justify-content: space-between;
     align-items: center;
 }
+.search {
+    cursor: pointer;
+}
 
 .title {
     display: inline-block;
 }
 
+.red-star {
+    color: rgb(255, 0, 0);
+}
+
 .app-area {
     display: flex;
     width: 100%;
-
 }
 
 .app-items {
@@ -100,7 +106,7 @@
 }
 
 .init .init-buttons {
-    position: absolute;
+    position: fixed;
     right: 50px;
     bottom: 100px;
 }
