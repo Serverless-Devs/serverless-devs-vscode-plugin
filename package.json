@@ -4,7 +4,7 @@
   "displayName": "serverless-devs",
   "description": "Serverless-Devs extension. Lets you develop your serverless application within VSCode.",
   "repository": "https://github.com/Serverless-Devs/serverless-devs-vscode-plugin",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "engines": {
     "vscode": "^1.65.0"
   },
