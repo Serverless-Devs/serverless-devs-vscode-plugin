@@ -61,17 +61,17 @@ async function handleMessage(
       break;
     case 'deleteCredential':
       try {
-        vscode.window.showInformationMessage(
-          `Delete ${message.alias} configuration successfully.`, '确认删除', '取消').then(result => {
-            if (result === '确认删除') {
-              deleteCredentialByAccess(message.alias);
-              credentialWebviewPanel.webview.postMessage({
-                command: 'deleted',
-                alias: message.alias
-              });
-            }
-          }
-          );
+        const res = await vscode.window.showInformationMessage(
+          `Are you sure to delete ${message.alias} configuration?`, '确认删除', '取消');
+        console.log(res);
+        if (res === '确认删除') {
+          await deleteCredentialByAccess(message.alias);
+          updateWebview(credentialWebviewPanel, 'credential-management', context, {
+            items: core.CONFIG_PROVIDERS,
+            configAccessList: core.CONFIG_ACCESS,
+            data: await getCredentialWithAll()
+          });
+        }
       } catch (e) {
         vscode.window.showInformationMessage(
           `Delete ${message.alias} configuration failed.`);
@@ -86,14 +86,13 @@ async function handleMessage(
           }
         );
       }
-      core.setKnownCredential(rest, message.alias);
+      await core.setKnownCredential(rest, message.alias);
       vscode.window.showInformationMessage(
         `Add ${message.alias} configuration successfully.`);
-      credentialWebviewPanel.webview.postMessage({
-        command: 'added',
-        alias: message.alias,
-        kvPairs: message.kvPairs
+      updateWebview(credentialWebviewPanel, 'credential-management', context, {
+        items: core.CONFIG_PROVIDERS,
+        configAccessList: core.CONFIG_ACCESS,
+        data: await getCredentialWithAll()
       });
-
   }
 }

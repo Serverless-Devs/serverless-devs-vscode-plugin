@@ -26,7 +26,10 @@ new Vue({
     });
   },
   mounted() {
-    window.addEventListener('message', this.onMessage);
+    window.addEventListener('message', this.onMessage); 
+  },
+  beforeDestroy() {
+    window.removeEventListener('message', this.onMessage);
   },
   computed: {
     // 加条'all'选项

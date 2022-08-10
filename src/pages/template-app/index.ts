@@ -1,8 +1,8 @@
 import * as vscode from 'vscode';
 import * as core from "@serverless-devs/core";
 import { updateWebview } from '../../common';
-import { attrList, setInitPath } from '../../common/createApp';
-const { lodash: _ } = core;
+import { attrList, initProject, setInitPath } from '../../common/createApp';
+const { lodash: _, includes } = core;
 const fetch = require('node-fetch');
 var qs = require('qs');
 
@@ -34,6 +34,10 @@ export async function activeTemplateAppWebviewPanel(
       },
       body: qs.stringify({ 'name': appParams.source })
     }).then(res => res.json());
+    if (_.includes(appParams.source, '/')) {
+      const dirNameArr = appParams.source.split('/');
+      appParams.source = dirNameArr[dirNameArr.length - 1];
+    }
     await updateWebview(templateAppWebviewPanel, 'template-app', context, {
       params: params.Response,
       access: appParams.access,
@@ -80,14 +84,7 @@ async function handleMessage(
         target: message.configItems.path,
         parameters: message.configItems
       };
-      try {
-        const appPath = await core.loadApplication(config);
-        const newWindow = !!vscode.workspace.rootPath;
-        if (newWindow) { templateAppWebviewPanel.dispose(); }
-        vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.file(appPath), newWindow);
-      } catch (e) {
-        vscode.window.showErrorMessage(e.message);
-      }
+      initProject(templateAppWebviewPanel, config);
       break;
   }
 }

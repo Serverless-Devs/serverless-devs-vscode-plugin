@@ -63,7 +63,7 @@
   <div class="init" v-else-if="pageStatus === 'init' ">
     <div class="config">
       <vscode-text-field class="config-item" @change="setConfigItem('dirName',event)"
-        :placeholder="configItems['dirName']">
+        :value="configItems['dirName']">
         <span class="red-star">*&nbsp;</span>应用名称(目录名称)
       </vscode-text-field>
       <vscode-text-field class="config-item" :value="configItems.path" @click="setInitPath()">
@@ -78,7 +78,7 @@
       </div>
       <div v-for="(param, name) in currentAppParams">
         <vscode-text-field class="config-item" v-if="!param.enum" @change="setConfigItem(name, event)"
-          :placeholder="param.default">
+          :value="param.default">
           <span class="red-star" v-if="isRequire(name)">*&nbsp;</span>{{ param.title }}
         </vscode-text-field>
         <div class=" config-item" v-else>

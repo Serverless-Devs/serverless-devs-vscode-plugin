@@ -48,3 +48,31 @@ export async function setInitPath() {
         return selectFolderUri[0];
     }
 }
+
+export async function initProject(
+    panel: vscode.WebviewPanel,
+    config: any
+    ) {
+    try {
+        const appPath = await vscode.window.withProgress(
+          {
+            location: vscode.ProgressLocation.Notification,
+          },
+          async (progress, token) => {
+            progress.report({
+              message: `Downloading: ${config.source}...`,
+            });
+            const appPath = await core.loadApplication(config);
+            progress.report({
+              message: `Downloaded: ${config.source}`,
+            });
+            return appPath;
+          }
+        );
+        const newWindow = !!vscode.workspace.rootPath;
+        if (newWindow) { panel.dispose(); }
+        vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.file(appPath), newWindow);
+      } catch (e) {
+        vscode.window.showErrorMessage(e.message);
+      }
+}

@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { updateWebview } from '../../common';
 import * as core from "@serverless-devs/core";
 import * as open from "open";
-import { attrList, setInitPath } from '../../common/createApp';
+import { attrList, initProject, setInitPath } from '../../common/createApp';
 const { lodash: _ } = core;
 const fetch = require('node-fetch');
 var qs = require('qs');
@@ -104,14 +104,7 @@ async function handleMessage(
         access: message.configItems.access,
         parameters: message.configItems
       };
-      try {
-        const appPath = await core.loadApplication(config);
-        const newWindow = !!vscode.workspace.rootPath;
-        if (newWindow) { applicationWebviewPanel.dispose(); }
-        vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.file(appPath), newWindow);
-      } catch (e) {
-        vscode.window.showErrorMessage(e.message);
-      }
+      initProject(applicationWebviewPanel, config);
       break;
   }
 }

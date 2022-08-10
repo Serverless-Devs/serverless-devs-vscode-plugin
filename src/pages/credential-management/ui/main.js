@@ -22,9 +22,6 @@ new Vue({
       this.statusTable[key] = false;
     });
   },
-  mounted() {
-    window.addEventListener('message', this.onMessage);
-  },
   computed: {
     providerItems() {
       return this.$config.items;
@@ -89,16 +86,6 @@ new Vue({
         alias: this.alias
       });
       this.status = 'management';
-    },
-    onMessage(event) {
-      switch (event.data.command) {
-        case 'deleted':
-          this.credentialAll = _.omit(this.credentialAll, event.data.alias);
-          break;
-        case 'added':
-          this.credentialAll[event.data.alias] = event.data.kvPairs;
-          break;
-      }
     }
   }
 });
