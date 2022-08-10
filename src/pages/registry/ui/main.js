@@ -29,10 +29,10 @@ new Vue({
     window.addEventListener('message', this.onMessage);
   },
   computed: {
-    // 加条'全部'选项
+    // 加条'all'选项
     categoryList: function () {
       return {
-        0: '全部',
+        0: 'All',
         ...this.categoryListRes
       };
     },
@@ -69,18 +69,18 @@ new Vue({
       const keyword = this.keyword;
       if (keyword === '') {
         this.applicationList = this.originalApplicationList;
-      }else {
-        this.applicationList = _.filter(this.originalApplicationList, function(o) {
+      } else {
+        this.applicationList = _.filter(this.originalApplicationList, function (o) {
           return o.package.indexOf(keyword) > -1;
         });
       }
     },
     sortBySelected(event) {
       this.applicationList = _.orderBy(this.originalApplicationList, function (item) {
-        const selected = event.target.currentValue;
-        if (selected === '按时间排序') {
+        const selected = event.target.ariaActiveDescendant;
+        if (selected === 'byDate') {
           return -item.version.published_at;
-        } else if (selected === '按下载量排序') {
+        } else if (selected === 'byDownload') {
           return -item.download;
         }
       });
@@ -97,14 +97,13 @@ new Vue({
       }
       this.pageStatus = status;
       this.selectedApp = appname;
-      console.log( this.configItems);
     },
     filterAppList(type, val) {
-      if (type === "category" && val !== "全部") {
+      if (type === 'category' && val !== 'All') {
         this.applicationList = _.filter(this.$config.applicationList.Response, function (o) {
           return o.tags.indexOf(val) !== -1;
         });
-      } else if (type === "category" && val === "全部") {
+      } else if (type === 'category' && val === 'All') {
         this.applicationList = this.$config.applicationList.Response;
       }
     },
@@ -114,7 +113,7 @@ new Vue({
         appName: appName
       });
     },
-    isRequire(name){
+    isRequire(name) {
       return this.paramRequired.indexOf(name) > -1;
     },
     setConfigItem(name, event) {
@@ -134,7 +133,6 @@ new Vue({
         command: 'initApplication',
         selectedApp: this.selectedApp,
         configItems: this.configItems,
-        requireConfig: this.requireConfig
       });
     }
   }

@@ -3,13 +3,11 @@ import { updateWebview } from '../../common';
 import * as core from "@serverless-devs/core";
 import * as open from "open";
 import { attrList, setInitPath } from '../../common/createApp';
-import LoadApplication from '../../common/loadApplication';
 const { lodash: _ } = core;
 const fetch = require('node-fetch');
 var qs = require('qs');
 
 let applicationWebviewPanel: vscode.WebviewPanel | undefined;
-let applicationInstance: LoadApplication;
 
 export async function activeApplicationWebviewPanel(
   context: vscode.ExtensionContext
@@ -67,8 +65,9 @@ async function handleMessage(
         categoryList: await categoryFetch.json(),
         applicationList: await applicationFetch.json(),
         aliasList: await core.getCredentialAliasList(),
-      })
+      });
       break;
+
     case 'openUrl':
       open('https://www.devsapp.cn/details.html?name=' + message.appName);
       break;
@@ -81,6 +80,7 @@ async function handleMessage(
         });
       }
       break;
+
     case 'getParams':
       const params = await fetch(attrList['params']['url'], {
         method: 'POST',
@@ -94,20 +94,24 @@ async function handleMessage(
         params: params.Response
       });
       break;
+
     case 'initApplication':
       const config = {
-        source: message.selectedApp,
+        source: `${message.selectedApp}@dev`,
         target: message.configItems.path,
+        name: message.configItems.dirName,
         appName: message.configItems.dirName,
-        access: message.configItems.access
+        access: message.configItems.access,
+        parameters: message.configItems
       };
-      applicationInstance = new LoadApplication(config);
-      await applicationInstance.loadServerless();
-      vscode.window.showInformationMessage(`应用已下载到${config.target}/${config.appName}`);
-      applicationInstance.setSconfigToLocal(message.configItems);
-      const newWindow = !!vscode.workspace.rootPath;
-      if (newWindow) { applicationWebviewPanel.dispose(); }
-      vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.file(applicationInstance.applicationPath), newWindow);
+      try {
+        const appPath = await core.loadApplication(config);
+        const newWindow = !!vscode.workspace.rootPath;
+        if (newWindow) { applicationWebviewPanel.dispose(); }
+        vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.file(appPath), newWindow);
+      } catch (e) {
+        vscode.window.showErrorMessage(e.message);
+      }
       break;
   }
 }

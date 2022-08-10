@@ -1,15 +1,13 @@
 import * as vscode from 'vscode';
-import * as path from 'path';
 import * as core from "@serverless-devs/core";
 import { updateWebview } from '../../common';
-import LoadApplication from '../../common/loadApplication';
 import { attrList, setInitPath } from '../../common/createApp';
 const { lodash: _ } = core;
 const fetch = require('node-fetch');
 var qs = require('qs');
 
 let templateAppWebviewPanel: vscode.WebviewPanel | undefined;
-let applicationInstance: LoadApplication;
+// let applicationInstance: LoadApplication;
 
 
 export async function activeTemplateAppWebviewPanel(
@@ -77,16 +75,19 @@ async function handleMessage(
       const config = {
         source: message.templateName,
         access: message.access,
-        target: message.configItems.path,
+        name: message.configItems.dirName,
         appName: message.configItems.dirName,
+        target: message.configItems.path,
+        parameters: message.configItems
       };
-      applicationInstance = new LoadApplication(config,'template');
-      await applicationInstance.loadServerless();
-      vscode.window.showInformationMessage(`应用已下载到${config.target}/${config.appName}`);
-      applicationInstance.setSconfigToLocal(message.configItems);
-      const newWindow = !!vscode.workspace.rootPath;
-      if (newWindow) { templateAppWebviewPanel.dispose(); }
-      vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.file(applicationInstance.applicationPath), newWindow);
+      try {
+        const appPath = await core.loadApplication(config);
+        const newWindow = !!vscode.workspace.rootPath;
+        if (newWindow) { templateAppWebviewPanel.dispose(); }
+        vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.file(appPath), newWindow);
+      } catch (e) {
+        vscode.window.showErrorMessage(e.message);
+      }
       break;
   }
 }

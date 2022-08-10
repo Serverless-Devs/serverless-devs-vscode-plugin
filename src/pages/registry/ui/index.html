@@ -24,7 +24,7 @@
                 <div class="head">
                   <span class="title">{{ i.package }}</span>
                   <div style="display: inline-block;">
-                    <i class="codicon codicon-arrow-circle-down" style=""></i><span
+                    <i class="codicon codicon-arrow-circle-down"></i><span
                       style="margin-left: 2px;">{{ i.download }}</span>
                   </div>
                 </div>
@@ -41,8 +41,8 @@
           <div class="condition-filter">
             <div class="ranking">
               <vscode-dropdown style="width: 150px;" @change="sortBySelected(event)">
-                <vscode-option>按时间排序</vscode-option>
-                <vscode-option>按下载量排序</vscode-option>
+                <vscode-option id="byDate">按时间排序</vscode-option>
+                <vscode-option id="byDownload">按下载量排序</vscode-option>
               </vscode-dropdown>
             </div>
             <div class="category">

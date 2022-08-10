@@ -1,7 +1,6 @@
 import * as vscode from "vscode";
 import { MultiStepInput } from "../../common";
 import * as core from "@serverless-devs/core";
-import { ext } from "../../extensionVariables";
 import { IMultiStepInputState as State } from "../../interface";
 import { activeTemplateAppWebviewPanel } from "../../pages/template-app";
 const { lodash: _ } = core;
@@ -73,17 +72,8 @@ export async function init(context: vscode.ExtensionContext) {
       template = state.pickItem;
     }
 
-    const registry = await core.getSetConfig(
-      "registry",
-      core.DEFAULT_REGIRSTRY
-    );
     const appParams = {
-      registry,
       source: template.value,
-      target: "./",
-      //webview下 应该是选择的路径
-      name: "test1",
-      parameters: {},
     };
 
     if (pickValue !== "Dev_Template_for_Serverless_Devs") {
