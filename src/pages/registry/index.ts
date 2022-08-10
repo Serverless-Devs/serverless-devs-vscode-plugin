@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { updateWebview } from '../../common';
 import * as core from "@serverless-devs/core";
 import * as open from "open";
-import { attrList, initProject, setInitPath } from '../../common/createApp';
+import { attrList, initProject, responseData, setInitPath } from '../../common/createApp';
 const { lodash: _ } = core;
 const fetch = require('node-fetch');
 var qs = require('qs');
@@ -58,14 +58,7 @@ async function handleMessage(
 ) {
   switch (message.command) {
     case 'requestData':
-      const categoryFetch = await fetch(attrList['category']['url']);
-      const applicationFetch = await fetch(attrList['application']['url']);
-      applicationWebviewPanel.webview.postMessage({
-        command: 'responseData',
-        categoryList: await categoryFetch.json(),
-        applicationList: await applicationFetch.json(),
-        aliasList: await core.getCredentialAliasList(),
-      });
+      responseData(applicationWebviewPanel, message.sort);
       break;
 
     case 'openUrl':
@@ -87,7 +80,7 @@ async function handleMessage(
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: qs.stringify({ 'name': message.selectedApp})
+        body: qs.stringify({ 'name': message.selectedApp })
       }).then(res => res.json());
       applicationWebviewPanel.webview.postMessage({
         command: 'getParams',

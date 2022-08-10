@@ -22,7 +22,8 @@ new Vue({
     document.getElementById('app').style.display = 'none';
     this.configItems.path = this.$config.defaultPath;
     vscode.postMessage({
-      command: 'requestData'
+      command: 'requestData',
+      sort: 'download'
     });
   },
   mounted() {
@@ -79,13 +80,9 @@ new Vue({
       }
     },
     sortBySelected(event) {
-      this.applicationList = _.orderBy(this.originalApplicationList, function (item) {
-        const selected = event.target.ariaActiveDescendant;
-        if (selected === 'byDate') {
-          return -item.version.published_at;
-        } else if (selected === 'byDownload') {
-          return -item.download;
-        }
+      vscode.postMessage({
+        command: 'requestData',
+        sort: event.target.ariaActiveDescendant
       });
     },
     switchStatus(status, appname) {

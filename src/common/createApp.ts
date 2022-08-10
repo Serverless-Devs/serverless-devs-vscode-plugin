@@ -2,6 +2,8 @@ import * as vscode from 'vscode';
 import { init } from '../commands/init';
 import * as core from '@serverless-devs/core';
 import { activeApplicationWebviewPanel } from '../pages/registry';
+const fetch = require('node-fetch');
+var qs = require('qs');
 
 export const attrList = {
     "category": {
@@ -47,6 +49,26 @@ export async function setInitPath() {
     if (selectFolderUri) {
         return selectFolderUri[0];
     }
+}
+
+export async function responseData(
+  panel: vscode.WebviewPanel,
+  sort: string
+) {
+  const categoryFetch = await fetch(attrList['category']['url']);
+  const applicationFetch = await fetch(attrList['application']['url'], {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: qs.stringify({ 'type': 'Application', 'sort': sort })
+  });
+  panel.webview.postMessage({
+    command: 'responseData',
+    categoryList: await categoryFetch.json(),
+    applicationList: await applicationFetch.json(),
+    aliasList: await core.getCredentialAliasList(),
+  });
 }
 
 export async function initProject(
