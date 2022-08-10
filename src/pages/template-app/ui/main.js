@@ -11,12 +11,7 @@ new Vue({
     this.init();
   },
   mounted() {
-    window.addEventListener('message', event => {
-      if(event.data.command === 'updatePath') {
-        this.configItems = _.omit(this.configItems, 'path');
-        this.configItems.path = event.data.path;
-      }
-    });
+    window.addEventListener('message', this.onMessage);
   },
   beforeDestroy() {
     window.removeEventListener('message', this.onMessage);
@@ -55,7 +50,10 @@ new Vue({
       });
     },
     onMessage(event) {
-      
+      if (event.data.command === 'updatePath') {
+        this.configItems = _.omit(this.configItems, 'path');
+        this.configItems.path = event.data.path;
+      }
     }
   }
 });

@@ -75,6 +75,7 @@ async function handleMessage(
           path: selectPath['path']
         });
       }
+      break;
     case 'initApplication':
       const config = {
         source: message.templateName,
