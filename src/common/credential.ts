@@ -1,7 +1,6 @@
 import * as fs from 'fs';
 import * as core from "@serverless-devs/core";
-const { colors, jsyaml: yaml, getRootHome, getYamlContent } = core;
-import { omit } from "lodash";
+const { lodash:_, colors, jsyaml: yaml, getRootHome, getYamlContent } = core;
 import * as path from "path";
 
 
@@ -9,7 +8,7 @@ export function mark(source: string): string {
     if (!source) {
         return source;
     }
-    const str =  `${source.slice(0,4)}***********${source.slice(-4)}`;
+    const str = `${source.slice(0, 4)}***********${source.slice(-4)}`;
     return str;
 }
 
@@ -19,7 +18,7 @@ export const getCredentialWithAll = async () => {
         const res = {};
         for (const access of data) {
             const info = await core.getCredential(access);
-            res[info.Alias] = omit(info, 'Alias');
+            res[info.Alias] = _.omit(info, 'Alias');
         }
         return res;
     }

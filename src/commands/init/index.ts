@@ -1,13 +1,13 @@
 import * as vscode from "vscode";
 import { MultiStepInput } from "../../common";
 import * as core from "@serverless-devs/core";
-import { ext } from "../../extensionVariables";
 import { IMultiStepInputState as State } from "../../interface";
+import { activeTemplateAppWebviewPanel } from "../../pages/template-app";
 const { lodash: _ } = core;
 
 const title = "Init Serverless Devs Application";
 
-export async function init() {
+export async function init(context: vscode.ExtensionContext) {
   async function collectInputs() {
     const state = {} as Partial<State>;
     state.step = 1;
@@ -72,17 +72,8 @@ export async function init() {
       template = state.pickItem;
     }
 
-    const registry = await core.getSetConfig(
-      "registry",
-      core.DEFAULT_REGIRSTRY
-    );
     const appParams = {
-      registry,
       source: template.value,
-      target: "./",
-      //webview下 应该是选择的路径
-      name: ext.cwd,
-      parameters: {},
     };
 
     if (pickValue !== "Dev_Template_for_Serverless_Devs") {
@@ -106,21 +97,7 @@ export async function init() {
         _.set(appParams, "access", state.pickItem.value);
       }
     }
-    vscode.window.withProgress(
-      {
-        location: vscode.ProgressLocation.Notification,
-      },
-      async (progress, token) => {
-        progress.report({
-          message: `Downloading: ${template.value}...`,
-        });
-        const appPath = await core.loadApplication(appParams);
-        progress.report({
-          message: `Downloaded: ${template.value}`,
-        });
-        return appPath;
-      }
-    );
+    activeTemplateAppWebviewPanel(context, appParams);
   }
 
   function shouldResume() {

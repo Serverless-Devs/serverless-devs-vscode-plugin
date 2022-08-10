@@ -1,0 +1,116 @@
+.nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.search {
+    cursor: pointer;
+}
+
+.title {
+    display: inline-block;
+}
+
+.red-star {
+    color: rgb(255, 0, 0);
+}
+
+.app-area {
+    display: flex;
+    width: 100%;
+}
+
+.app-items {
+    flex: 1;
+}
+
+.condition-filter {
+    flex: 0 0 20%;
+    height: 100%;
+}
+
+.category,
+.provider {
+    width: 150px;
+}
+
+.list {
+    list-style-type: none;
+    padding: 0 10px;
+}
+
+.list .list-item {
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    font-size: 14px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.list .list-item:hover,
+.list-item-active {
+    background-color: rgb(137, 137, 137);
+    color: #fff;
+}
+
+.app-items ul {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.app-card {
+    list-style-type: none;
+    display: inline-block;
+    width: 250px;
+    height: 140px;
+    margin: 0 20px 15px 0;
+    border: 1px solid rgb(128, 128, 128);
+    border-radius: 4px;
+}
+
+.app-card .head {
+    height: 30px;
+    padding: 5px 12px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.app-card .head .title {
+    font-size: 14px;
+}
+
+.app-card .detail {
+    height: 50px;
+    padding: 0 10px;
+    font-size: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.app-card .app-buttons {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 8px;
+}
+
+.init .config {
+    width: 400px;
+    margin: 120px auto 0;
+}
+
+.init .config .config-item,
+.init .config .config-item vscode-dropdown {
+    width: 250px;
+    margin-bottom: 15px;
+}
+
+.init .init-buttons {
+    position: fixed;
+    right: 50px;
+    bottom: 100px;
+}
+
+.init .init-buttons vscode-button {
+    margin-right: 10px;
+}

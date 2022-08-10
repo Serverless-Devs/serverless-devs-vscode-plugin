@@ -3,6 +3,7 @@ import * as fs from "fs";
 import { ext } from "../extensionVariables";
 import { TEMPLTE_FILE, TERMINAL_NAME } from "../constants";
 import * as vscode from "vscode";
+import { getHtmlForWebview } from "./getHtmlForWebview";
 
 export { getHtmlForWebview } from "./getHtmlForWebview";
 export { MultiStepInput } from "./multiStepInput";
@@ -29,3 +30,16 @@ export function createTerminal(command: string) {
   terminal.show();
 }
 
+export function updateWebview(
+  panel:vscode.WebviewPanel,
+  filename: string,
+  context: vscode.ExtensionContext,
+  parameter?: any
+  ) {
+  panel.webview.html = getHtmlForWebview(
+    filename,
+    context,
+    panel.webview,
+    parameter
+  );
+}
