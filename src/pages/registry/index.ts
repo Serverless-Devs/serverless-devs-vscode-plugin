@@ -97,7 +97,7 @@ async function handleMessage(
 
     case 'initApplication':
       const config = {
-        source: `${message.selectedApp}@dev`,
+        source: message.selectedApp,
         target: message.configItems.path,
         name: message.configItems.dirName,
         appName: message.configItems.dirName,

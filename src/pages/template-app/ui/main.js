@@ -18,6 +18,9 @@ new Vue({
       }
     });
   },
+  beforeDestroy() {
+    window.removeEventListener('message', this.onMessage);
+  },
   methods: {
     init() {
       this.currentAppParams = this.$config.params.properties;
@@ -50,6 +53,9 @@ new Vue({
         templateName: this.$config.templateName,
         configItems: this.configItems,
       });
+    },
+    onMessage(event) {
+      
     }
   }
 });

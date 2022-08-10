@@ -7,13 +7,12 @@
     </div>
     <div class="right">
       <vscode-text-field @input="updateKeyword(event)">
-        <span slot="end" class="codicon codicon-search search" @click="search()"></span>
+        <span slot="end" class="codicon codicon-search search" @click="search()" @keyup.enter="search()"></span>
       </vscode-text-field>
     </div>
   </div>
   <div class="app-panel" v-if="pageStatus === 'search'">
     <vscode-panels aria-label="Default">
-
       <vscode-panel-tab id="tab-1">全部应用</vscode-panel-tab>
       <vscode-panel-tab id="tab-2">推荐应用</vscode-panel-tab>
       <vscode-panel-view id="view-1">
