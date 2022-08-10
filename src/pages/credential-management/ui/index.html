@@ -71,10 +71,10 @@
             </div>
             <vscode-divider></vscode-divider>
             <div class="card-body" v-if="statusTable[alias]">
-                <span class="info" v-for="(value, key) in item">{{ key }}:{{ value }}</span>
+                <span class="info" v-for="(value, key) in item">{{ key }}:&nbsp;{{ value }}</span>
             </div>
             <div class="card-body" v-if="!statusTable[alias]">
-                <span class="info" v-for="(value, key) in item">{{ key }}:{{ mark(value) }}</span>
+                <span class="info" v-for="(value, key) in item">{{ key }}:&nbsp;{{ secret(value) }}</span>
             </div>
         </div>
         <div class="card">

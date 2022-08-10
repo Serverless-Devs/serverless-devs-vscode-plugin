@@ -1,8 +1,7 @@
 import * as vscode from "vscode";
-import { getHtmlForWebview, updateWebview } from "../../common";
+import {  updateWebview } from "../../common";
 import * as core from "@serverless-devs/core";
-import { rest, result } from "lodash";
-import { deleteCredentialByAccess, getCredentialWithAll, mark } from "../../common/credential";
+import { deleteCredentialByAccess, getCredentialWithAll, } from "../../common/credential";
 const { lodash: _ } = core;
 
 let credentialWebviewPanel: vscode.WebviewPanel | undefined;
@@ -63,7 +62,6 @@ async function handleMessage(
       try {
         const res = await vscode.window.showInformationMessage(
           `Are you sure to delete ${message.alias} configuration?`, '确认删除', '取消');
-        console.log(res);
         if (res === '确认删除') {
           await deleteCredentialByAccess(message.alias);
           updateWebview(credentialWebviewPanel, 'credential-management', context, {
@@ -74,7 +72,7 @@ async function handleMessage(
         }
       } catch (e) {
         vscode.window.showInformationMessage(
-          `Delete ${message.alias} configuration failed.`);
+          `Delete ${message.alias} configuration failed.${e.message}`);
       }
       break;
     case 'setCredential':

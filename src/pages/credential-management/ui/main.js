@@ -31,9 +31,12 @@ new Vue({
     },
   },
   methods: {
-    mark(source) {
-      const str = `${source.slice(0, 4)}******${source.slice(-4)}`;
-      return str;
+    secret(data) {
+      const len = data.length;
+      const res = len > 6 ?
+        data.slice(0, 3) + '*'.repeat(len - 6) + data.slice(len - 3) :
+        data;
+      return res;
     },
     updateHideStatus(alias) {
       const status = this.statusTable[alias];

@@ -2,13 +2,11 @@ import * as vscode from 'vscode';
 import * as core from "@serverless-devs/core";
 import { updateWebview } from '../../common';
 import { attrList, initProject, setInitPath } from '../../common/createApp';
-const { lodash: _, includes } = core;
+const { lodash: _ } = core;
 const fetch = require('node-fetch');
 var qs = require('qs');
 
 let templateAppWebviewPanel: vscode.WebviewPanel | undefined;
-// let applicationInstance: LoadApplication;
-
 
 export async function activeTemplateAppWebviewPanel(
   context: vscode.ExtensionContext,
