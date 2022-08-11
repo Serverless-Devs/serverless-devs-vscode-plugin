@@ -9,6 +9,14 @@ export { getHtmlForWebview } from "./getHtmlForWebview";
 export { MultiStepInput } from "./multiStepInput";
 export { ItemData, TreeItem } from "./treeItem";
 
+const ICON_PATH = 'https://docs.serverless-devs.com/favicon.ico';
+
+export async function setPanelIcon(
+  panel: vscode.WebviewPanel
+) {
+  panel.iconPath = vscode.Uri.parse(ICON_PATH);
+}
+
 export function getQuickCommands() {
   const filePath = path.join(ext.cwd, TEMPLTE_FILE);
   if (!fs.existsSync(filePath)) {

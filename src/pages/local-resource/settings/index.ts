@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import * as path from "path";
-import { getHtmlForWebview } from "../../../common";
+import { getHtmlForWebview, setPanelIcon } from "../../../common";
 import * as event from "./event";
 import * as core from "@serverless-devs/core";
 import { ItemData, getQuickCommands, createTerminal } from "../../../common";
@@ -27,9 +27,7 @@ export async function activeLocalResourceSettingsWebview(
       }
     );
     await new UpdateWebview(context, itemData).init();
-    localResourceSettingsWebviewPanel.iconPath = vscode.Uri.parse(
-      "https://img.alicdn.com/imgextra/i4/O1CN01AvqMOu1sYpY1j8xaI_!!6000000005779-2-tps-574-204.png"
-    );
+    await setPanelIcon(localResourceSettingsWebviewPanel);
     localResourceSettingsWebviewPanel.webview.onDidReceiveMessage(
       handleMessage,
       undefined,

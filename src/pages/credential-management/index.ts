@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import {  updateWebview } from "../../common";
+import {  setPanelIcon, updateWebview } from "../../common";
 import * as core from "@serverless-devs/core";
 import { deleteCredentialByAccess, getCredentialWithAll, } from "../../common/credential";
 const { lodash: _ } = core;
@@ -26,10 +26,7 @@ export async function activeCredentialWebviewPanel(
       configAccessList: core.CONFIG_ACCESS,
       data: await getCredentialWithAll()
     });
-
-    credentialWebviewPanel.iconPath = vscode.Uri.parse(
-      "https://img.alicdn.com/imgextra/i4/O1CN01AvqMOu1sYpY1j8xaI_!!6000000005779-2-tps-574-204.png"
-    );
+    await setPanelIcon(credentialWebviewPanel);
     credentialWebviewPanel.onDidDispose(
       () => {
         credentialWebviewPanel = undefined;

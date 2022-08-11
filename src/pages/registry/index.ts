@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { updateWebview } from '../../common';
+import { setPanelIcon, updateWebview } from '../../common';
 import * as core from "@serverless-devs/core";
 import * as open from "open";
 import { attrList, initProject, responseData, setInitPath } from '../../common/createApp';
@@ -33,9 +33,7 @@ export async function activeApplicationWebviewPanel(
       aliasList: await core.getCredentialAliasList(),
       defaultPath: core.getRootHome().slice(0, core.getRootHome().lastIndexOf('/'))
     });
-    applicationWebviewPanel.iconPath = vscode.Uri.parse(
-      "https://img.alicdn.com/imgextra/i4/O1CN01AvqMOu1sYpY1j8xaI_!!6000000005779-2-tps-574-204.png"
-    );
+    await setPanelIcon(applicationWebviewPanel);
     applicationWebviewPanel.onDidDispose(
       () => {
         applicationWebviewPanel = undefined;
