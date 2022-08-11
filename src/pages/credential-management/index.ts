@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import {  setPanelIcon, updateWebview } from "../../common";
+import { setPanelIcon, updateWebview } from "../../common";
 import * as core from "@serverless-devs/core";
 import { deleteCredentialByAccess, getCredentialWithAll, } from "../../common/credential";
 const { lodash: _ } = core;
@@ -73,12 +73,15 @@ async function handleMessage(
       break;
     case 'setCredential':
       const { ...rest } = message.kvPairs;
-      if (message.pickProvider === 'alibaba') {
-        core.getAccountId(message.kvPairs).then(
-          result => {
-            message.rest.AccountId = result['AccountId'];
-          }
-        );
+      if (message.provider === 'alibaba') {
+        try {
+          const accountId = await core.getAccountId(message.kvPairs);
+          rest['AccountID'] = accountId['AccountId'];
+        } catch (e) {
+          vscode.window.showErrorMessage(`Unable to obtain AccountID,
+            please check the input you entered.`);
+            return;
+        }
       }
       await core.setKnownCredential(rest, message.alias);
       vscode.window.showInformationMessage(
