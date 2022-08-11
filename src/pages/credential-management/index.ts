@@ -43,7 +43,6 @@ export async function activeCredentialWebviewPanel(
   }
 }
 
-
 async function handleMessage(
   context: vscode.ExtensionContext,
   message: any
