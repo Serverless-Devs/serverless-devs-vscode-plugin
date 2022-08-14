@@ -3,7 +3,6 @@ import { setPanelIcon, updateWebview } from "../../common";
 import * as core from "@serverless-devs/core";
 import { deleteCredentialByAccess, getCredentialWithAll, } from "../../common/credential";
 const { lodash: _ } = core;
-
 let credentialWebviewPanel: vscode.WebviewPanel | undefined;
 
 export async function activeCredentialWebviewPanel(
@@ -57,8 +56,8 @@ async function handleMessage(
     case 'deleteCredential':
       try {
         const res = await vscode.window.showInformationMessage(
-          `Are you sure to delete ${message.alias} configuration?`, '确认删除', '取消');
-        if (res === '确认删除') {
+          `Are you sure to delete ${message.alias} configuration?`, 'yes', 'no');
+        if (res === 'yes') {
           await deleteCredentialByAccess(message.alias);
           updateWebview(credentialWebviewPanel, 'credential-management', context, {
             items: core.CONFIG_PROVIDERS,
@@ -80,7 +79,7 @@ async function handleMessage(
         } catch (e) {
           vscode.window.showErrorMessage(`Unable to obtain AccountID,
             please check the input you entered.`);
-            return;
+          return;
         }
       }
       await core.setKnownCredential(rest, message.alias);
