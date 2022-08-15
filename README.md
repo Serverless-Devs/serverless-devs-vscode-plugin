@@ -25,7 +25,8 @@
 
 3. 通常情况下，您需要先[获取密钥](https://docs.serverless-devs.com/serverless-devs/default_provider_config/readme)
 
-4. 点击创建应用
+4. 选择创建方式并创建应用
+5. 在新的项目窗口中开发程序并进行编辑配置、部署、构建等操作
 
    > 部分功能依赖[Serverless Devs](https://github.com/Serverless-Devs/Serverless-Devs),但插件内会检测并提供安装流程。该插件与[Serverless Devs](https://github.com/Serverless-Devs/Serverless-Devs) 共享本地配置文件。
 
