@@ -67,13 +67,13 @@ export class TreeItem extends vscode.TreeItem {
     const iconName = itemData.icon;
     const light = iconName
       ? vscode.Uri.file(
-          this.extensionContext.asAbsolutePath(`media/light/${iconName}`)
-        )
+        this.extensionContext.asAbsolutePath(`media/light/${iconName}`)
+      )
       : null;
     const dark = iconName
       ? vscode.Uri.file(
-          this.extensionContext.asAbsolutePath(`media/dark/${iconName}`)
-        )
+        this.extensionContext.asAbsolutePath(`media/dark/${iconName}`)
+      )
       : null;
     return { light, dark };
   }

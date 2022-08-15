@@ -15,6 +15,7 @@ import * as open from "open";
 import { activeCredentialWebviewPanel } from "./pages/credential-management";
 import { activeApplicationWebviewPanel } from "./pages/registry";
 import { pickCreateMethod } from "./common/createApp";
+import { installSTool } from "./common/installSTool";
 
 export async function activate(context: vscode.ExtensionContext) {
   ext.context = context;
@@ -138,7 +139,13 @@ export async function activate(context: vscode.ExtensionContext) {
     })
   );
 
-  await new LocalResource(context).autoMark();
+  context.subscriptions.push(
+    vscode.commands.registerCommand("serverless-devs.install", () => {
+      installSTool();
+    })
+  );
+
+  await new LocalResource(context).autoMark();  
 }
 
 // this method is called when your extension is deactivated

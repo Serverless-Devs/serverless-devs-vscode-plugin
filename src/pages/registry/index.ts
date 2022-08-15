@@ -1,8 +1,8 @@
 import * as vscode from 'vscode';
-import { updateWebview } from '../../common';
+import { setPanelIcon, updateWebview } from '../../common';
 import * as core from "@serverless-devs/core";
 import * as open from "open";
-import { attrList, initProject, responseData, setInitPath } from '../../common/createApp';
+import { attrList, initProject, replaceDefaultConfig, responseData, setInitPath } from '../../common/createApp';
 const { lodash: _ } = core;
 const fetch = require('node-fetch');
 var qs = require('qs');
@@ -25,17 +25,11 @@ export async function activeApplicationWebviewPanel(
       }
     );
 
-    const categoryFetch = await fetch(attrList['category']['url']);
-    const applicationFetch = await fetch(attrList['application']['url']);
     await updateWebview(applicationWebviewPanel, 'registry', context, {
-      categoryList: await categoryFetch.json(),
-      applicationList: await applicationFetch.json(),
       aliasList: await core.getCredentialAliasList(),
       defaultPath: core.getRootHome().slice(0, core.getRootHome().lastIndexOf('/'))
     });
-    applicationWebviewPanel.iconPath = vscode.Uri.parse(
-      "https://img.alicdn.com/imgextra/i4/O1CN01AvqMOu1sYpY1j8xaI_!!6000000005779-2-tps-574-204.png"
-    );
+    await setPanelIcon(applicationWebviewPanel);
     applicationWebviewPanel.onDidDispose(
       () => {
         applicationWebviewPanel = undefined;
@@ -64,6 +58,7 @@ async function handleMessage(
     case 'openUrl':
       open('https://www.devsapp.cn/details.html?name=' + message.appName);
       break;
+
     case 'setInitPath':
       const selectPath = await setInitPath();
       if (selectPath) {
@@ -75,16 +70,17 @@ async function handleMessage(
       break;
 
     case 'getParams':
-      const params = await fetch(attrList['params']['url'], {
+      const originalParams = await fetch(attrList['params']['url'], {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
         body: qs.stringify({ 'name': message.selectedApp })
       }).then(res => res.json());
+      const params = replaceDefaultConfig(originalParams.Response);
       applicationWebviewPanel.webview.postMessage({
         command: 'getParams',
-        params: params.Response
+        params: params
       });
       break;
 

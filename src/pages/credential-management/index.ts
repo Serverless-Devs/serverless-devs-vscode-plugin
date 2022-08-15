@@ -1,10 +1,8 @@
 import * as vscode from "vscode";
-import { getHtmlForWebview, updateWebview } from "../../common";
+import { setPanelIcon, updateWebview } from "../../common";
 import * as core from "@serverless-devs/core";
-import { rest, result } from "lodash";
-import { deleteCredentialByAccess, getCredentialWithAll, mark } from "../../common/credential";
+import { deleteCredentialByAccess, getCredentialWithAll, } from "../../common/credential";
 const { lodash: _ } = core;
-
 let credentialWebviewPanel: vscode.WebviewPanel | undefined;
 
 export async function activeCredentialWebviewPanel(
@@ -27,10 +25,7 @@ export async function activeCredentialWebviewPanel(
       configAccessList: core.CONFIG_ACCESS,
       data: await getCredentialWithAll()
     });
-
-    credentialWebviewPanel.iconPath = vscode.Uri.parse(
-      "https://img.alicdn.com/imgextra/i4/O1CN01AvqMOu1sYpY1j8xaI_!!6000000005779-2-tps-574-204.png"
-    );
+    await setPanelIcon(credentialWebviewPanel);
     credentialWebviewPanel.onDidDispose(
       () => {
         credentialWebviewPanel = undefined;
@@ -47,7 +42,6 @@ export async function activeCredentialWebviewPanel(
   }
 }
 
-
 async function handleMessage(
   context: vscode.ExtensionContext,
   message: any
@@ -62,9 +56,8 @@ async function handleMessage(
     case 'deleteCredential':
       try {
         const res = await vscode.window.showInformationMessage(
-          `Are you sure to delete ${message.alias} configuration?`, '确认删除', '取消');
-        console.log(res);
-        if (res === '确认删除') {
+          `Are you sure to delete ${message.alias} configuration?`, 'yes', 'no');
+        if (res === 'yes') {
           await deleteCredentialByAccess(message.alias);
           updateWebview(credentialWebviewPanel, 'credential-management', context, {
             items: core.CONFIG_PROVIDERS,
@@ -74,17 +67,20 @@ async function handleMessage(
         }
       } catch (e) {
         vscode.window.showInformationMessage(
-          `Delete ${message.alias} configuration failed.`);
+          `Delete ${message.alias} configuration failed.${e.message}`);
       }
       break;
     case 'setCredential':
       const { ...rest } = message.kvPairs;
-      if (message.pickProvider === 'alibaba') {
-        core.getAccountId(message.kvPairs).then(
-          result => {
-            message.rest.AccountId = result['AccountId'];
-          }
-        );
+      if (message.provider === 'alibaba') {
+        try {
+          const accountId = await core.getAccountId(message.kvPairs);
+          rest['AccountID'] = accountId['AccountId'];
+        } catch (e) {
+          vscode.window.showErrorMessage(`Unable to obtain AccountID,
+            please check the input you entered.`);
+          return;
+        }
       }
       await core.setKnownCredential(rest, message.alias);
       vscode.window.showInformationMessage(

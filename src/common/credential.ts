@@ -1,16 +1,7 @@
 import * as fs from 'fs';
 import * as core from "@serverless-devs/core";
-const { lodash:_, colors, jsyaml: yaml, getRootHome, getYamlContent } = core;
+const { lodash:_, jsyaml: yaml} = core;
 import * as path from "path";
-
-
-export function mark(source: string): string {
-    if (!source) {
-        return source;
-    }
-    const str = `${source.slice(0, 4)}***********${source.slice(-4)}`;
-    return str;
-}
 
 export const getCredentialWithAll = async () => {
     const data = await core.getCredentialAliasList();
@@ -32,10 +23,10 @@ export const deleteCredentialByAccess = async (access: string) => {
             delete accessFileInfo[access];
             fs.writeFileSync(filePath, yaml.dump(accessFileInfo));
         } else {
-            console.log(`Access not found`);
+            throw new Error(`Access not found,May have been deleted.`);
         }
     } else {
-        console.log(`Access not found`);
+        throw new Error(`Configuration file not found.`);
     }
 };
 

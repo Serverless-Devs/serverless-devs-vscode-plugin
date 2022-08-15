@@ -1,13 +1,21 @@
 import * as path from "path";
 import * as fs from "fs";
+import * as vscode from "vscode";
 import { ext } from "../extensionVariables";
 import { TEMPLTE_FILE, TERMINAL_NAME } from "../constants";
-import * as vscode from "vscode";
 import { getHtmlForWebview } from "./getHtmlForWebview";
 
 export { getHtmlForWebview } from "./getHtmlForWebview";
 export { MultiStepInput } from "./multiStepInput";
 export { ItemData, TreeItem } from "./treeItem";
+
+const ICON_PATH = 'https://docs.serverless-devs.com/favicon.ico';
+
+export async function setPanelIcon(
+  panel: vscode.WebviewPanel
+) {
+  panel.iconPath = vscode.Uri.parse(ICON_PATH);
+}
 
 export function getQuickCommands() {
   const filePath = path.join(ext.cwd, TEMPLTE_FILE);
@@ -18,7 +26,7 @@ export function getQuickCommands() {
   return Array.isArray(data["quick-commands"]) ? data["quick-commands"] : [];
 }
 
-export function createTerminal(command: string) {
+export function createTerminal(command: string): vscode.Terminal {
   const terminals = vscode.window.terminals;
   for (const item of terminals) {
     if (item.name === TERMINAL_NAME) {
@@ -26,16 +34,37 @@ export function createTerminal(command: string) {
     }
   }
   const terminal = vscode.window.createTerminal(TERMINAL_NAME);
-  terminal.sendText(command);
   terminal.show();
+  terminal.sendText(command);
+  return terminal;
+}
+
+export function createTerminalWithExitStatus(command: string)
+  : Promise<vscode.TerminalExitStatus> {
+  const terminal = createTerminal(command);
+  terminal.sendText("exit");
+  return new Promise((resolve, reject) => {
+    const disposeToken = vscode.window.onDidCloseTerminal(
+      async (closedTerminal) => {
+        if (closedTerminal === terminal) {
+          disposeToken.dispose();
+          if (terminal.exitStatus !== undefined) {
+            resolve(terminal.exitStatus);
+          } else {
+            reject("Terminal exited with undefined status");
+          }
+        }
+      }
+    );
+  });
 }
 
 export function updateWebview(
-  panel:vscode.WebviewPanel,
+  panel: vscode.WebviewPanel,
   filename: string,
   context: vscode.ExtensionContext,
   parameter?: any
-  ) {
+) {
   panel.webview.html = getHtmlForWebview(
     filename,
     context,
