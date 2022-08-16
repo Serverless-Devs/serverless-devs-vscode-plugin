@@ -17,7 +17,6 @@
 
 ## 快速开始
 
-****
 
 1. 安装 Node.js(>=10.8.0) 与 NPM 包管理工具；
 
@@ -32,8 +31,6 @@
 
 ## 帮助内容
 
-****
-
 > 如果您是第一次上手serverless架构，我们还提供了以下内容，可能会对您所有帮助。
 
 - [Serverless Devs 文档](https://docs.serverless-devs.com/serverless-devs/readme)
@@ -42,8 +39,6 @@
 - [阿里云官网](https://www.aliyun.com/)
 
 ## 交流社区
-
-****
 
 您如果有关于错误的反馈或者未来的期待，您可以在 [Issues](https://github.com/serverless-devs/serverless-devs/issues) 和 [Discussions](https://github.com/serverless-devs/serverless-devs/discussions) 中进行反馈和交流。如果您想要加入我们的讨论组或者了解 Serverless Devs 的最新动态，您可以通过以下渠道进行：
 
