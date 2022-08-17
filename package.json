@@ -4,7 +4,7 @@
   "displayName": "serverless-devs",
   "description": "Serverless-Devs extension. Lets you develop your serverless application within VSCode.",
   "repository": "https://github.com/Serverless-Devs/serverless-devs-vscode-plugin",
-  "version": "0.0.3",
+  "version": "0.0.7",
   "engines": {
     "vscode": "^1.65.0"
   },
@@ -12,12 +12,14 @@
     "Other"
   ],
   "main": "./out/extension.js",
+  "icon": "media/s.ico",
   "activationEvents": [
     "onView:local-resource",
     "onCommand:serverless-devs.init",
     "onCommand:serverless-devs.config",
     "onCommand:serverless-devs.set",
     "onCommand:serverless-devs.install",
+    "onCommand:serverless-devs.component",
     "onCommand:create.pick"
   ],
   "contributes": {
@@ -49,7 +51,7 @@
     },
     "viewsWelcome": [{
         "view": "quick-start",
-        "contents": "快速开始你的Serverless之旅\n[密钥管理](command:serverless-devs.config)\n[创建一个应用](command:create.pick)\n除此之外，您可以可以快速通过[快速上手](https://docs.serverless-devs.com/serverless-devs/quick_start)进行更多的图文案例的参考和学习。"
+        "contents": "快速开始你的Serverless之旅\n[密钥管理](command:serverless-devs.config)\n[创建一个应用](command:create.pick)\n[组件管理](command:serverless-devs.component)\n除此之外，您可以可以快速通过[快速上手](https://docs.serverless-devs.com/serverless-devs/quick_start)进行更多的图文案例的参考和学习。"
       },
       {
         "view": "dev-docs",
@@ -318,7 +320,8 @@
     "eslint": "^8.11.0",
     "glob": "^7.2.0",
     "mocha": "^9.2.2",
-    "typescript": "^4.5.5"
+    "typescript": "^4.5.5",
+    "react": "^18.2.0"
   },
   "dependencies": {
     "@serverless-devs/core": "latest",
