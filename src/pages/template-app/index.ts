@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import * as core from "@serverless-devs/core";
+import * as core from '@serverless-devs/core';
 import { setPanelIcon, updateWebview } from '../../common';
 import { attrList, initProject, setInitPath } from '../../common/createApp';
 const { lodash: _ } = core;
@@ -54,8 +54,8 @@ export async function activeTemplateAppWebviewPanel(
     templateAppWebviewPanel.webview.onDidReceiveMessage(
       (message) => {
         handleMessage(message);
-      }
-      , undefined,
+      },
+      undefined,
       context.subscriptions
     );
   }
