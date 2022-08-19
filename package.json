@@ -38,6 +38,7 @@
       ],
       "explorer": [{
         "id": "local-resource",
+        "when": "resource == true",
         "name": "Serverless-Devs"
       }]
     },
