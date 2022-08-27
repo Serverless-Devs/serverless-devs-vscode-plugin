@@ -1,3 +1,5 @@
+import * as core from '@serverless-devs/core';
+const { getYamlContent, lodash: _ } = core;
 
 // 基本信息的schema
 export const baseSchema = {
@@ -25,7 +27,7 @@ export const baseSchema = {
       "type": "object",
       "description": "应用所包含的服务",
       "patternProperties": {
-        "^:[a-zA-Z]$": {
+        "^[a-zA-Z0-9-]*$": {
           "properties": {
             "access": {
               "type": "string",
@@ -36,7 +38,7 @@ export const baseSchema = {
               "description": "组件名称"
             },
             "actions": {
-              "type": "string",
+              "type": "object",
               "description": "自定义执行逻辑"
             },
             "props": {
@@ -53,6 +55,23 @@ export const baseSchema = {
 };
 
 // 应用所依赖组件的schema
-export function getCmptSchema() {
-
+export async function getCmptSchema(
+  cmptPublishPath: string
+): Promise<any> {
+  const cmptBaseSchema: any = baseSchema;
+  const cmptYamlContent: any = await getYamlContent(cmptPublishPath);
+  console.log(cmptYamlContent);
+  const definitions: any = cmptYamlContent.Properties.definitions;
+  const properties: any = _.omit(cmptYamlContent.Properties, "definitions");
+  if (!_.isEmpty(properties)) {
+    cmptBaseSchema.definitions = definitions;
+    cmptBaseSchema
+      .properties
+      .services
+      .patternProperties['^[a-zA-Z0-9-]*$']
+      .properties.props = properties;
+  } else {
+    throw new Error('The component maybe invalid.');
+  }
+  return cmptBaseSchema;
 }

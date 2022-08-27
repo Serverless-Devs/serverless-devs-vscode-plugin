@@ -88,9 +88,9 @@ export async function responseData(
 export async function initProject(
   panel: vscode.WebviewPanel,
   config: any
-) {
+): Promise<string> | undefined {
   try {
-    const appPath = await vscode.window.withProgress(
+    const appPath: string = await vscode.window.withProgress(
       {
         location: vscode.ProgressLocation.Notification,
       },
@@ -108,6 +108,7 @@ export async function initProject(
     const newWindow = !!vscode.workspace.rootPath;
     if (newWindow) { panel.dispose(); }
     vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.file(appPath), newWindow);
+    return appPath;
   } catch (e) {
     vscode.window.showErrorMessage(e.message);
   }

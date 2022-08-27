@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import * as core from "@serverless-devs/core";
 import { setPanelIcon, updateWebview } from '../../common';
 import { attrList, initProject, setInitPath } from '../../common/createApp';
+import { updateYamlSettings } from '../../schema/jsonSchema';
 const { lodash: _ } = core;
 const fetch = require('node-fetch');
 var qs = require('qs');
@@ -83,7 +84,10 @@ async function handleMessage(
         target: message.configItems.path,
         parameters: message.configItems
       };
-      initProject(templateAppWebviewPanel, config);
+      const appPath: string = await initProject(templateAppWebviewPanel, config);
+      if (appPath) {
+        await updateYamlSettings(appPath);
+      }
       break;
   }
 }
