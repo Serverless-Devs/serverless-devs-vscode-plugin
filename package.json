@@ -65,7 +65,7 @@
       },
       {
         "view": "local-resource",
-        "contents": "您正确安装了serverless-devs命令行工具吗？该部分的功能依赖此工具，建议您安装后体验。\n[立即安装](command:serverless-devs.install)"
+        "contents": "您正确安装了serverless-devs命令行工具吗？该部分的功能依赖此工具，建议您安装后体验。\n[立即安装](command:serverless-devs.install)\n如果您以安装仍然出现此提示，说明该目录并不存在s.yaml文件"
       }
     ],
     "commands": [{
