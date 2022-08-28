@@ -214,11 +214,6 @@
           "light": "media/light/issue.svg",
           "dark": "media/dark/issue.svg"
         }
-      },
-      {
-        "command": "serverless-devs.yaml",
-        "title": "标记Yaml到工作空间",
-        "category": "Serverless-Devs"
       }
     ],
     "menus": {
@@ -258,11 +253,6 @@
           "group": "navigation@7"
         }
       ],
-      "explorer/context": [{
-        "command": "serverless-devs.yaml",
-        "when": "resourceExtname == .yaml || resourceExtname == .yml",
-        "group": "navigation"
-      }],
       "view/title": [{
           "command": "serverless-devs.init",
           "group": "navigation@1",

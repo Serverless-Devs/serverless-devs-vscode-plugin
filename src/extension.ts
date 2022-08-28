@@ -83,15 +83,6 @@ export async function activate(context: vscode.ExtensionContext) {
     })
   );
 
-  // 标记Yaml文件到工作空间
-  context.subscriptions.push(
-    vscode.commands.registerCommand(
-      "serverless-devs.yaml",
-      (uri: vscode.Uri) => {
-        markYaml(uri);
-      }
-    )
-  );
   // 设置中心
   context.subscriptions.push(
     vscode.commands.registerCommand("serverless-devs.set", () => {
@@ -144,9 +135,9 @@ export async function activate(context: vscode.ExtensionContext) {
       installSTool();
     })
   );
-
-  await new LocalResource(context).autoMark();  
+  
+  await new LocalResource(context).autoMark();
 }
 
 // this method is called when your extension is deactivated
-export function deactivate() {}
+export function deactivate() { }

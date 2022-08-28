@@ -7,6 +7,7 @@ import { ItemData, getQuickCommands, createTerminal } from "../../../common";
 import { ext } from "../../../extensionVariables";
 import { getComponentInfo } from "../../../services";
 import { CNTranslation } from "../languages";
+import { markYaml } from "../../../commands/mark-yaml";
 const { lodash: _ } = core;
 
 let localResourceSettingsWebviewPanel: vscode.WebviewPanel | undefined;
@@ -223,5 +224,12 @@ async function handleMessage(params: { type: string; [key: string]: any }) {
     case "empty":
       vscode.window.showErrorMessage("value cannot be empty.");
       return;
+    case "saveConfig":
+      try {
+        await markYaml();
+        vscode.window.showInformationMessage("Saving the configuration successful.");
+      } catch (e) {
+        vscode.window.showErrorMessage("Saving the configuration faild.");
+      }
   }
 }
