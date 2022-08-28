@@ -6,6 +6,7 @@ import * as core from "@serverless-devs/core";
 import { ItemData, getQuickCommands, createTerminal } from "../../../common";
 import { ext } from "../../../extensionVariables";
 import { getComponentInfo } from "../../../services";
+import { CNTranslation } from "../languages";
 const { lodash: _ } = core;
 
 let localResourceSettingsWebviewPanel: vscode.WebviewPanel | undefined;
@@ -138,7 +139,10 @@ class UpdateWebview {
         const ele = commands[command];
         if (_.isPlainObject(ele)) {
           for (const key in ele) {
-            currentCommand.push({ command: key, desc: ele[key] });
+            const value = CNTranslation[command][key]
+            ? CNTranslation[command][key]
+            : ele[key];
+            currentCommand.push({ command: key, desc: value });
           }
         } else {
           currentCommand.push({ command, desc: ele });
