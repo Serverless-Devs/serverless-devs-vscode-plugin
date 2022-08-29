@@ -1,4 +1,4 @@
-![插件](https://serverless-devs-1257396592.cos.ap-nanjing.myqcloud.com/readme-banner.png)
+![插件](https://img.alicdn.com/imgextra/i3/O1CN013XbDqD1KO7RGoz3Q1_!!6000000001153-2-tps-1890-719.png)
 
 <p align="center">
   <a href="https://marketplace.visualstudio.com/items?itemName=serverless-devs.serverless-devs">
