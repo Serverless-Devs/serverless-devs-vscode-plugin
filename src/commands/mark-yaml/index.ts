@@ -6,13 +6,13 @@ import { ext } from "../../extensionVariables";
 import { TEMPLTE_FILE } from "../../constants";
 const { lodash: _ } = core;
 
-export async function markYaml(uri: vscode.Uri) {
-  const { fsPath } = uri;
+export async function markYaml() {
+  const fsPath = path.join(ext.cwd, 's.yaml');
   try {
     // 方法执行成功说明yaml文件符合devs规范
     await core.transforYamlPath(fsPath);
     const answer = await vscode.window.showInputBox({
-      title: "标记Yaml到工作空间",
+      title: "此工作空间配置的别名",
       prompt: "请输入",
       validateInput: (name: string) => {
         return name.length === 0 ? "value cannot be empty." : undefined;

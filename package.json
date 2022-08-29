@@ -39,6 +39,7 @@
       ],
       "explorer": [{
         "id": "local-resource",
+        "when": "resource == true",
         "name": "Serverless-Devs"
       }]
     },
@@ -65,7 +66,7 @@
       },
       {
         "view": "local-resource",
-        "contents": "您正确安装了serverless-devs命令行工具吗？该部分的功能依赖此工具，建议您安装后体验。\n[立即安装](command:serverless-devs.install)"
+        "contents": "您正确安装了serverless-devs命令行工具吗？该部分的功能依赖此工具，建议您安装后体验。\n[立即安装](command:serverless-devs.install)\n如果您以安装仍然出现此提示，说明该目录并不存在s.yaml文件"
       }
     ],
     "commands": [{
@@ -214,11 +215,6 @@
           "light": "media/light/issue.svg",
           "dark": "media/dark/issue.svg"
         }
-      },
-      {
-        "command": "serverless-devs.yaml",
-        "title": "标记Yaml到工作空间",
-        "category": "Serverless-Devs"
       }
     ],
     "menus": {
@@ -258,11 +254,6 @@
           "group": "navigation@7"
         }
       ],
-      "explorer/context": [{
-        "command": "serverless-devs.yaml",
-        "when": "resourceExtname == .yaml || resourceExtname == .yml",
-        "group": "navigation"
-      }],
       "view/title": [{
           "command": "serverless-devs.init",
           "group": "navigation@1",
@@ -333,5 +324,8 @@
     "node-fetch": "^2.6.7",
     "open": "^8.4.0",
     "qs": "^6.11.0"
-  }
+  },
+  "extensionDependencies": [
+    "redhat.vscode-yaml"
+  ]
 }

@@ -3,6 +3,7 @@ import { setPanelIcon, updateWebview } from '../../common';
 import * as core from "@serverless-devs/core";
 import * as open from "open";
 import { attrList, initProject, replaceDefaultConfig, responseData, setInitPath } from '../../common/createApp';
+import { updateYamlSettings } from '../../schema/jsonSchema';
 const { lodash: _ } = core;
 const fetch = require('node-fetch');
 var qs = require('qs');
@@ -93,7 +94,10 @@ async function handleMessage(
         access: message.configItems.access,
         parameters: message.configItems
       };
-      initProject(applicationWebviewPanel, config);
+      const appPath: string = await initProject(applicationWebviewPanel, config);
+      if (appPath) {
+        await updateYamlSettings(appPath);
+      }
       break;
   }
 }

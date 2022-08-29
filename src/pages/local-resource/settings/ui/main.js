@@ -79,6 +79,13 @@ new Vue({
     },
   },
   methods: {
+    saveConfig() {
+      vscode.postMessage(
+        {
+          type: "saveConfig"
+        }
+      );
+    },
     getPicture(command) {
       return this[`${command}Picture`];
     },

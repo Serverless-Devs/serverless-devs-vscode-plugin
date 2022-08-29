@@ -100,11 +100,11 @@ new Vue({
     },
     filterAppList(type, val) {
       if (type === 'category' && val !== 'All') {
-        this.applicationList = _.filter(this.$config.applicationList.Response, function (o) {
+        this.applicationList = _.filter(this.originalApplicationList, function (o) {
           return o.tags.indexOf(val) !== -1;
         });
       } else if (type === 'category' && val === 'All') {
-        this.applicationList = this.$config.applicationList.Response;
+        this.applicationList = this.originalApplicationList;
       }
     },
     openUrl(appName) {
