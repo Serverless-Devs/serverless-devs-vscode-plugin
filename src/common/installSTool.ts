@@ -9,7 +9,6 @@ export function installSTool() {
     }).catch(err => {
       vscode.window.showErrorMessage(`Installation failed, please report to us in Dingding`);
       vscode.window.showErrorMessage(`Error: ${err}`);
-
     });
   } else {
     vscode.window.showErrorMessage(`You don't seem to have Node.js installed.
