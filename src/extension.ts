@@ -16,6 +16,7 @@ import { activeCredentialWebviewPanel } from "./pages/credential-management";
 import { activeApplicationWebviewPanel } from "./pages/registry";
 import { pickCreateMethod } from "./common/createApp";
 import { installSTool } from "./common/installSTool";
+import { activeComponentWebviewPanel } from "./pages/component-management";
 
 export async function activate(context: vscode.ExtensionContext) {
   ext.context = context;
@@ -45,6 +46,7 @@ export async function activate(context: vscode.ExtensionContext) {
       createTerminal(`s edit -t ${template}`);
     })
   );
+
   context.subscriptions.push(
     vscode.commands.registerCommand("serverless-devs.home", () => {
       open("https://www.serverless-devs.com");
@@ -77,27 +79,27 @@ export async function activate(context: vscode.ExtensionContext) {
     })
   );
 
+  // 通过registry应用中心创建
   context.subscriptions.push(
     vscode.commands.registerCommand("serverless-devs.app", () => {
       activeApplicationWebviewPanel(context);
     })
   );
 
-  // 标记Yaml文件到工作空间
+  // 组件管理
   context.subscriptions.push(
-    vscode.commands.registerCommand(
-      "serverless-devs.yaml",
-      (uri: vscode.Uri) => {
-        markYaml(uri);
-      }
-    )
+    vscode.commands.registerCommand("serverless-devs.component", () => {
+      activeComponentWebviewPanel(context);
+    })
   );
+
   // 设置中心
   context.subscriptions.push(
     vscode.commands.registerCommand("serverless-devs.set", () => {
       activeGlobalSettingsWebview(context);
     })
   );
+  
   // 打开文件
   context.subscriptions.push(
     vscode.commands.registerCommand(
@@ -144,9 +146,9 @@ export async function activate(context: vscode.ExtensionContext) {
       installSTool();
     })
   );
-
-  await new LocalResource(context).autoMark();  
+  
+  await new LocalResource(context).autoMark();
 }
 
 // this method is called when your extension is deactivated
-export function deactivate() {}
+export function deactivate() { }
