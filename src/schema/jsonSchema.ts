@@ -25,16 +25,9 @@ export async function updateYamlSettings(
       'vscodeSchema',
       `${cmptName}Schema.json`
     );
-    const cmptPublishPath = path.join(
-      sPath,
-      'components',
-      'devsapp.cn',
-      cmptName,
-      'publish.yaml'
-    );
     if (!(_.has(schemasObj, cmptSchemaPath))) {
       try {
-        const cmptChemaData: any = await getCmptSchema(cmptPublishPath);
+        const cmptChemaData: any = await getCmptSchema(cmptName);
         await writeJsonSchema(cmptSchemaPath, cmptChemaData, schemasObj);
       } catch (e) {
         vscode.window.showErrorMessage(e);

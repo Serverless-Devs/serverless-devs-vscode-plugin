@@ -1,5 +1,7 @@
 import * as core from '@serverless-devs/core';
 const { getYamlContent, lodash: _ } = core;
+const fetch = require('node-fetch');
+var qs = require('qs');
 
 // 基本信息的schema
 export const baseSchema = {
@@ -56,13 +58,19 @@ export const baseSchema = {
 
 // 应用所依赖组件的schema
 export async function getCmptSchema(
-  cmptPublishPath: string
+  componentName: string
 ): Promise<any> {
   const cmptBaseSchema: any = baseSchema;
-  const cmptYamlContent: any = await getYamlContent(cmptPublishPath);
-  console.log(cmptYamlContent);
-  const definitions: any = cmptYamlContent.Properties.definitions;
-  const properties: any = _.omit(cmptYamlContent.Properties, "definitions");
+  const cmptContent: any =
+    await fetch('https://registry.devsapp.cn/package/content', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: qs.stringify({ 'name': componentName })
+    }).then(res => res.json());
+  const definitions: any = cmptContent.Response.props.definitions;
+  const properties: any = _.omit(cmptContent.Response.props, "definitions");
   if (!_.isEmpty(properties)) {
     cmptBaseSchema.definitions = definitions;
     cmptBaseSchema
