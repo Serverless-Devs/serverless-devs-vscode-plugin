@@ -6,6 +6,9 @@ const { lodash: _ } = core;
 
 export async function custom(itemData: ItemData) {
   const quickCommandList = getQuickCommands();
+  itemData.spath = itemData.spath
+    ? itemData.spath
+    : itemData.path.replace(ext.cwd, '');
   const lastPathSep = itemData.spath.lastIndexOf('/');
   const spath = lastPathSep
     ? path.join(ext.cwd, itemData.spath.substring(0, lastPathSep))
@@ -15,10 +18,7 @@ export async function custom(itemData: ItemData) {
     quickCommandList,
     (item) => item.path === itemData.spath
   );
-  let command =
-    itemData.contextValue === "app"
-      ? `s ${itemData.scommand}`
-      : `s ${itemData.label} ${itemData.scommand}`;
+  let command = `s ${itemData.scommand}`;
   if (findObj) {
     const argsObj = _.find(
       findObj.$shortcuts,

@@ -25,6 +25,7 @@ export class ItemData {
 
   initialCollapsibleState: vscode.TreeItemCollapsibleState =
     vscode.TreeItemCollapsibleState.None;
+  path: any;
 }
 
 export class TreeItem extends vscode.TreeItem {

@@ -218,7 +218,7 @@
       },
       {
         "command": "serverless-devs.yaml",
-        "title": "标记Yaml到工作空间",
+        "title": "添加到工作空间",
         "category": "Serverless-Devs"
       }
     ],
@@ -260,10 +260,26 @@
         }
       ],
       "explorer/context": [{
-        "command": "serverless-devs.yaml",
-        "when": "resourceExtname == .yaml || resourceExtname == .yml",
-        "group": "navigation"
-      }],
+          "command": "serverless-devs.yaml",
+          "when": "resourceExtname == .yaml || resourceExtname == .yml",
+          "group": "navigation@0"
+        },
+        {
+          "command": "local-resource.deploy",
+          "when": "resourceExtname == .yaml || resourceExtname == .yml",
+          "group": "navigation"
+        },
+        {
+          "command": "local-resource.build",
+          "when": "resourceExtname == .yaml || resourceExtname == .yml",
+          "group": "navigation"
+        },
+        {
+          "command": "local-resource.invoke",
+          "when": "resourceExtname == .yaml || resourceExtname == .yml",
+          "group": "navigation"
+        }
+      ],
       "view/title": [{
           "command": "serverless-devs.init",
           "group": "navigation@1",
