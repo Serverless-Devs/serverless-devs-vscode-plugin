@@ -216,7 +216,12 @@ async function handleMessage(params: { type: string; [key: string]: any }) {
       await event.writeShortcuts(params);
       return;
     case "handleOperate":
-      createTerminal(params.command);
+      const lastPathSep = params.spath.lastIndexOf('/');
+      const spath = lastPathSep 
+        ? path.join(ext.cwd, params.spath.substring(0, lastPathSep))
+        : ext.cwd;
+      const yamlFileName = params.spath.split('/').pop();
+      createTerminal(params.command, spath, yamlFileName);
       return;
     case "handleConfirmTitle":
       event.handleConfirmTitle(params);

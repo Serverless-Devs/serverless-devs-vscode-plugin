@@ -66,22 +66,9 @@ async function fileSearch(dirPath: string, yamlList: string[]) {
       await fileSearch(datas.files[index], yamlList);
     }
     if (stat.isFile() && regexp.test(filename)) {
-      console.log(fullFileame);
       yamlList.push(fullFileame);
     }
   }
-  // datas.stats.forEach(stat => {
-  //   const index = datas.stats.indexOf(stat);
-  //   const fullFileame = datas.files[index];
-  //   const filename = fullFileame.split('/').pop();
-  //   if (stat.isDirectory()) {
-  //     fileSearch(datas.files[index], yamlList);
-  //   }
-  //   if (stat.isFile() && regexp.test(filename)) {
-  //     console.log(fullFileame);
-  //     yamlList.push(fullFileame);
-  //   }
-  // });
 }
 
 function fsReadDir(dir: string) {

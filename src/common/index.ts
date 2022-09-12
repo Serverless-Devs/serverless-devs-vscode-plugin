@@ -26,16 +26,22 @@ export function getQuickCommands() {
   return Array.isArray(data["quick-commands"]) ? data["quick-commands"] : [];
 }
 
-export function createTerminal(command: string): vscode.Terminal {
+export function createTerminal(command: string, shellPath?: string, yamlFileName?: string)
+  : vscode.Terminal {
   const terminals = vscode.window.terminals;
+  const exec = yamlFileName 
+    ? `${command} -t ${yamlFileName}`
+    : command;
   for (const item of terminals) {
     if (item.name === TERMINAL_NAME) {
       item.dispose();
     }
   }
-  const terminal = vscode.window.createTerminal(TERMINAL_NAME);
+  const terminal = shellPath
+    ? vscode.window.createTerminal({ name: TERMINAL_NAME, cwd: shellPath })
+    : vscode.window.createTerminal(TERMINAL_NAME);
   terminal.show();
-  terminal.sendText(command);
+  terminal.sendText(exec);
   return terminal;
 }
 
