@@ -22,7 +22,7 @@ export async function activate(context: vscode.ExtensionContext) {
   ext.context = context;
   ext.cwd =
     vscode.workspace.workspaceFolders &&
-    vscode.workspace.workspaceFolders.length > 0
+      vscode.workspace.workspaceFolders.length > 0
       ? vscode.workspace.workspaceFolders[0].uri.fsPath
       : undefined;
   // s init 
@@ -86,6 +86,16 @@ export async function activate(context: vscode.ExtensionContext) {
     })
   );
 
+  // 添加yaml配置到工作空间
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      "serverless-devs.yaml",
+      (uri: vscode.Uri) => {
+        markYaml(uri);
+      }
+    )
+  );
+
   // 组件管理
   context.subscriptions.push(
     vscode.commands.registerCommand("serverless-devs.component", () => {
@@ -99,7 +109,7 @@ export async function activate(context: vscode.ExtensionContext) {
       activeGlobalSettingsWebview(context);
     })
   );
-  
+
   // 打开文件
   context.subscriptions.push(
     vscode.commands.registerCommand(
@@ -146,7 +156,7 @@ export async function activate(context: vscode.ExtensionContext) {
       installSTool();
     })
   );
-  
+
   await new LocalResource(context).autoMark();
 }
 

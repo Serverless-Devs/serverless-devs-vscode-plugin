@@ -6,8 +6,8 @@ import { ext } from "../../extensionVariables";
 import { TEMPLTE_FILE } from "../../constants";
 const { lodash: _ } = core;
 
-export async function markYaml() {
-  const fsPath = path.join(ext.cwd, 's.yaml');
+export async function markYaml(uri: vscode.Uri) {
+  const { fsPath } = uri;
   try {
     // 方法执行成功说明yaml文件符合devs规范
     await core.transforYamlPath(fsPath);

@@ -224,12 +224,5 @@ async function handleMessage(params: { type: string; [key: string]: any }) {
     case "empty":
       vscode.window.showErrorMessage("value cannot be empty.");
       return;
-    case "saveConfig":
-      try {
-        await markYaml();
-        vscode.window.showInformationMessage("Saving the configuration successful.");
-      } catch (e) {
-        vscode.window.showErrorMessage("Saving the configuration faild.");
-      }
   }
 }
