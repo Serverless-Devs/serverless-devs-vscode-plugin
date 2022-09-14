@@ -17,6 +17,7 @@ import { activeApplicationWebviewPanel } from "./pages/registry";
 import { pickCreateMethod } from "./common/createApp";
 import { installSTool } from "./common/installSTool";
 import { activeComponentWebviewPanel } from "./pages/component-management";
+import { closeSYaml } from "./common/closeSYaml";
 
 export async function activate(context: vscode.ExtensionContext) {
   ext.context = context;
@@ -154,6 +155,12 @@ export async function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand("serverless-devs.install", () => {
       installSTool();
+    })
+  );
+
+  context.subscriptions.push(
+    vscode.workspace.onDidCloseTextDocument(document => {
+      closeSYaml(document);
     })
   );
 
