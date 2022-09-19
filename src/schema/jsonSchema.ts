@@ -10,7 +10,8 @@ export async function updateYamlSettings(
   appPath: string
 ) {
   const sPath: string = getRootHome();
-  const yamlConfig: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration('yaml');
+  const yamlConfig: vscode.WorkspaceConfiguration =
+    vscode.workspace.getConfiguration('yaml', vscode.workspace.workspaceFolders[0].uri);
   const schemasObj: any = yamlConfig.get('schemas');
   const schemaPath: string = path.join(sPath, 'vscodeSchema', 'baseSchema.json');
   const sYamlPath: string = path.join(appPath, 's.yaml');
@@ -47,7 +48,7 @@ async function writeJsonSchema(
     yamlConfig.update(
       'schemas',
       schemaObj,
-      vscode.ConfigurationTarget.Global
+      vscode.ConfigurationTarget.Workspace
     );
   } else {
     yamlConfig.update(
@@ -55,7 +56,7 @@ async function writeJsonSchema(
       {
         [schemaPath]: ["*/*.yaml", "*/*.yml"]
       },
-      vscode.ConfigurationTarget.Global
+      vscode.ConfigurationTarget.Workspace
     );
   }
   writeSchema(schemaPath, schema);

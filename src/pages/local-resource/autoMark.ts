@@ -22,8 +22,8 @@ export async function autoMark(appPath: string) {
       }
     }
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
-    ext.localResource.refresh();
   }
+  ext.localResource.refresh();
 }
 
 async function checkYaml(filePath: string) {
