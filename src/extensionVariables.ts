@@ -5,4 +5,5 @@ export namespace ext {
   export let context: vscode.ExtensionContext;
   export let cwd: string | undefined;
   export let localResource: LocalResourceTreeDataProvider;
+  export let yamlChangeOffsets: Map<string, number>;
 }

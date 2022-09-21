@@ -17,7 +17,7 @@ import { activeApplicationWebviewPanel } from "./pages/registry";
 import { pickCreateMethod } from "./common/createApp";
 import { installSTool } from "./common/installSTool";
 import { activeComponentWebviewPanel } from "./pages/component-management";
-import { closeSYaml } from "./common/closeSYaml";
+import { changeSYaml, closeSYaml } from "./common/documentListener";
 
 export async function activate(context: vscode.ExtensionContext) {
   ext.context = context;
@@ -26,6 +26,7 @@ export async function activate(context: vscode.ExtensionContext) {
       vscode.workspace.workspaceFolders.length > 0
       ? vscode.workspace.workspaceFolders[0].uri.fsPath
       : undefined;
+  ext.yamlChangeOffsets = new Map<string, number>();
   // s init 
   context.subscriptions.push(
     vscode.commands.registerCommand("serverless-devs.init", () => init(context))
@@ -159,6 +160,9 @@ export async function activate(context: vscode.ExtensionContext) {
   );
 
   context.subscriptions.push(
+    vscode.workspace.onDidChangeTextDocument(document => {
+      changeSYaml(document);
+    }),
     vscode.workspace.onDidCloseTextDocument(document => {
       closeSYaml(document);
     })

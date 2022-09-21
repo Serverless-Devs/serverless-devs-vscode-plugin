@@ -5,13 +5,30 @@ import { markYaml } from "../commands/mark-yaml";
 import { ext } from "../extensionVariables";
 import { TEMPLTE_FILE } from "../constants";
 
+export function changeSYaml(documentEvent: vscode.TextDocumentChangeEvent) {
+  if (documentEvent.document.languageId === 'yaml') {
+    const filename: string = documentEvent.document.fileName;
+    if (documentEvent.contentChanges.length > 0) {
+      const { rangeOffset } = documentEvent.contentChanges[0]; // 第一个更改总是最小rangeOffset
+      if (ext.yamlChangeOffsets.has(filename)
+        && rangeOffset === ext.yamlChangeOffsets.get(filename)) {
+        ext.yamlChangeOffsets.delete(filename);
+      } else if (!ext.yamlChangeOffsets.has(filename)
+        && rangeOffset !== 0) {
+        ext.yamlChangeOffsets.set(filename, rangeOffset);
+      }
+    }
+  }
+}
+
 export function closeSYaml(document: vscode.TextDocument) {
   const fsPath = document.uri.fsPath;
   if (document.languageId === 'yaml') {
     const relativePath = fsPath.replace(`${ext.cwd}/`, '');
-    if (!configIsExsit(relativePath)) {
+    console.log(ext.yamlChangeOffsets);
+    if (!configIsExsit(relativePath) && ext.yamlChangeOffsets.has(fsPath)) {
       vscode.window.showInformationMessage(
-        'This YAML is not marked, do you want to mark it?',
+        `${relativePath} is not marked, do you want to mark it?`,
         { modal: true },
         ...['Yes']
       ).then((e) => {
