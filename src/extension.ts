@@ -52,28 +52,21 @@ export async function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand("serverless-devs.home", () => {
       open("https://www.serverless-devs.com");
-    })
-  );
-  context.subscriptions.push(
+    }),
     vscode.commands.registerCommand("serverless-devs.registry", () => {
       open("http://www.devsapp.cn/index.html");
-    })
-  );
-  context.subscriptions.push(
+    }),
     vscode.commands.registerCommand("serverless-devs.github", () => {
       open("https://github.com/Serverless-Devs/Serverless-Devs");
-    })
-  );
-  context.subscriptions.push(
+    }),
     vscode.commands.registerCommand("serverless-devs.group", () => {
       open("http://i.serverless-devs.com");
-    })
-  );
-  context.subscriptions.push(
+    }),
     vscode.commands.registerCommand("serverless-devs.issue", () => {
       open("https://github.com/Serverless-Devs/Serverless-Devs/issues");
     })
   );
+  
   // s config add,get and delete
   context.subscriptions.push(
     vscode.commands.registerCommand("serverless-devs.config", () => {
