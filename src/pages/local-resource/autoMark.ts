@@ -5,25 +5,25 @@ import { ext } from "../../extensionVariables";
 import { TEMPLTE_FILE } from "../../constants";
 
 export async function autoMark(appPath: string) {
-  const spath = getYamlPath(appPath);
-  if (await checkYaml(spath)) {
-    const filePath = path.join(appPath, TEMPLTE_FILE);
-    if (!fs.existsSync(filePath)) {
-      fs.writeFileSync(filePath, JSON.stringify({}));
-    }
+  const filePath = path.join(appPath, TEMPLTE_FILE);
+  if (!fs.existsSync(filePath)) {
+    const spaths = await getYamlPath(appPath);
+    fs.writeFileSync(filePath, JSON.stringify({}));
     const data = JSON.parse(fs.readFileSync(filePath, "utf-8"));
     if (!Array.isArray(data["marked-yamls"])) {
       data["marked-yamls"] = [];
     }
-
-    if (data["marked-yamls"].length > 0) return;
-    data["marked-yamls"].push({
-      path: path.relative(ext.cwd, spath),
-      alias: "默认环境",
-    });
+    for (const spath of spaths) {
+      if (await checkYaml(spath)) {
+        data["marked-yamls"].push({
+          path: path.relative(ext.cwd, spath),
+          alias: "默认环境",
+        });
+      }
+    }
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
-    ext.localResource.refresh();
   }
+  ext.localResource.refresh();
 }
 
 async function checkYaml(filePath: string) {
@@ -36,13 +36,55 @@ async function checkYaml(filePath: string) {
   }
 }
 
-function getYamlPath(appPath: string) {
-  const yamlPath = path.join(appPath, "s.yaml");
-  if (fs.existsSync(yamlPath)) {
-    return yamlPath;
+async function getYamlPath(appPath: string): Promise<string[]> {
+  try {
+    const yamlList: string[] = new Array();
+    await fileSearch(appPath, yamlList);
+    return yamlList;
+  } catch (e) {
+    console.error(e);
   }
-  const ymlPath = path.join(appPath, "s.yml");
-  if (fs.existsSync(ymlPath)) {
-    return ymlPath;
+}
+
+async function fileSearch(dirPath: string, yamlList: string[]) {
+  const files = await fsReadDir(dirPath);
+  const regexp = new RegExp(/^s(.*?)[.yaml|.yml]$/);
+  const promises = files.map(file => {
+    return fsStat(path.join(dirPath, file));
+  });
+  const datas = await Promise.all(promises).then(stats => {
+    for (let i = 0; i < files.length; i += 1) {
+      files[i] = path.join(dirPath, files[i]);
+    }
+    return { stats, files };
+  });
+  for (const stat of datas.stats) {
+    const index = datas.stats.indexOf(stat);
+    const fullFileame = datas.files[index];
+    const filename = fullFileame.split('/').pop();
+    if (stat.isDirectory()) {
+      await fileSearch(datas.files[index], yamlList);
+    }
+    if (stat.isFile() && regexp.test(filename)) {
+      yamlList.push(fullFileame);
+    }
   }
+}
+
+function fsReadDir(dir: string) {
+  return new Promise<string[]>((resolve, reject) => {
+    fs.readdir(dir, (err, files) => {
+      if (err) reject(err);
+      resolve(files);
+    });
+  });
+}
+
+function fsStat(path: string) {
+  return new Promise<fs.Stats>((resolve, reject) => {
+    fs.stat(path, (err, stat) => {
+      if (err) reject(err);
+      resolve(stat);
+    });
+  });
 }

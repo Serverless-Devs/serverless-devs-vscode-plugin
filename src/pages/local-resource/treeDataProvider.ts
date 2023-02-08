@@ -5,6 +5,7 @@ import * as fs from "fs";
 import { ext } from "../../extensionVariables";
 import { ItemData, TreeItem } from "../../common";
 import { TEMPLTE_FILE } from "../../constants";
+import { updateYamlSettings } from "../../schema/jsonSchema";
 
 export class LocalResourceTreeDataProvider
   implements vscode.TreeDataProvider<ItemData>
@@ -16,6 +17,7 @@ export class LocalResourceTreeDataProvider
   readonly onDidChangeTreeData: vscode.Event<ItemData | undefined> =
     this.onDidChange.event;
   refresh(): void {
+    updateYamlSettings(ext.cwd);
     this.onDidChange.fire(undefined);
   }
 

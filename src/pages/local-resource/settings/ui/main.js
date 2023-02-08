@@ -79,13 +79,6 @@ new Vue({
     },
   },
   methods: {
-    saveConfig() {
-      vscode.postMessage(
-        {
-          type: "saveConfig"
-        }
-      );
-    },
     getPicture(command) {
       return this[`${command}Picture`];
     },
@@ -125,17 +118,18 @@ new Vue({
     },
     handleOperate(item) {
       const { itemData } = this.$config;
+      let spath = itemData.spath;
       let command =
         itemData.contextValue === "app"
-          ? `s ${item.command}`
-          : `s ${itemData.label} ${item.command}`;
-
+        ? `s ${item.command}`
+        : `s ${itemData.label} ${item.command}`;
       if (item.args) {
         command = `${command} ${item.args}`;
       }
       vscode.postMessage({
         type: "handleOperate",
         command,
+        spath
       });
     },
   },

@@ -1,23 +1,13 @@
 <div id="app">
-  <div class="flex" style="justify-content: space-between;" v-if="!isEditTitle">
-    <div class="left flex">
-      <h1>{{title}}{{extraTitle}}</h1>
-      <vscode-button
-        v-if="showEditBtn"
-        @click="isEditTitle=true"
-        appearance="icon"
-        class="ml8"
-        ><span class="codicon codicon-edit"></span
-      ></vscode-button>
-    </div>
-    <div class="right">
-      <vscode-button 
-      style="height: 40px;
-             width: 100px;
-             "
-      @click="saveConfig()"
-      >保存配置</vscode-button>
-    </div>
+  <div class="flex" v-if="!isEditTitle">
+    <h1>{{title}}{{extraTitle}}</h1>
+    <vscode-button
+      v-if="showEditBtn"
+      @click="isEditTitle=true"
+      appearance="icon"
+      class="ml8"
+      ><span class="codicon codicon-edit"></span
+    ></vscode-button>
   </div>
   <vscode-data-grid
     v-if="isEditTitle"

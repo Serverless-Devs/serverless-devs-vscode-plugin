@@ -17,14 +17,16 @@ import { activeApplicationWebviewPanel } from "./pages/registry";
 import { pickCreateMethod } from "./common/createApp";
 import { installSTool } from "./common/installSTool";
 import { activeComponentWebviewPanel } from "./pages/component-management";
+import { changeSYaml, closeSYaml } from "./common/documentListener";
 
 export async function activate(context: vscode.ExtensionContext) {
   ext.context = context;
   ext.cwd =
     vscode.workspace.workspaceFolders &&
-    vscode.workspace.workspaceFolders.length > 0
+      vscode.workspace.workspaceFolders.length > 0
       ? vscode.workspace.workspaceFolders[0].uri.fsPath
       : undefined;
+  ext.yamlChangeOffsets = new Map<string, number>();
   // s init 
   context.subscriptions.push(
     vscode.commands.registerCommand("serverless-devs.init", () => init(context))
@@ -50,28 +52,21 @@ export async function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand("serverless-devs.home", () => {
       open("https://www.serverless-devs.com");
-    })
-  );
-  context.subscriptions.push(
+    }),
     vscode.commands.registerCommand("serverless-devs.registry", () => {
       open("http://www.devsapp.cn/index.html");
-    })
-  );
-  context.subscriptions.push(
+    }),
     vscode.commands.registerCommand("serverless-devs.github", () => {
       open("https://github.com/Serverless-Devs/Serverless-Devs");
-    })
-  );
-  context.subscriptions.push(
+    }),
     vscode.commands.registerCommand("serverless-devs.group", () => {
       open("http://i.serverless-devs.com");
-    })
-  );
-  context.subscriptions.push(
+    }),
     vscode.commands.registerCommand("serverless-devs.issue", () => {
       open("https://github.com/Serverless-Devs/Serverless-Devs/issues");
     })
   );
+  
   // s config add,get and delete
   context.subscriptions.push(
     vscode.commands.registerCommand("serverless-devs.config", () => {
@@ -84,6 +79,16 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand("serverless-devs.app", () => {
       activeApplicationWebviewPanel(context);
     })
+  );
+
+  // 添加yaml配置到工作空间
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      "serverless-devs.yaml",
+      (uri: vscode.Uri) => {
+        markYaml(uri);
+      }
+    )
   );
 
   // 组件管理
@@ -99,7 +104,7 @@ export async function activate(context: vscode.ExtensionContext) {
       activeGlobalSettingsWebview(context);
     })
   );
-  
+
   // 打开文件
   context.subscriptions.push(
     vscode.commands.registerCommand(
@@ -146,7 +151,16 @@ export async function activate(context: vscode.ExtensionContext) {
       installSTool();
     })
   );
-  
+
+  context.subscriptions.push(
+    vscode.workspace.onDidChangeTextDocument(document => {
+      changeSYaml(document);
+    }),
+    vscode.workspace.onDidCloseTextDocument(document => {
+      closeSYaml(document);
+    })
+  );
+
   await new LocalResource(context).autoMark();
 }
 
