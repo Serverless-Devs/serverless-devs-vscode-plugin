@@ -1,7 +1,8 @@
 import { vscode } from './utilities/vscode';
 import { VSCodeButton } from '@vscode/webview-ui-toolkit/react';
-
-import './styles/index.less';
+import './styles/basic.less';
+import A from './components/A';
+import B from './components/B';
 
 function App() {
   function handleHowdyClick() {
@@ -14,6 +15,8 @@ function App() {
   return (
     <main>
       <h1 className="ml-16">Hello World!</h1>
+      <A />
+      <B />
       <VSCodeButton onClick={handleHowdyClick}>Howdy!</VSCodeButton>
     </main>
   );
