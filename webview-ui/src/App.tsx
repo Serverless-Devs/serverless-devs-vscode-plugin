@@ -14,7 +14,8 @@ function App() {
 
   return (
     <main>
-      <h1 className="ml-16">Hello World!</h1>
+      <h1 className="ml-16">This is a React app running in a VS Code webview.</h1>
+      <pre>{JSON.stringify((window as any).SERVERLESS_DEVS_CONFIG, null, 2)}</pre>
       <A />
       <B />
       <VSCodeButton onClick={handleHowdyClick}>Howdy!</VSCodeButton>
