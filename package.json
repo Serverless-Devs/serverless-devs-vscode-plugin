@@ -13,15 +13,6 @@
   ],
   "main": "./out/extension.js",
   "icon": "media/s.ico",
-  "activationEvents": [
-    "onView:local-resource",
-    "onCommand:serverless-devs.init",
-    "onCommand:serverless-devs.config",
-    "onCommand:serverless-devs.set",
-    "onCommand:serverless-devs.install",
-    "onCommand:serverless-devs.component",
-    "onCommand:create.pick"
-  ],
   "contributes": {
     "views": {
       "Serverless-Devs-explorer": [
@@ -74,6 +65,10 @@
       }
     ],
     "commands": [
+      {
+        "command": "hello-world.showHelloWorld",
+        "title": "Hello World (React + CRA): Show"
+      },
       {
         "command": "create.pick",
         "title": "Choose how to create app"
