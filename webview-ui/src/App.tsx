@@ -1,6 +1,8 @@
 import { vscode } from './utilities/vscode';
 import { VSCodeButton } from '@vscode/webview-ui-toolkit/react';
 
+import './styles/index.less';
+
 function App() {
   function handleHowdyClick() {
     vscode.postMessage({
