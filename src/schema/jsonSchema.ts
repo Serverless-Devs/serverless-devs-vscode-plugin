@@ -5,13 +5,12 @@ import * as core from '@serverless-devs/core';
 import { baseSchema, getCmptSchema } from './schema';
 const { getRootHome, getYamlContent, lodash: _ } = core;
 
-
-export async function updateYamlSettings(
-  appPath: string
-) {
+export async function updateYamlSettings(appPath: string) {
   const sPath: string = getRootHome();
-  const yamlConfig: vscode.WorkspaceConfiguration =
-    vscode.workspace.getConfiguration('yaml', vscode.workspace.workspaceFolders[0].uri);
+  const yamlConfig: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration(
+    'yaml',
+    vscode.workspace.workspaceFolders[0].uri,
+  );
   const schemasObj: any = yamlConfig.get('schemas');
   const schemaPath: string = path.join(sPath, 'vscodeSchema', 'baseSchema.json');
   const sYamlPath: string = path.join(appPath, 's.yaml');
@@ -21,12 +20,8 @@ export async function updateYamlSettings(
   const sYamlData = await getYamlContent(sYamlPath);
   for (const service in sYamlData['services']) {
     const cmptName: string = sYamlData['services'][service]['component'];
-    const cmptSchemaPath = path.join(
-      sPath,
-      'vscodeSchema',
-      `${cmptName}Schema.json`
-    );
-    if (!(_.has(schemasObj, cmptSchemaPath))) {
+    const cmptSchemaPath = path.join(sPath, 'vscodeSchema', `${cmptName}Schema.json`);
+    if (!_.has(schemasObj, cmptSchemaPath)) {
       try {
         const cmptChemaData: any = await getCmptSchema(cmptName);
         await writeJsonSchema(cmptSchemaPath, cmptChemaData, schemasObj);
@@ -37,26 +32,18 @@ export async function updateYamlSettings(
   }
 }
 
-async function writeJsonSchema(
-  schemaPath: string,
-  schema: any,
-  schemaObj?: any
-) {
+async function writeJsonSchema(schemaPath: string, schema: any, schemaObj?: any) {
   const yamlConfig: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration('yaml');
   if (schemaObj && _.isEmpty(schemaObj)) {
-    schemaObj[schemaPath] = ["*/*.yaml", "*/*.yml"];
-    yamlConfig.update(
-      'schemas',
-      schemaObj,
-      vscode.ConfigurationTarget.Workspace
-    );
+    schemaObj[schemaPath] = ['*/*.yaml', '*/*.yml'];
+    yamlConfig.update('schemas', schemaObj, vscode.ConfigurationTarget.Workspace);
   } else {
     yamlConfig.update(
       'schemas',
       {
-        [schemaPath]: ["*/*.yaml", "*/*.yml"]
+        [schemaPath]: ['*/*.yaml', '*/*.yml'],
       },
-      vscode.ConfigurationTarget.Workspace
+      vscode.ConfigurationTarget.Workspace,
     );
   }
   writeSchema(schemaPath, schema);

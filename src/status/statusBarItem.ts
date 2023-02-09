@@ -61,7 +61,7 @@
 //   return lines;
 // }
 
-import * as vscode from "vscode";
+import * as vscode from 'vscode';
 
 let myStatusBarItem: vscode.StatusBarItem;
 
@@ -69,19 +69,16 @@ export function statusBarItem(context: vscode.ExtensionContext) {
   const { subscriptions } = context;
   // register a command that is invoked when the status bar
   // item is selected
-  const myCommandId = "sample.showSelectionCount";
+  const myCommandId = 'sample.showSelectionCount';
   subscriptions.push(
     vscode.commands.registerCommand(myCommandId, () => {
       vscode.window.showInformationMessage(`this message from status bar`);
-    })
+    }),
   );
 
   // create a new status bar item that we can now manage
   // 终端的权重大概在50
-  myStatusBarItem = vscode.window.createStatusBarItem(
-    vscode.StatusBarAlignment.Left,
-    100
-  );
+  myStatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
   myStatusBarItem.command = myCommandId;
   myStatusBarItem.text = `default:cn-hangzhou`;
   myStatusBarItem.show();

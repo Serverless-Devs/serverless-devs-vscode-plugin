@@ -7,22 +7,22 @@ const fetch = require('node-fetch');
 var qs = require('qs');
 
 export const attrList = {
-  "category": {
-    "url": "https://registry.devsapp.cn/common/category",
-    "id": "categorylist"
+  category: {
+    url: 'https://registry.devsapp.cn/common/category',
+    id: 'categorylist',
   },
-  "provider": {
-    "url": "https://registry.devsapp.cn/common/provider",
-    "id": "providerlist"
+  provider: {
+    url: 'https://registry.devsapp.cn/common/provider',
+    id: 'providerlist',
   },
-  "application": {
-    "url": "https://registry.devsapp.cn/package/search",
-    "id": "applicationlist"
+  application: {
+    url: 'https://registry.devsapp.cn/package/search',
+    id: 'applicationlist',
   },
-  "params": {
-    "url": "https://registry.devsapp.cn/package/param",
-    "id": "appParams"
-  }
+  params: {
+    url: 'https://registry.devsapp.cn/package/param',
+    id: 'appParams',
+  },
 };
 
 export async function pickCreateMethod(context: vscode.ExtensionContext) {
@@ -31,9 +31,9 @@ export async function pickCreateMethod(context: vscode.ExtensionContext) {
   });
 
   vscode.window.showInformationMessage(`通过${result}创建应用.`);
-  if (result === "模板") {
+  if (result === '模板') {
     await init(context);
-  } else if (result === "Registry") {
+  } else if (result === 'Registry') {
     activeApplicationWebviewPanel(context);
   }
 }
@@ -43,7 +43,7 @@ export async function setInitPath() {
     canSelectFolders: true,
     canSelectFiles: false,
     canSelectMany: false,
-    openLabel: "选择这个路径",
+    openLabel: '选择这个路径',
     defaultUri: vscode.Uri.file(core.getRootHome().slice(0, core.getRootHome().lastIndexOf('/'))),
   };
   const selectFolderUri = await vscode.window.showOpenDialog(options);
@@ -52,30 +52,30 @@ export async function setInitPath() {
   }
 }
 
-export function replaceDefaultConfig(
-  config: any
-) {
+export function replaceDefaultConfig(config: any) {
   for (let i in config['properties']) {
-    if (config['properties'][i].hasOwnProperty('default')
-      && _.endsWith(config['properties'][i]['default'], '${default-suffix}')) {
-      config['properties'][i]['default'] =
-        _.replace(config['properties'][i]['default'], '${default-suffix}', generateRandom());
+    if (
+      config['properties'][i].hasOwnProperty('default') &&
+      _.endsWith(config['properties'][i]['default'], '${default-suffix}')
+    ) {
+      config['properties'][i]['default'] = _.replace(
+        config['properties'][i]['default'],
+        '${default-suffix}',
+        generateRandom(),
+      );
     }
   }
   return config;
 }
 
-export async function responseData(
-  panel: vscode.WebviewPanel,
-  sort: string
-) {
+export async function responseData(panel: vscode.WebviewPanel, sort: string) {
   const categoryFetch = await fetch(attrList['category']['url']);
   const applicationFetch = await fetch(attrList['application']['url'], {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
-    body: qs.stringify({ 'type': 'Application', 'sort': sort })
+    body: qs.stringify({ type: 'Application', sort: sort }),
   });
   panel.webview.postMessage({
     command: 'responseData',
@@ -87,7 +87,7 @@ export async function responseData(
 
 export async function initProject(
   panel: vscode.WebviewPanel,
-  config: any
+  config: any,
 ): Promise<string> | undefined {
   try {
     const appPath: string = await vscode.window.withProgress(
@@ -103,10 +103,12 @@ export async function initProject(
           message: `Downloaded: ${config.source}`,
         });
         return appPath;
-      }
+      },
     );
     const newWindow = !!vscode.workspace.rootPath;
-    if (newWindow) { panel.dispose(); }
+    if (newWindow) {
+      panel.dispose();
+    }
     vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.file(appPath), newWindow);
     return appPath;
   } catch (e) {

@@ -1,40 +1,39 @@
-import * as vscode from "vscode";
+import * as vscode from 'vscode';
 
 export class ItemData {
-  label = "";
+  label = '';
 
-  id = "";
+  id = '';
 
-  description = "";
+  description = '';
 
-  tooltip = "";
+  tooltip = '';
 
-  scommand = "";
+  scommand = '';
 
-  spath = "";
+  spath = '';
 
-  alias = "";
+  alias = '';
 
   command;
 
-  contextValue = "";
+  contextValue = '';
 
-  icon = "";
+  icon = '';
 
   children: ItemData[] = [];
 
-  initialCollapsibleState: vscode.TreeItemCollapsibleState =
-    vscode.TreeItemCollapsibleState.None;
+  initialCollapsibleState: vscode.TreeItemCollapsibleState = vscode.TreeItemCollapsibleState.None;
   path: any;
 }
 
 export class TreeItem extends vscode.TreeItem {
   iconPath: { light: vscode.Uri; dark: vscode.Uri };
-  contextValue = "treeItem";
+  contextValue = 'treeItem';
   constructor(
     itemData: ItemData,
     public readonly collapsibleState: vscode.TreeItemCollapsibleState,
-    public readonly extensionContext: vscode.ExtensionContext
+    public readonly extensionContext: vscode.ExtensionContext,
   ) {
     super(itemData.label, collapsibleState);
 
@@ -67,14 +66,10 @@ export class TreeItem extends vscode.TreeItem {
   private getTreeItemIcon(itemData: ItemData) {
     const iconName = itemData.icon;
     const light = iconName
-      ? vscode.Uri.file(
-        this.extensionContext.asAbsolutePath(`media/light/${iconName}`)
-      )
+      ? vscode.Uri.file(this.extensionContext.asAbsolutePath(`media/light/${iconName}`))
       : null;
     const dark = iconName
-      ? vscode.Uri.file(
-        this.extensionContext.asAbsolutePath(`media/dark/${iconName}`)
-      )
+      ? vscode.Uri.file(this.extensionContext.asAbsolutePath(`media/dark/${iconName}`))
       : null;
     return { light, dark };
   }
@@ -84,8 +79,8 @@ export class TreeItem extends vscode.TreeItem {
       return itemData.contextValue;
     }
     if (itemData.children.length) {
-      return "parent";
+      return 'parent';
     }
-    return "child";
+    return 'child';
   }
 }

@@ -27,10 +27,15 @@ async function getFolderSize(rootItemPath: string) {
     if (stats.isDirectory()) {
       const directoryItems = fs.readdirSync(itemPath);
       if (typeof directoryItems !== 'object') return;
-      await Promise.all(directoryItems.map(directoryItem => processItem(path.join(itemPath, directoryItem))));
+      await Promise.all(
+        directoryItems.map((directoryItem) => processItem(path.join(itemPath, directoryItem))),
+      );
     }
   }
-  const folderSize = Array.from(fileSizes.values()).reduce((total, fileSize) => total + fileSize, 0);
+  const folderSize = Array.from(fileSizes.values()).reduce(
+    (total, fileSize) => total + fileSize,
+    0,
+  );
   return folderSize;
 }
 
