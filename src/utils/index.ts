@@ -35,13 +35,15 @@ export function getWebviewContent(
   extensionUri: vscode.Uri,
   componentName?: string,
 ) {
+  // const theme = vscode.workspace.getConfiguration('workbench').get('colorTheme');
+  const theme = 'dark';
   // The CSS file from the React build output
   const stylesUri = getUri(webview, extensionUri, [
     'webview-ui',
     'build',
     'static',
     'css',
-    'main.css',
+    `${theme}.css`,
   ]);
   // The JS file from the React build output
   const scriptUri = getUri(webview, extensionUri, [
@@ -49,7 +51,7 @@ export function getWebviewContent(
     'build',
     'static',
     'js',
-    'main.js',
+    `${theme}.js`,
   ]);
 
   const SERVERLESS_DEVS_CONFIG = {

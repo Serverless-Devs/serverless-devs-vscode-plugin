@@ -195,7 +195,7 @@ module.exports = function (webpackEnv) {
       : isEnvDevelopment && 'cheap-module-source-map',
     // These are the "entry points" to our application.
     // This means they will be the "root" imports that are included in JS bundle.
-    entry: paths.appIndexJs,
+    entry: { light: paths.appIndexJs, dark: paths.appDarkJs },
     output: {
       // The build folder.
       path: paths.appBuild,
@@ -645,7 +645,10 @@ module.exports = function (webpackEnv) {
             manifest[file.name] = file.path;
             return manifest;
           }, seed);
-          const entrypointFiles = entrypoints.main.filter((fileName) => !fileName.endsWith('.map'));
+          const entrypointFiles = Object.keys(entrypoints).reduce((pre, current) => {
+            const tmp = entrypoints[current].filter((fileName) => !fileName.endsWith('.map'));
+            return [...pre, ...tmp];
+          });
 
           return {
             files: manifestFiles,
