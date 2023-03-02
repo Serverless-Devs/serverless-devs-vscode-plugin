@@ -33,10 +33,12 @@ export function getNonce() {
 export function getWebviewContent(
   webview: vscode.Webview,
   extensionUri: vscode.Uri,
-  componentName?: string,
+  config: Record<string, any> = {},
 ) {
+  const { componentName, ...rest } = config;
   // const theme = vscode.workspace.getConfiguration('workbench').get('colorTheme');
-  const theme = 'light';
+  // const theme = 'light';
+  const theme = 'dark';
   // The CSS file from the React build output
   const stylesUri = getUri(webview, extensionUri, [
     'webview-ui',
@@ -56,6 +58,7 @@ export function getWebviewContent(
 
   const SERVERLESS_DEVS_CONFIG = {
     componentName,
+    data: rest,
   };
 
   // Tip: Install the es6-string-html VS Code extension to enable code highlighting below

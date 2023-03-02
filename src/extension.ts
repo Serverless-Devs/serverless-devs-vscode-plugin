@@ -1,6 +1,6 @@
 import * as path from 'path';
 import { commands, workspace, ExtensionContext } from 'vscode';
-import { GlobalSettings } from './panels/GlobalSettings';
+import { GlobalSettings } from './panels/global-settings';
 import { ext } from './extensionVariables';
 import { init } from './commands/init';
 import { createTerminal } from './common';
@@ -64,8 +64,8 @@ export function activate(context: ExtensionContext) {
   /**
    * create the set command, which will be used to open the GlobalSettings panel
    */
-  const setCommand = commands.registerCommand('serverless-devs.set', () => {
-    GlobalSettings.render(context);
+  const setCommand = commands.registerCommand('serverless-devs.set', async () => {
+    await GlobalSettings.render(context);
   });
   /**
    * Add command to the extension context

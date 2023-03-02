@@ -1,17 +1,27 @@
-import './styles/basic.less';
-import HelloWorld from './components/HelloWorld';
-import GlobalSettings from './components/GlobalSettings';
+import './styles/index.less';
+import HelloWorld from './components/hello-world';
+import GlobalSettings from './components/global-settings';
 import { get } from 'lodash';
 
 function App() {
-  const componentName = get(window, 'SERVERLESS_DEVS_CONFIG.componentName', 'HelloWorld');
-  if (componentName === 'HelloWorld') {
-    return <HelloWorld />;
-  }
-  if (componentName === 'GlobalSettings') {
-    return <GlobalSettings />;
-  }
-  return <div>Not Found</div>;
+  const SERVERLESS_DEVS_CONFIG = get(window, 'SERVERLESS_DEVS_CONFIG');
+  const componentName: string = get(SERVERLESS_DEVS_CONFIG, 'componentName', 'GlobalSettings');
+  const Comp = () => {
+    if (componentName === 'HelloWorld') {
+      return <HelloWorld />;
+    }
+    if (componentName === 'GlobalSettings') {
+      return <GlobalSettings />;
+    }
+    return <div>Not Found</div>;
+  };
+
+  return (
+    <>
+      <pre>{JSON.stringify(SERVERLESS_DEVS_CONFIG, null, 2)}</pre>
+      <Comp />
+    </>
+  );
 }
 
 export default App;
