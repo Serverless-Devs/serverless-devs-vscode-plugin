@@ -326,7 +326,7 @@
     }
   },
   "scripts": {
-    "install": "npm install && npm --prefix ./webview-ui install ./webview-ui",
+    "install:all": "npm install && npm --prefix ./webview-ui install ./webview-ui",
     "start:webview": "npm --prefix ./webview-ui run start",
     "build:webview": "npm --prefix ./webview-ui run build",
     "vscode:prepublish": "npm run compile",
@@ -362,8 +362,5 @@
     "node-fetch": "^2.6.7",
     "open": "^8.4.0",
     "qs": "^6.11.0"
-  },
-  "extensionDependencies": [
-    "redhat.vscode-yaml"
-  ]
+  }
 }
