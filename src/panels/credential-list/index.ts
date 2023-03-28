@@ -1,19 +1,20 @@
 import * as core from '@serverless-devs/core';
-import * as open from 'open';
+import * as path from 'path';
 import { WebviewPanel, ViewColumn, ExtensionContext, Uri } from 'vscode';
 import { getWebviewContent, createWebviewPanel } from '../../utils';
 import { WEBVIEW_ICON, ISSUE_URL } from '../../constants';
 import * as event from './event';
+const { lodash: _ } = core;
 
-class GlobalSettings {
-  public static currentPanel: GlobalSettings | undefined;
+class CredentialList {
+  public static currentPanel: CredentialList | undefined;
   private readonly _panel: WebviewPanel;
 
   private constructor(panel: WebviewPanel, private context: ExtensionContext) {
     this._panel = panel;
     this._panel.onDidDispose(
       () => {
-        GlobalSettings.currentPanel = undefined;
+        CredentialList.currentPanel = undefined;
       },
       null,
       context.subscriptions,
@@ -25,23 +26,32 @@ class GlobalSettings {
     );
   }
 
+  async getCredentialList() {
+    const data = await core.getYamlContent(path.join(core.getRootHome(), 'access.yaml'));
+    if (_.isEmpty(data)) return [];
+    const list: any = [];
+    for (const access in data) {
+      const info = await core.getCredential(access);
+      list.push(info);
+    }
+    return list;
+  }
+
   async run() {
-    const analysis = await core.getSetConfig('analysis');
     this._panel.webview.html = getWebviewContent(this._panel.webview, this.context.extensionUri, {
-      componentName: 'GlobalSettings',
-      analysis: analysis === 'enable',
-      workspace: core.getRootHome(),
+      componentName: 'CredentialList',
+      credentialList: await this.getCredentialList(),
     });
     return this;
   }
   public static async render(context: ExtensionContext) {
-    if (GlobalSettings.currentPanel) {
-      GlobalSettings.currentPanel._panel.reveal(ViewColumn.One);
+    if (CredentialList.currentPanel) {
+      CredentialList.currentPanel._panel.reveal(ViewColumn.One);
     } else {
       // If a webview panel does not already exist create and show a new one
-      const panel = createWebviewPanel('GlobalSettings', '设置中心');
+      const panel = createWebviewPanel('CredentialList', '密钥管理');
       panel.iconPath = Uri.parse(WEBVIEW_ICON);
-      GlobalSettings.currentPanel = await new GlobalSettings(panel, context).run();
+      CredentialList.currentPanel = await new CredentialList(panel, context).run();
     }
   }
 
@@ -49,23 +59,13 @@ class GlobalSettings {
     const command = message.command;
     const data = message.data;
     switch (command) {
-      case 'resetWorkspace':
-        await event.resetWorkspace();
+      case 'deleteCredential':
+        await event.deleteCredential(data);
         await update();
-        break;
-      case 'manageWorkspace':
-        await event.mangeWorkspace();
-        await update();
-        break;
-      case 'setAnalysis':
-        await event.setAnalysis(data);
-        break;
-      case 'issueFeedback':
-        open(ISSUE_URL);
         break;
       // Add more switch case statements here as more webview message commands
     }
   }
 }
 
-export default GlobalSettings;
+export default CredentialList;

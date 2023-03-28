@@ -1,12 +1,15 @@
-import { vscode } from '../../utilities/vscode';
+import { FC } from 'react';
+import { vscode } from '../../utils';
 import { Button, Switch, Input, Divider, Form, Field } from '@alicloud/console-components';
 import { FORM_LAYOUT } from '../../constants';
-import { get } from 'lodash';
 
-function GlobalSettings() {
-  const initValue = get(window, 'SERVERLESS_DEVS_CONFIG.data');
+type Props = {
+  analysis: boolean;
+  workspace: string;
+};
 
-  const field = Field.useField({ values: initValue });
+const GlobalSettings: FC<Props> = (props) => {
+  const field = Field.useField({ values: props });
   const { init } = field;
   const onResetWorkspace = () => {
     vscode.postMessage({
@@ -94,6 +97,6 @@ function GlobalSettings() {
       </Button>
     </>
   );
-}
+};
 
 export default GlobalSettings;

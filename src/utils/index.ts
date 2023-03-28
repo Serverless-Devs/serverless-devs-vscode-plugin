@@ -37,8 +37,8 @@ export function getWebviewContent(
 ) {
   const { componentName, ...rest } = config;
   // const theme = vscode.workspace.getConfiguration('workbench').get('colorTheme');
-  // const theme = 'light';
-  const theme = 'dark';
+  const theme = 'light';
+  // const theme = 'dark';
   // The CSS file from the React build output
   const stylesUri = getUri(webview, extensionUri, [
     'webview-ui',

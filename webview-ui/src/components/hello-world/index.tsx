@@ -1,4 +1,4 @@
-import { vscode } from '../../utilities/vscode';
+import { vscode } from '../../utils';
 import AliReadme from '@serverless-cd/ali-readme';
 import { Button, Select, Input } from '@alicloud/console-components';
 

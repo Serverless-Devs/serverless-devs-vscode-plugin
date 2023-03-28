@@ -1,6 +1,7 @@
 import * as path from 'path';
 import { commands, workspace, ExtensionContext } from 'vscode';
-import { GlobalSettings } from './panels/global-settings';
+import GlobalSettings from './panels/global-settings';
+import CredentialList from './panels/credential-list';
 import { ext } from './extensionVariables';
 import { init } from './commands/init';
 import { createTerminal } from './common';
@@ -67,6 +68,9 @@ export function activate(context: ExtensionContext) {
   const setCommand = commands.registerCommand('serverless-devs.set', async () => {
     await GlobalSettings.render(context);
   });
+  const configCommand = commands.registerCommand('serverless-devs.config', async () => {
+    await CredentialList.render(context);
+  });
   /**
    * Add command to the extension context
    */
@@ -80,5 +84,6 @@ export function activate(context: ExtensionContext) {
     // groupCommand,
     // issueCommand,
     setCommand,
+    configCommand,
   );
 }
