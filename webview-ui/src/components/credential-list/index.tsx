@@ -3,6 +3,7 @@ import { vscode, sleep } from '../../utils';
 import { Button, Table, Dialog } from '@alicloud/console-components';
 import Actions, { LinkButton } from '@alicloud/console-components-actions';
 import { map, set, startsWith } from 'lodash';
+import Add from './components/add';
 
 type Props = {
   credentialList: { Alias: string; [prop: string]: any }[];
@@ -99,9 +100,9 @@ const CredentialList: FC<Props> = (props) => {
 
   return (
     <>
-      <Button type="primary" onClick={handleAdd}>
-        添加密钥
-      </Button>
+      <Add>
+        <Button type="primary">添加密钥</Button>
+      </Add>
       <Table className="mt-16" dataSource={data} columns={columns} />
     </>
   );

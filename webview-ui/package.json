@@ -5,6 +5,7 @@
   "dependencies": {
     "@alicloud/console-components": "^1.6.2",
     "@alicloud/console-components-actions": "^2.0.2",
+    "@alicloud/console-components-slide-panel": "^3.0.3",
     "@babel/core": "^7.16.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
     "@serverless-cd/ali-readme": "^0.0.7",
