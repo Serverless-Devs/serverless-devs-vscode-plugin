@@ -4,6 +4,7 @@ import { Button, Table, Dialog } from '@alicloud/console-components';
 import Actions, { LinkButton } from '@alicloud/console-components-actions';
 import { map, set, startsWith } from 'lodash';
 import Add from './components/add';
+import Header from '@/components/header';
 
 type Props = {
   credentialList: { Alias: string; [prop: string]: any }[];
@@ -98,6 +99,7 @@ const CredentialList: FC<Props> = (props) => {
 
   return (
     <>
+      <Header title="密钥管理" subtitle="本地密钥信息的管理" />
       <Add existAlias={map(data, (item) => item.Alias)}>
         <Button type="primary">添加密钥</Button>
       </Add>

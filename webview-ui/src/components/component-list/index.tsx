@@ -2,7 +2,7 @@ import { FC, useState } from 'react';
 import { vscode, sleep } from '@/utils';
 import { Button, Table, Dialog } from '@alicloud/console-components';
 import Actions, { LinkButton } from '@alicloud/console-components-actions';
-import { map, set, startsWith } from 'lodash';
+import Header from '@/components/header';
 
 type IItem = { Component: string; Version: string; Size: string; Description: string };
 
@@ -188,6 +188,7 @@ const ComponentList: FC<Props> = (props) => {
 
   return (
     <>
+      <Header title="组件管理" subtitle="工具已安装组件管理" />
       <Button disabled={selectedRowKeys.length === 0} type="primary" onClick={handleBatchDelete}>
         批量删除
       </Button>

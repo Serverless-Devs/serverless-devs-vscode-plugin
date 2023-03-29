@@ -2,6 +2,7 @@ import { FC } from 'react';
 import { vscode } from '../../utils';
 import { Button, Switch, Input, Divider, Form, Field } from '@alicloud/console-components';
 import { FORM_LAYOUT } from '../../constants';
+import Header from '@/components/header';
 
 type Props = {
   analysis: boolean;
@@ -28,12 +29,9 @@ const GlobalSettings: FC<Props> = (props) => {
   };
   return (
     <>
-      <div className="align-center">
-        <div className="text-bold fz-20">设置中心</div>
-        <span className="ml-8 color-gray">系统功能配置</span>
-      </div>
+      <Header title="设置中心" subtitle="系统功能配置" />
       <>
-        <div className="mt-32 text-bold fz-18">默认工具工作空间配置</div>
+        <div className="text-bold fz-18">默认工具工作空间配置</div>
         <Divider />
         <div className="color-gray">
           在使用Serverless

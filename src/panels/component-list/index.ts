@@ -37,7 +37,7 @@ class ComponentList {
       ComponentList.currentPanel._panel.reveal(ViewColumn.One);
     } else {
       // If a webview panel does not already exist create and show a new one
-      const panel = createWebviewPanel('ComponentList', '密钥管理');
+      const panel = createWebviewPanel('ComponentList', '组件管理');
       panel.iconPath = Uri.parse(WEBVIEW_ICON);
       ComponentList.currentPanel = await new ComponentList(panel, context).run();
     }
