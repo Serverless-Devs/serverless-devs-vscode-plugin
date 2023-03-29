@@ -51,3 +51,5 @@ export const PROVIDER_LIST = [
   },
   { label: 'Custom (others)', value: PROVIDER.custom },
 ];
+
+export type IMessageData = { data: { eventId: string; data: any } };

@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { vscode, sleep } from '../../utils';
+import { vscode, sleep } from '@/utils';
 import { Button, Table, Dialog } from '@alicloud/console-components';
 import Actions, { LinkButton } from '@alicloud/console-components-actions';
 import { map, set, startsWith } from 'lodash';
@@ -31,7 +31,7 @@ const CredentialList: FC<Props> = (props) => {
   const [data, setData] = useState(newCredentialList);
 
   const handleDelete = (value: string) => {
-    const dialog = Dialog.alert({
+    Dialog.alert({
       title: `删除密钥：${value}`,
       content: '您确定删除当前密钥吗?',
       onOk: async () => {
@@ -96,11 +96,9 @@ const CredentialList: FC<Props> = (props) => {
     },
   ];
 
-  const handleAdd = () => {};
-
   return (
     <>
-      <Add>
+      <Add existAlias={map(data, (item) => item.Alias)}>
         <Button type="primary">添加密钥</Button>
       </Add>
       <Table className="mt-16" dataSource={data} columns={columns} />

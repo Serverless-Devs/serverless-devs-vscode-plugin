@@ -1,8 +1,9 @@
 import * as core from '@serverless-devs/core';
 import * as path from 'path';
+import * as open from 'open';
 import { WebviewPanel, ViewColumn, ExtensionContext, Uri } from 'vscode';
 import { getWebviewContent, createWebviewPanel } from '../../utils';
-import { WEBVIEW_ICON, ISSUE_URL } from '../../constants';
+import { WEBVIEW_ICON } from '../../constants';
 import * as event from './event';
 const { lodash: _ } = core;
 
@@ -63,6 +64,12 @@ class CredentialList {
         await event.deleteCredential(data);
         await update();
         break;
+      case 'addCredential':
+        const { success } = await event.addCredential(data);
+        success && (await update());
+        break;
+      case 'openAccessUrl':
+        await open(data.doc);
       // Add more switch case statements here as more webview message commands
     }
   }
