@@ -33,7 +33,7 @@ const CredentialList: FC<Props> = (props) => {
   const handleDelete = (value: string) => {
     Dialog.alert({
       title: `删除密钥：${value}`,
-      content: '您确定删除当前密钥吗?',
+      content: '您确定要删除当前密钥吗?',
       onOk: async () => {
         vscode.postMessage({
           command: 'deleteCredential',
