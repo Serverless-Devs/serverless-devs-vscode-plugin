@@ -1,0 +1,16 @@
+{
+  "vscode.the.alias.for.this.workspace.configuration": "此工作空间配置的别名",
+  "vscode.please.enter": "请输入",
+  "vscode.yaml.files.do.not.conform.to.the.Serverless.Devs.specification": "yaml文件不符合Serverless Devs规范",
+  "vscode.template": "模板",
+  "vscode.how.do.you.want.to.create.your.app": "您希望以哪种方式创建应用？",
+  "vscode.select.this.path": "选择这个路径",
+  "vscode.default.environment": "默认环境",
+  "vscode.quick.start": "快速开始",
+  "vscode.a.must-read.for.development": "开发必读",
+  "vscode.more": "更多",
+  "vscode.quick.start.welcome.contents": "快速开始你的Serverless之旅\n[密钥管理](command:serverless-devs.access)\n[创建一个应用](command:serverless-devs.createApp)\n[组件管理](command:serverless-devs.component)\n除此之外，您可以可以快速通过[快速上手](https://docs.serverless-devs.com/serverless-devs/quick_start)进行更多的图文案例的参考和学习。",
+  "vscode.dev.docs.welcome.contents": "您可以在使用该插件之前，查看[帮助文档](https://docs.serverless-devs.com/serverless-devs/readme)，以便对Serverless-Devs和本插件有更深入的了解，您也可以通过以下链接快速学习和探索\n[快速上手案例](https://docs.serverless-devs.com/serverless-devs/quick_start#%E4%B8%8A%E6%89%8B%E4%BD%93%E9%AA%8C)\n[Serverless 应用介绍](http://www.devsapp.cn/application.html)\n[Serverless Devs Yaml规范](https://docs.serverless-devs.com/fc/yaml/readme)\n[Yaml继承和多环境实战](https://docs.serverless-devs.com/serverless-devs/extend)\n[与常见的CI/CD平台集成](https://docs.serverless-devs.com/serverless-devs/cicd)",
+  "vscode.learn.more.welcome.contents": "您在使用当前工具的时候，遇到任何问题都可以在[Github Issues](https://github.com/Serverless-Devs/Serverless-Devs/issues)上面找到我们，也欢迎您和我们一起共建该项目。\n[访问代码仓库](https://github.com/Serverless-Devs/Serverless-Devs)",
+  "vscode.local.resource..welcome.contents": "您正确安装了serverless-devs命令行工具吗？该部分的功能依赖此工具，建议您安装后体验。\n[立即安装](command:serverless-devs.install)\n如果您以安装仍然出现此提示，说明该目录并不存在s.yaml文件"
+}

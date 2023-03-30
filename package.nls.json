@@ -1,0 +1,16 @@
+{
+  "vscode.the.alias.for.this.workspace.configuration": "The alias for this workspace configuration",
+  "vscode.please.enter": "Please enter",
+  "vscode.yaml.files.do.not.conform.to.the.Serverless.Devs.specification": "YAML files do not conform to the Serverless Devs specification",
+  "vscode.template": "Template",
+  "vscode.how.do.you.want.to.create.your.app": "How do you want to create your app?",
+  "vscode.select.this.path": "Select this path",
+  "vscode.default.environment": "Default environment",
+  "vscode.quick.start": "Quick start",
+  "vscode.a.must-read.for.development": "A must-read for development",
+  "vscode.more": "More",
+  "vscode.quick.start.welcome.contents": "Quickly start your journey to Serverless\n[Credential Management](command:serverless-devs.access)\n[Create an application](command:serverless-devs.createApp)\n[Component Management](command:serverless-devs.component)\nIn addition, You can quickly refer to and learn more graphic cases through [Get started quickly](https://docs.serverless-devs.com/serverless-devs/quick_start).",
+  "vscode.dev.docs.welcome.contents": "You can check the [Help Documentation](https://docs.serverless-devs.com/serverless-devs/readme) before using the plugin to have a deeper understanding of Serverless-Devs and this plugin. You can also learn and explore quickly through the following links\n[Quick Start Case](https://docs.serverless-devs.com/serverless-devs/quick_start#%E4%B8%8A%E6%89%8B%E4%BD%93%E9%AA%8C)\n[Serverless Application Introduction](http://www.devsapp.cn/application.html)\n[Serverless Devs  YAML Specification](https://docs.serverless-devs.com/fc/yaml/readme)\n[Yaml extend and Multi-Environment Practice](https://docs.serverless-devs.com/serverless-devs/extend)\n[Integration with Common CI/CD Platforms](https://docs.serverless-devs.com/serverless-devs/cicd)",
+  "vscode.learn.more.welcome.contents": "If you encounter any problems with the current tool, you can find us on [Github Issues](https://github.com/Serverless-Devs/Serverless-Devs/issues), and you are welcome to work with us to build the project. \n[Access repository](https://github.com/Serverless-Devs/Serverless-Devs)",
+  "vscode.local.resource..welcome.contents": "Did you install the serverless-devs command-line tool correctly? The functionality of this section relies on this tool and is recommended for post-installation experience. \n[Install Now](command:serverless-devs.install)\nIf you still see this prompt as an installation, the s.yaml file does not exist in that directory"
+}
