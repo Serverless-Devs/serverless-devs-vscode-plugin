@@ -4,8 +4,8 @@ import GlobalSettings from './panels/global-settings';
 import CredentialList from './panels/credential-list';
 import ComponentList from './panels/component-list';
 import { ext } from './extensionVariables';
-import { init } from './commands/init';
 import { createTerminal } from './common';
+import createApp from './commands/create-app';
 
 export function activate(context: ExtensionContext) {
   ext.context = context;
@@ -81,6 +81,9 @@ export function activate(context: ExtensionContext) {
   const componentCommand = commands.registerCommand('serverless-devs.component', async () => {
     await ComponentList.render(context);
   });
+  const createAppCommand = commands.registerCommand('serverless-devs.createApp', async () => {
+    await createApp(context);
+  });
   /**
    * Add command to the extension context
    */
@@ -96,5 +99,6 @@ export function activate(context: ExtensionContext) {
     setCommand,
     accessCommand,
     componentCommand,
+    createAppCommand,
   );
 }

@@ -1,4 +1,4 @@
-import { QuickPickItem } from "vscode";
+import { QuickPickItem } from 'vscode';
 
 export interface IPickItem extends QuickPickItem {
   value: string;
@@ -11,4 +11,9 @@ export interface IMultiStepInputState {
   pickItem: IPickItem;
   name: string;
   value: string;
+}
+
+export enum CreateAppType {
+  template = 'template',
+  registry = 'registry',
 }

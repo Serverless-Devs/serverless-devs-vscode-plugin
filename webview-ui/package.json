@@ -9,11 +9,14 @@
     "@babel/core": "^7.16.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
     "@serverless-cd/ali-readme": "^0.0.7",
+    "@serverless-cd/app-card-ui": "^0.0.5",
     "@svgr/webpack": "^5.5.0",
     "@types/node": "^16.18.12",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
     "@types/vscode-webview": "^1.57.1",
+    "ahooks": "^3.7.6",
+    "axios": "^1.3.4",
     "babel-jest": "^27.4.2",
     "babel-loader": "^8.2.3",
     "babel-plugin-named-asset-import": "^0.3.8",
@@ -143,6 +146,7 @@
     ]
   },
   "devDependencies": {
+    "@types/styled-components": "^5.1.26",
     "less": "^4.1.3",
     "less-loader": "^11.1.0"
   },

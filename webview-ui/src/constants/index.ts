@@ -53,3 +53,8 @@ export const PROVIDER_LIST = [
 ];
 
 export type IMessageData = { data: { eventId: string; data: any } };
+
+export enum LANG {
+  en = 'en',
+  zh = 'zh',
+}
