@@ -1,13 +1,14 @@
 import * as path from 'path';
 import { commands, workspace, ExtensionContext } from 'vscode';
-import GlobalSettings from './panels/global-settings';
-import CredentialList from './panels/credential-list';
-import ComponentList from './panels/component-list';
+import GlobalSettings from './webviews/global-settings';
+import CredentialList from './webviews/credential-list';
+import ComponentList from './webviews/component-list';
 import { ext } from './extensionVariables';
 import { createTerminal } from './common';
 import createApp from './commands/create-app';
+import { LocalResource } from './views/local-resource';
 
-export function activate(context: ExtensionContext) {
+export async function activate(context: ExtensionContext) {
   ext.context = context;
   const cwd =
     workspace.workspaceFolders && workspace.workspaceFolders.length > 0
@@ -101,4 +102,5 @@ export function activate(context: ExtensionContext) {
     componentCommand,
     createAppCommand,
   );
+  await new LocalResource(context).autoMark();
 }
