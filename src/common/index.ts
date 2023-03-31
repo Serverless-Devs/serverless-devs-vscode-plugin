@@ -3,9 +3,6 @@ import * as fs from 'fs';
 import * as vscode from 'vscode';
 import { ext } from '../extensionVariables';
 import { TEMPLTE_FILE, TERMINAL_NAME } from '../constants';
-import { getHtmlForWebview } from './getHtmlForWebview';
-
-export { getHtmlForWebview } from './getHtmlForWebview';
 export { MultiStepInput } from './multiStepInput';
 export { ItemData, TreeItem } from './treeItem';
 
@@ -59,13 +56,4 @@ export function createTerminalWithExitStatus(command: string): Promise<vscode.Te
       }
     });
   });
-}
-
-export function updateWebview(
-  panel: vscode.WebviewPanel,
-  filename: string,
-  context: vscode.ExtensionContext,
-  parameter?: any,
-) {
-  panel.webview.html = getHtmlForWebview(filename, context, panel.webview, parameter);
 }

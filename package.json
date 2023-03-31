@@ -351,13 +351,8 @@
   },
   "dependencies": {
     "@serverless-devs/core": "^0.1.57-beta.5",
-    "@vscode/codicons": "^0.0.30",
-    "@vscode/webview-ui-toolkit": "^1.0.0",
-    "art-template": "^4.13.2",
     "command-exists": "^1.2.9",
-    "node-fetch": "^2.6.7",
     "open": "^8.4.0",
-    "qs": "^6.11.0",
     "rimraf": "^4.4.1"
   }
 }
