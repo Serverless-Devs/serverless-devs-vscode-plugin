@@ -1,10 +1,10 @@
 import { Button, Icon, Form, Field, Select, Input, Loading } from '@alicloud/console-components';
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { FORM_LAYOUT, RANDOM_PATTERN } from '@/constants';
-import { generateRandom, vscode } from '@/utils';
+import { generateRandom, vscode, sleep } from '@/utils';
 import { getAppParams } from '@/services/app';
 import { useRequest } from 'ahooks';
-import { endsWith, get, includes, map, replace } from 'lodash';
+import { endsWith, first, get, includes, map, replace } from 'lodash';
 import { CreateAppType, IEventData } from '@/constants';
 
 const FormItem = Form.Item;
@@ -19,6 +19,7 @@ type Props = {
 
 const Params: FC<Props> = (props) => {
   const { onBack, downloadPath, appName, aliasList, type = CreateAppType.registry } = props;
+  const [submitting, setSubmitting] = useState(false);
   const { data = {}, loading } = useRequest(getAppParams, {
     defaultParams: [{ name: appName }],
   });
@@ -29,7 +30,7 @@ const Params: FC<Props> = (props) => {
     const fn = (event: IEventData) => {
       const { eventId, data } = event.data;
       if (eventId === 'setDownloadPath') {
-        setValue('downloadPath', get(data, 'downloadPath'));
+        setValue('$downloadPath', get(data, 'downloadPath'));
       }
     };
     // 监听webview发来的消息
@@ -39,16 +40,26 @@ const Params: FC<Props> = (props) => {
     };
   }, []);
   const handleCreate = () => {
-    validate((errors, values) => {
+    validate(async (errors, values) => {
       console.log('errors', errors, values);
       if (errors) return;
+      setSubmitting(true);
+      vscode.postMessage({
+        command: 'createApp',
+        data: {
+          ...values,
+          $template: appName,
+        },
+      });
+      await sleep();
+      setSubmitting(false);
     });
   };
   const openFolder = () => {
     vscode.postMessage({
       command: 'setDownloadPath',
       data: {
-        downloadPath: getValue('downloadPath'),
+        downloadPath: getValue('$downloadPath'),
       },
     });
   };
@@ -109,7 +120,7 @@ const Params: FC<Props> = (props) => {
             <Input
               className="full-width"
               readOnly
-              {...init('downloadPath', {
+              {...init('$downloadPath', {
                 initValue: downloadPath,
                 rules: [
                   {
@@ -126,7 +137,7 @@ const Params: FC<Props> = (props) => {
           <FormItem label="应用名称" required>
             <Input
               className="full-width"
-              {...init('appName', {
+              {...init('$appName', {
                 initValue: appName,
                 rules: [
                   {
@@ -142,7 +153,8 @@ const Params: FC<Props> = (props) => {
               showSearch
               placeholder="请选择密钥别名"
               className="full-width"
-              {...init('alias', {
+              {...init('$alias', {
+                initValue: includes(aliasList, 'default') ? 'default' : first(aliasList),
                 rules: [
                   {
                     required: true,
@@ -155,11 +167,11 @@ const Params: FC<Props> = (props) => {
           </FormItem>
           {renderProperties()}
           <FormItem className="mt-32">
-            <Button type="primary" onClick={handleCreate}>
+            <Button type="primary" onClick={handleCreate} loading={submitting}>
               创建
             </Button>
             {type === CreateAppType.registry && (
-              <Button className="ml-16" onClick={onBack}>
+              <Button className="ml-16" onClick={onBack} disabled={submitting}>
                 取消
               </Button>
             )}

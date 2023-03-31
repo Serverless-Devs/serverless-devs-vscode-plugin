@@ -68,10 +68,6 @@ async function init(context: vscode.ExtensionContext) {
       });
       template = state.pickItem;
     }
-
-    if (pickValue === 'Dev_Template_for_Serverless_Devs') {
-      return;
-    }
     await CreateAppPanel.render(context, {
       step: 1,
       type: CreateAppType.template,

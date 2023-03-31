@@ -350,7 +350,7 @@
     "typescript": "^4.5.5"
   },
   "dependencies": {
-    "@serverless-devs/core": "latest",
+    "@serverless-devs/core": "^0.1.57-beta.5",
     "@vscode/codicons": "^0.0.30",
     "@vscode/webview-ui-toolkit": "^1.0.0",
     "art-template": "^4.13.2",

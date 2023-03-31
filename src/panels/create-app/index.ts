@@ -55,6 +55,8 @@ class CreateApp {
       case 'setDownloadPath':
         await event.setDownloadPath(data, this._panel.webview);
         break;
+      case 'createApp':
+        await event.createApp(data, this._panel);
       // Add more switch case statements here as more webview message commands
     }
   }

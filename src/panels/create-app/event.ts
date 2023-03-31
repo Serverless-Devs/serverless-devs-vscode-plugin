@@ -1,8 +1,6 @@
 import * as vscode from 'vscode';
-import * as path from 'path';
-import * as rimraf from 'rimraf';
 import * as core from '@serverless-devs/core';
-const { lodash: _, jsyaml: yaml, fse: fs } = core;
+const { lodash: _ } = core;
 
 export async function setDownloadPath(
   { downloadPath }: { downloadPath: string },
@@ -25,4 +23,22 @@ export async function setDownloadPath(
       },
     });
   }
+}
+
+export async function createApp(data, panel: vscode.WebviewPanel) {
+  const { $template, $downloadPath, $alias, $appName, ...rest } = data;
+  const appPath = await core.loadApplication({
+    source: $template,
+    target: $downloadPath,
+    name: $appName,
+    parameters: rest,
+    appName: $appName,
+    access: $alias,
+  });
+  panel.dispose();
+  vscode.commands.executeCommand(
+    'vscode.openFolder',
+    vscode.Uri.file(appPath),
+    _.isEmpty(vscode.workspace.workspaceFolders) ? false : true, // 是否在新窗口打开
+  );
 }
