@@ -1,20 +1,21 @@
 import * as vscode from 'vscode';
 import { MultiStepInput } from '../../common';
 import * as core from '@serverless-devs/core';
-import { IMultiStepInputState as State } from '../../interface';
-import { activeTemplateAppWebviewPanel } from '../../pages/template-app';
+import { IMultiStepInputState as State, CreateAppType } from '../../interface';
+import CreateAppPanel from '../../panels/create-app';
+
 const { lodash: _ } = core;
 
 const title = 'Init Serverless Devs Application';
 
 async function init(context: vscode.ExtensionContext) {
   async function collectInputs() {
-    const state = { step: 1 } as Partial<State>;
+    const state = { step: 1 } as State;
     await MultiStepInput.run((input) => pickCloudProvider(input, state));
     return state as State;
   }
 
-  async function pickCloudProvider(input: MultiStepInput, state: Partial<State>) {
+  async function pickCloudProvider(input: MultiStepInput, state: State) {
     // 第一层级
     state.pickItem = await input.showQuickPick({
       title,
@@ -28,7 +29,7 @@ async function init(context: vscode.ExtensionContext) {
     return await pickSolution(input, state);
   }
 
-  async function pickSolution(input: MultiStepInput, state: Partial<State>) {
+  async function pickSolution(input: MultiStepInput, state: State) {
     const pickValue = state.pickItem.value;
     let template = state.pickItem;
     if (pickValue === 'Alibaba_Cloud_Serverless') {
@@ -68,29 +69,14 @@ async function init(context: vscode.ExtensionContext) {
       template = state.pickItem;
     }
 
-    const appParams = {
-      source: template.value,
-    };
-
-    if (pickValue !== 'Dev_Template_for_Serverless_Devs') {
-      const credentialAliasList = _.map(await core.getCredentialAliasList(), (o) => ({
-        label: o,
-        value: o,
-      }));
-      if (credentialAliasList.length > 0) {
-        state.pickItem = await input.showQuickPick({
-          title,
-          step: state.step++,
-          totalSteps: state.totalSteps,
-          placeholder: 'please select credential alias',
-          items: credentialAliasList,
-          activeItem: state.pickItem,
-          shouldResume: shouldResume,
-        });
-        _.set(appParams, 'access', state.pickItem.value);
-      }
+    if (pickValue === 'Dev_Template_for_Serverless_Devs') {
+      return;
     }
-    activeTemplateAppWebviewPanel(context, appParams);
+    await CreateAppPanel.render(context, {
+      step: 1,
+      type: CreateAppType.template,
+      appName: template.value,
+    });
   }
 
   function shouldResume() {

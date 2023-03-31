@@ -1,27 +1,38 @@
 import { FC, useState, useEffect } from 'react';
 import { vscode, sleep } from '@/utils';
-import { Button, Table, Tab, Loading, Search } from '@alicloud/console-components';
+import { Tab, Loading, Search } from '@alicloud/console-components';
 import Header from '@/components/header';
 import Empty from '@/components/empty';
+import Params from './components/params';
 import AppCard from '@serverless-cd/app-card-ui';
 import { getApps, getTabs } from '@/services/app';
 import { map, sortBy, filter, includes, first, get, isEmpty, find } from 'lodash';
 import styled from 'styled-components';
-
-type IItem = { Component: string; Version: string; Size: string; Description: string };
+import { CreateAppType } from '@/constants';
 
 type Props = {
-  componentList: IItem[];
+  downloadPath: string;
+  aliasList: string[];
+  step?: number;
+  appName?: string;
+  type?: `${CreateAppType}`;
 };
 
 const CreateApp: FC<Props> = (props) => {
-  const {} = props;
+  const {
+    downloadPath = '/Users/shihuali',
+    aliasList = ['default', 'dankun', 'sub', 'z-fc-console', 'test'],
+    step: stepProps = 0,
+    type = CreateAppType.registry,
+    appName,
+  } = props;
   const [loading, setLoading] = useState(false);
   const [templates, setTemplates] = useState([]);
   const [activeTab, setActiveTab] = useState<string>('');
   const [applist, setApplist] = useState<any>([]);
   const [searchValue, setSearchValue] = useState('');
-  const [total, setTotal] = useState(0);
+  const [step, setStep] = useState(stepProps); // 0 选择模版 1 配置参数
+  const [appInfo, setAppInfo] = useState<any>({});
 
   useEffect(() => {
     fetchData();
@@ -48,7 +59,6 @@ const CreateApp: FC<Props> = (props) => {
     setTemplates(tabs);
     setActiveTab(get(fistTab, 'key', ''));
     setApplist(get(fistTab, 'items'));
-    setTotal(get(apps, 'length', 0));
     setLoading(false);
   };
 
@@ -81,46 +91,73 @@ const CreateApp: FC<Props> = (props) => {
     setSearchValue(value);
     setApplist(newData);
   };
+  const onCreate = async (item) => {
+    setAppInfo(item);
+    setStep(1);
+  };
+
+  const renderAppList = () => (
+    <Loading inline={false} visible={loading} style={{ minHeight: 500 }}>
+      <Search
+        style={{ width: '50%' }}
+        className="mb-16"
+        placeholder="通过关键词快速搜索应用"
+        hasClear
+        value={searchValue}
+        onSearch={handleSearch}
+        onChange={handleSearch}
+      />
+      <Tab
+        shape="capsule"
+        className="applications-template-tab"
+        activeKey={activeTab}
+        onChange={handleTabChange}
+      >
+        {map(templates, (template: any) => (
+          <Tab.Item
+            title={
+              template.key === 'all' ? template.name : `${template.name} ${template.items.length}`
+            }
+            key={template.key}
+          >
+            {isEmpty(applist) ? (
+              <Empty />
+            ) : (
+              <Wrapper>
+                {map(applist, (item: any) => (
+                  <AppCard
+                    key={item.package}
+                    dataSouce={item}
+                    column={3}
+                    onCreate={onCreate}
+                    env="vscode"
+                  />
+                ))}
+              </Wrapper>
+            )}
+          </Tab.Item>
+        ))}
+      </Tab>
+    </Loading>
+  );
   return (
     <>
-      <Header title="创建应用" subtitle="通过registry创建新的应用" />
-      <Loading inline={false} visible={loading} style={{ minHeight: 500 }}>
-        <Search
-          style={{ width: '50%' }}
-          className="mb-16"
-          placeholder="通过关键词快速搜索应用"
-          hasClear
-          value={searchValue}
-          onSearch={handleSearch}
-          onChange={handleSearch}
+      <Header
+        title="创建应用"
+        subtitle={
+          type === CreateAppType.registry ? '通过registry创建新的应用' : '通过模版创建新的应用'
+        }
+      />
+      {step === 0 && renderAppList()}
+      {step === 1 && (
+        <Params
+          onBack={() => setStep(0)}
+          aliasList={aliasList}
+          downloadPath={downloadPath}
+          appName={get(appInfo, 'package', appName)}
+          type={type}
         />
-        <Tab
-          size="small"
-          shape="capsule"
-          className="applications-template-tab"
-          activeKey={activeTab}
-          onChange={handleTabChange}
-        >
-          {map(templates, (template: any) => (
-            <Tab.Item
-              title={
-                template.key === 'all' ? template.name : `${template.name} ${template.items.length}`
-              }
-              key={template.key}
-            >
-              {isEmpty(applist) ? (
-                <Empty />
-              ) : (
-                <Wrapper>
-                  {map(applist, (item: any) => (
-                    <AppCard key={item.package} dataSouce={item} column={3} />
-                  ))}
-                </Wrapper>
-              )}
-            </Tab.Item>
-          ))}
-        </Tab>
-      </Loading>
+      )}
     </>
   );
 };

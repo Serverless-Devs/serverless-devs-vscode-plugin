@@ -12,3 +12,16 @@ export const getTabs = async (params = { type: 'fc', lang }) => {
   const response = await axios.get(`https://registry.devsapp.cn/console/tabs`, { params });
   return get(response, 'data.Response', []);
 };
+
+export const getAppParams = async (data) => {
+  const response = await axios.post(
+    `https://registry.devsapp.cn/package/param?lang=${lang}`,
+    data,
+    {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    },
+  );
+  return get(response, 'data.Response', {});
+};

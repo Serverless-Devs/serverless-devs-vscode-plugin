@@ -52,9 +52,16 @@ export const PROVIDER_LIST = [
   { label: 'Custom (others)', value: PROVIDER.custom },
 ];
 
-export type IMessageData = { data: { eventId: string; data: any } };
+export type IEventData = { data: { eventId: string; data: any } };
 
 export enum LANG {
   en = 'en',
   zh = 'zh',
+}
+
+export const RANDOM_PATTERN = '${default-suffix}';
+
+export enum CreateAppType {
+  template = 'template',
+  registry = 'registry',
 }

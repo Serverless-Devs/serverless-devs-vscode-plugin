@@ -1,4 +1,5 @@
 import * as core from '@serverless-devs/core';
+import * as os from 'os';
 import { WebviewPanel, ViewColumn, ExtensionContext, Uri } from 'vscode';
 import { getWebviewContent, createWebviewPanel } from '../../utils';
 import { WEBVIEW_ICON } from '../../constants';
@@ -6,6 +7,7 @@ import * as event from './event';
 const { lodash: _ } = core;
 
 class CreateApp {
+  public static payload: Record<string, any>;
   public static currentPanel: CreateApp | undefined;
   private readonly _panel: WebviewPanel;
 
@@ -28,10 +30,14 @@ class CreateApp {
   async run() {
     this._panel.webview.html = getWebviewContent(this._panel.webview, this.context.extensionUri, {
       componentName: 'CreateApp',
+      downloadPath: os.homedir(),
+      aliasList: await core.getCredentialAliasList(),
+      ...CreateApp.payload,
     });
     return this;
   }
-  public static async render(context: ExtensionContext) {
+  public static async render(context: ExtensionContext, payload: Record<string, any> = {}) {
+    CreateApp.payload = payload;
     if (CreateApp.currentPanel) {
       CreateApp.currentPanel._panel.reveal(ViewColumn.One);
     } else {
@@ -46,9 +52,8 @@ class CreateApp {
     const command = message.command;
     const data = message.data;
     switch (command) {
-      case 'deleteComponent':
-        await event.deleteComponent(data);
-        await update();
+      case 'setDownloadPath':
+        await event.setDownloadPath(data, this._panel.webview);
         break;
       // Add more switch case statements here as more webview message commands
     }
