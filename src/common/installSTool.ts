@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import * as commandExsits from 'command-exists';
 import { createTerminalWithExitStatus } from '.';
 
+// TODO: need remove？
 export function installSTool() {
   if (commandExsits.sync('npm')) {
     createTerminalWithExitStatus(`npm install @serverless-devs/s -g`)

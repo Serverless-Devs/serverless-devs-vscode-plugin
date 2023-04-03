@@ -2,18 +2,20 @@ import * as core from '@serverless-devs/core';
 import { WebviewPanel, ViewColumn, ExtensionContext, Uri } from 'vscode';
 import { getWebviewContent, createWebviewPanel } from '../../utils';
 import { WEBVIEW_ICON } from '../../constants';
+
 import * as event from './event';
 const { lodash: _ } = core;
 
-class ComponentList {
-  public static currentPanel: ComponentList | undefined;
+class LocalResource {
+  public static payload: Record<string, any>;
+  public static currentPanel: LocalResource | undefined;
   private readonly _panel: WebviewPanel;
 
   private constructor(panel: WebviewPanel, private context: ExtensionContext) {
     this._panel = panel;
     this._panel.onDidDispose(
       () => {
-        ComponentList.currentPanel = undefined;
+        LocalResource.currentPanel = undefined;
       },
       null,
       context.subscriptions,
@@ -26,34 +28,51 @@ class ComponentList {
   }
 
   async run() {
+    const data = await event.getParams(_.get(LocalResource.payload, 'itemData', {}));
+    console.log(data, 'data');
+
     this._panel.webview.html = getWebviewContent(this._panel.webview, this.context.extensionUri, {
-      componentName: 'ComponentList',
-      componentList: await event.getComponentList(),
+      componentName: 'LocalResource',
+      ...data,
     });
     return this;
   }
-  public static async render(context: ExtensionContext) {
-    if (ComponentList.currentPanel) {
-      ComponentList.currentPanel._panel.reveal(ViewColumn.One);
+  public static async render(context: ExtensionContext, payload: Record<string, any> = {}) {
+    LocalResource.payload = payload;
+    if (LocalResource.currentPanel) {
+      LocalResource.currentPanel._panel.reveal(ViewColumn.One);
     } else {
       // If a webview panel does not already exist create and show a new one
-      const panel = createWebviewPanel('ComponentList', '组件管理');
+      const panel = createWebviewPanel('LocalResource', 'Set up - Serverless-Devs');
       panel.iconPath = Uri.parse(WEBVIEW_ICON);
-      ComponentList.currentPanel = await new ComponentList(panel, context).run();
+      LocalResource.currentPanel = await new LocalResource(panel, context).run();
     }
   }
 
   private async receiveMessage(message: any, update: () => Promise<this>) {
+    console.log(message, '53message');
+
     const command = message.command;
     const data = message.data;
     switch (command) {
-      case 'deleteComponent':
-        await event.deleteComponent(data);
-        await update();
+      case 'updateAlias':
+        await event.updateAlias(data);
         break;
+      case 'updateShortcuts':
+        await event.updateShortcuts(data);
+        break;
+      case 'updateQuickCommandList':
+        await event.updateQuickCommandList(data);
+        break;
+      case 'executeCommand':
+        console.log(data, 'data');
+
+        await event.executeCommand(data);
+        break;
+
       // Add more switch case statements here as more webview message commands
     }
   }
 }
 
-export default ComponentList;
+export default LocalResource;

@@ -21,24 +21,27 @@ export function getQuickCommands() {
   return Array.isArray(data['quick-commands']) ? data['quick-commands'] : [];
 }
 
-export function createTerminal(
-  command: string,
-  shellPath?: string,
-  yamlFileName?: string,
-): vscode.Terminal {
+export function getMarkedYamls() {
+  const filePath = path.join(ext.cwd, TEMPLTE_FILE);
+  if (!fs.existsSync(filePath)) {
+    fs.writeFileSync(filePath, JSON.stringify({}));
+  }
+  const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+  return Array.isArray(data['marked-yamls']) ? data['marked-yamls'] : [];
+}
+
+export function createTerminal(command: string) {
   const terminals = vscode.window.terminals;
-  const exec = yamlFileName ? `${command} -t ${yamlFileName}` : command;
   for (const item of terminals) {
     if (item.name === TERMINAL_NAME) {
       item.dispose();
     }
   }
-  const terminal = shellPath
-    ? vscode.window.createTerminal({ name: TERMINAL_NAME, cwd: shellPath })
-    : vscode.window.createTerminal(TERMINAL_NAME);
+  const terminal = vscode.window.createTerminal(TERMINAL_NAME);
+  terminal.sendText(command);
   terminal.show();
-  terminal.sendText(exec);
   return terminal;
+
 }
 
 export function createTerminalWithExitStatus(command: string): Promise<vscode.TerminalExitStatus> {

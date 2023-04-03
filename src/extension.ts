@@ -1,12 +1,14 @@
 import * as path from 'path';
 import { commands, workspace, ExtensionContext } from 'vscode';
-import GlobalSettings from './webviews/global-settings';
-import CredentialList from './webviews/credential-list';
-import ComponentList from './webviews/component-list';
+import GlobalSettings from './panels/global-settings';
+import CredentialList from './panels/credential-list';
+import ComponentList from './panels/component-list';
+import LocalResourceWebview from './panels/local-resource';
 import { ext } from './extensionVariables';
 import { createTerminal } from './common';
 import createApp from './commands/create-app';
 import { LocalResource } from './views/local-resource';
+import { ItemData } from './common/treeItem';
 
 export async function activate(context: ExtensionContext) {
   ext.context = context;
@@ -64,24 +66,22 @@ export async function activate(context: ExtensionContext) {
   // const issueCommand = commands.registerCommand('serverless-devs.issue', () => {
   //   open('https://github.com/Serverless-Devs/Serverless-Devs/issues');
   // });
-  /**
-   * create the set command, which will be used to open the GlobalSettings panel
-   */
+
   const setCommand = commands.registerCommand('serverless-devs.set', async () => {
     await GlobalSettings.render(context);
   });
-  /**
-   * create the access command, which will be used to open the CredentialList panel
-   */
   const accessCommand = commands.registerCommand('serverless-devs.access', async () => {
     await CredentialList.render(context);
   });
-  /**
-   * create the component command, which will be used to open the ComponentList panel
-   */
   const componentCommand = commands.registerCommand('serverless-devs.component', async () => {
     await ComponentList.render(context);
   });
+  const localResourceSetCommand = commands.registerCommand(
+    'local-resource.set',
+    async (itemData: ItemData) => {
+      await LocalResourceWebview.render(context, { itemData });
+    },
+  );
   const createAppCommand = commands.registerCommand('serverless-devs.createApp', async () => {
     await createApp(context);
   });
@@ -101,6 +101,7 @@ export async function activate(context: ExtensionContext) {
     accessCommand,
     componentCommand,
     createAppCommand,
+    localResourceSetCommand,
   );
   await new LocalResource(context).autoMark();
 }
