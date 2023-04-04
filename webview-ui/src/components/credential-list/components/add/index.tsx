@@ -49,7 +49,6 @@ const Add: FC<IProps> = (props) => {
   const handleDoc = () => {
     const obj = find(PROVIDER_LIST, (item) => item.value === getValue('provider'));
     if (isEmpty(obj)) return;
-    console.log(obj.doc);
     vscode.postMessage({
       command: 'openAccessUrl',
       data: obj,

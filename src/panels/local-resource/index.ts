@@ -7,6 +7,7 @@ import * as event from './event';
 const { lodash: _ } = core;
 
 class LocalResource {
+  public static id: string; // webview id 
   public static payload: Record<string, any>;
   public static currentPanel: LocalResource | undefined;
   private readonly _panel: WebviewPanel;
@@ -29,8 +30,6 @@ class LocalResource {
 
   async run() {
     const data = await event.getParams(_.get(LocalResource.payload, 'itemData', {}));
-    console.log(data, 'data');
-
     this._panel.webview.html = getWebviewContent(this._panel.webview, this.context.extensionUri, {
       componentName: 'LocalResource',
       ...data,
@@ -39,19 +38,19 @@ class LocalResource {
   }
   public static async render(context: ExtensionContext, payload: Record<string, any> = {}) {
     LocalResource.payload = payload;
-    if (LocalResource.currentPanel) {
+    const id = _.get(payload, 'itemData.id');
+    if (LocalResource.currentPanel && id === LocalResource.id) {
       LocalResource.currentPanel._panel.reveal(ViewColumn.One);
     } else {
       // If a webview panel does not already exist create and show a new one
       const panel = createWebviewPanel('LocalResource', 'Set up - Serverless-Devs');
       panel.iconPath = Uri.parse(WEBVIEW_ICON);
       LocalResource.currentPanel = await new LocalResource(panel, context).run();
+      LocalResource.id = id;
     }
   }
 
   private async receiveMessage(message: any, update: () => Promise<this>) {
-    console.log(message, '53message');
-
     const command = message.command;
     const data = message.data;
     switch (command) {
@@ -65,8 +64,6 @@ class LocalResource {
         await event.updateQuickCommandList(data);
         break;
       case 'executeCommand':
-        console.log(data, 'data');
-
         await event.executeCommand(data);
         break;
 

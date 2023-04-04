@@ -28,7 +28,7 @@ export class ItemData {
 }
 
 export class TreeItem extends vscode.TreeItem {
-  iconPath: { light: vscode.Uri; dark: vscode.Uri };
+  iconPath!: { light: vscode.Uri; dark: vscode.Uri };
   contextValue = 'treeItem';
   constructor(
     itemData: ItemData,
@@ -56,8 +56,6 @@ export class TreeItem extends vscode.TreeItem {
     const { light, dark } = this.getTreeItemIcon(itemData);
     if (light && dark) {
       this.iconPath = { light, dark };
-    } else {
-      delete this.iconPath;
     }
 
     this.contextValue = this.getTreeItemContextValue(itemData);

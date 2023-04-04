@@ -8,7 +8,7 @@ import localize from '../../localize';
 export async function autoMark(appPath: string) {
   const filePath = path.join(appPath, TEMPLTE_FILE);
   if (!fs.existsSync(filePath)) {
-    const spaths = await getYamlPath(appPath);
+    const spaths = await getYamlPath(appPath) || [];
     fs.writeFileSync(filePath, JSON.stringify({}));
     const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
     if (!Array.isArray(data['marked-yamls'])) {
@@ -38,12 +38,10 @@ async function checkYaml(filePath: string) {
 }
 
 // TODO: 多层级查找yaml 代码优化
-async function getYamlPath(appPath: string): Promise<string[]> {
+async function getYamlPath(appPath: string): Promise<string[] | undefined> {
   try {
     const yamlList: string[] = new Array();
     await fileSearch(appPath, yamlList);
-    console.log(yamlList, 'yamlList');
-
     return yamlList;
   } catch (e) {
     console.error(e);
@@ -69,7 +67,7 @@ async function fileSearch(dirPath: string, yamlList: string[]) {
     if (stat.isDirectory()) {
       await fileSearch(datas.files[index], yamlList);
     }
-    if (stat.isFile() && regexp.test(filename)) {
+    if (stat.isFile() && regexp.test(filename as string)) {
       yamlList.push(fullFileame);
     }
   }

@@ -13,6 +13,7 @@
   ],
   "main": "./out/extension.js",
   "icon": "media/s.ico",
+  "activationEvents": [],
   "contributes": {
     "views": {
       "Serverless-Devs-explorer": [
@@ -326,8 +327,8 @@
     "start:webview": "npm --prefix ./webview-ui run start",
     "build:webview": "npm --prefix ./webview-ui run build",
     "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
+    "compile": "tsc -p ./tsconfig.json",
+    "watch": "tsc -watch -p ./tsconfig.json",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
     "test": "node ./out/test/runTest.js",

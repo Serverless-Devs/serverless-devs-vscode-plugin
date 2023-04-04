@@ -4,7 +4,7 @@ import * as fs from "fs";
 const serviceDecorationTypes: vscode.TextEditorDecorationType[] =
   createDecorationTypesByOpacity({ r: 255, g: 255, b: 64 }, 0.3, 0.01, 0.03);
 
-export async function goToFile(filePath: string, flowName?: string) {
+export default async function goToFile(filePath: string, flowName?: string) {
   const document = await vscode.workspace.openTextDocument(
     vscode.Uri.file(filePath)
   );

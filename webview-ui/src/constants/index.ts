@@ -58,10 +58,16 @@ export enum LANG {
   en = 'en',
   zh = 'zh',
 }
-
+// eslint-disable-next-line 
 export const RANDOM_PATTERN = '${default-suffix}';
 
 export enum CreateAppType {
   template = 'template',
   registry = 'registry',
+}
+
+export const ICONS = {
+  DEPLOY: 'https://img.alicdn.com/imgextra/i3/O1CN01BtNlJq1w6DLASrvHV_!!6000000006258-55-tps-16-16.svg',
+  BUILD: 'https://img.alicdn.com/imgextra/i1/O1CN01VUgjJx1kEfG9jD4vn_!!6000000004652-2-tps-16-16.png',
+  INVOKE: 'https://img.alicdn.com/imgextra/i4/O1CN01Tno0SH1oJ1UTq1PWB_!!6000000005203-55-tps-16-16.svg'
 }

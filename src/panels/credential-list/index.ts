@@ -1,6 +1,6 @@
 import * as core from '@serverless-devs/core';
 import * as path from 'path';
-import * as open from 'open';
+import open from 'open';
 import { WebviewPanel, ViewColumn, ExtensionContext, Uri } from 'vscode';
 import { getWebviewContent, createWebviewPanel } from '../../utils';
 import { WEBVIEW_ICON } from '../../constants';

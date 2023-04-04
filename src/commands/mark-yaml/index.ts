@@ -7,7 +7,7 @@ import localize from '../../localize';
 import { TEMPLTE_FILE } from '../../constants';
 const { lodash: _ } = core;
 
-export async function markYaml(uri: vscode.Uri) {
+async function markYaml(uri: vscode.Uri) {
   const { fsPath } = uri;
   try {
     // 方法执行成功说明yaml文件符合devs规范
@@ -58,3 +58,5 @@ export async function markYaml(uri: vscode.Uri) {
     );
   }
 }
+
+export default markYaml;

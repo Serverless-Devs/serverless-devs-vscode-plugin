@@ -3,10 +3,12 @@ import * as os from 'os';
 import { WebviewPanel, ViewColumn, ExtensionContext, Uri } from 'vscode';
 import { getWebviewContent, createWebviewPanel } from '../../utils';
 import { WEBVIEW_ICON } from '../../constants';
+import { CreateAppType } from '../../interface';
 import * as event from './event';
 const { lodash: _ } = core;
 
 class CreateApp {
+  public static id: string; // webview id 
   public static payload: Record<string, any>;
   public static currentPanel: CreateApp | undefined;
   private readonly _panel: WebviewPanel;
@@ -38,13 +40,15 @@ class CreateApp {
   }
   public static async render(context: ExtensionContext, payload: Record<string, any> = {}) {
     CreateApp.payload = payload;
-    if (CreateApp.currentPanel) {
+    const id = _.get(payload, 'type', CreateAppType.registry);
+    if (CreateApp.currentPanel && id === CreateApp.id) {
       CreateApp.currentPanel._panel.reveal(ViewColumn.One);
     } else {
       // If a webview panel does not already exist create and show a new one
       const panel = createWebviewPanel('CreateApp', '创建应用');
       panel.iconPath = Uri.parse(WEBVIEW_ICON);
       CreateApp.currentPanel = await new CreateApp(panel, context).run();
+      CreateApp.id = id;
     }
   }
 
