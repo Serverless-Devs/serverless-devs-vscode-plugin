@@ -1,5 +1,4 @@
 import { FC, useState, useEffect } from 'react';
-import { vscode, sleep } from '@/utils';
 import { Tab, Loading, Search } from '@alicloud/console-components';
 import Header from '@/components/header';
 import Empty from '@/components/empty';
@@ -9,6 +8,7 @@ import { getApps, getTabs } from '@/services/app';
 import { map, sortBy, filter, includes, first, get, isEmpty, find } from 'lodash';
 import styled from 'styled-components';
 import { CreateAppType } from '@/constants';
+import i18n from '@/i18n';
 
 type Props = {
   downloadPath: string;
@@ -20,8 +20,8 @@ type Props = {
 
 const CreateApp: FC<Props> = (props) => {
   const {
-    downloadPath = '/Users/shihuali',
-    aliasList = ['default', 'dankun', 'sub', 'z-fc-console', 'test'],
+    downloadPath,
+    aliasList,
     step: stepProps = 0,
     type = CreateAppType.registry,
     appName,
@@ -51,9 +51,9 @@ const CreateApp: FC<Props> = (props) => {
     }));
     const one = tabs.shift();
     if (one) {
-      tabs = [one, { key: 'all', name: '所有模版', items: apps }, ...tabs];
+      tabs = [one, { key: 'all', name: i18n('webview.create_app.all_templates'), items: apps }, ...tabs];
     } else {
-      tabs = [{ key: 'all', name: '所有模版', items: apps }, ...tabs];
+      tabs = [{ key: 'all', name: i18n('webview.create_app.all_templates'), items: apps }, ...tabs];
     }
     const fistTab = first(tabs);
     setTemplates(tabs);
@@ -101,7 +101,7 @@ const CreateApp: FC<Props> = (props) => {
       <Search
         style={{ width: '50%' }}
         className="mb-16"
-        placeholder="通过关键词快速搜索应用"
+        placeholder={i18n('webview.create_app.search_placeholder')}
         hasClear
         value={searchValue}
         onSearch={handleSearch}
@@ -143,9 +143,9 @@ const CreateApp: FC<Props> = (props) => {
   return (
     <>
       <Header
-        title="创建应用"
+        title={i18n('webview.create_app.title')}
         subtitle={
-          type === CreateAppType.registry ? '通过registry创建新的应用' : '通过模版创建新的应用'
+          type === CreateAppType.registry ? i18n('webview.create_app.registry') : i18n('webview.create_app.template')
         }
       />
       {step === 0 && renderAppList()}

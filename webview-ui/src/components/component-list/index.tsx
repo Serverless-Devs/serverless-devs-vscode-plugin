@@ -3,6 +3,7 @@ import { vscode, sleep } from '@/utils';
 import { Button, Table, Dialog } from '@alicloud/console-components';
 import Actions, { LinkButton } from '@alicloud/console-components-actions';
 import Header from '@/components/header';
+import i18n from '@/i18n';
 
 type IItem = { Component: string; Version: string; Size: string; Description: string };
 
@@ -16,8 +17,8 @@ const ComponentList: FC<Props> = (props) => {
 
   const handleDelete = (value: string) => {
     Dialog.alert({
-      title: `删除组件：${value}`,
-      content: '您确定要删除当前组件吗?',
+      title: i18n('webview.component_list.delete_component', { value }),
+      content: i18n('webview.component_list.delete_component_tips'),
       onOk: async () => {
         vscode.postMessage({
           command: 'deleteComponent',
@@ -30,13 +31,9 @@ const ComponentList: FC<Props> = (props) => {
 
   const handleBatchDelete = () => {
     Dialog.alert({
-      title: `批量删除组件`,
+      title: i18n('webview.component_list.batch_delete_component'),
       content: (
-        <div style={{ lineHeight: '18px' }}>
-          您确定对这些组件
-          <span className="color-error ml-4 mr-4">{selectedRowKeys.join(', ')}</span>
-          进行删除吗?
-        </div>
+        <div style={{ lineHeight: '18px' }} dangerouslySetInnerHTML={{ __html: i18n('webview.component_list.batch_delete_tips', { selectedRowKeys }) }} />
       ),
       onOk: async () => {
         vscode.postMessage({
@@ -70,7 +67,7 @@ const ComponentList: FC<Props> = (props) => {
       dataIndex: 'Description',
     },
     {
-      title: '操作',
+      title: i18n('webview.common.operation'),
       cell: (value, _index, record) => (
         // @ts-ignore
         <Actions>
@@ -80,7 +77,7 @@ const ComponentList: FC<Props> = (props) => {
             onClick={() => handleDelete(record.Component)}
             loading={record.loading}
           >
-            删除
+            {i18n('webview.common.delete')}
           </LinkButton>
         </Actions>
       ),
@@ -89,9 +86,9 @@ const ComponentList: FC<Props> = (props) => {
 
   return (
     <>
-      <Header title="组件管理" subtitle="工具已安装组件管理" />
+      <Header title={i18n('webview.component_list.component_management')} subtitle={i18n('webview.component_list.tools_installed_components_management')} />
       <Button disabled={selectedRowKeys.length === 0} type="primary" onClick={handleBatchDelete}>
-        批量删除
+        {i18n('webview.common.batch_delete')}
       </Button>
       <Table
         rowSelection={{

@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { get } from 'lodash';
+import { getLanguage } from '../utils';
+const lang = getLanguage();
 
-const lang = get(window, 'SERVERLESS_DEVS_CONFIG.lang', 'zh');
 
 export const getApps = async (params = { type: 'fc', lang }) => {
   const response = await axios.get(`https://registry.devsapp.cn/console/applications`, { params });

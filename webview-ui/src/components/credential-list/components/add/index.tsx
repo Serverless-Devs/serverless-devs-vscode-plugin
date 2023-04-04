@@ -10,6 +10,7 @@ import Google from './components/Google';
 import Tencent from './components/Tencent';
 import Custom, { customValidate, customFormat } from './components/Custom';
 import { find, includes, isEmpty } from 'lodash';
+import i18n from '@/i18n';
 
 const FormItem = Form.Item;
 
@@ -61,7 +62,7 @@ const Add: FC<IProps> = (props) => {
     <>
       <span onClick={() => setVisible(true)}>{children}</span>
       <SlidePanel
-        title={'添加密钥'}
+        title={i18n('webview.credential_list.add_key')}
         isShowing={visible}
         onClose={handleClose}
         onOk={handleOK}
@@ -70,21 +71,21 @@ const Add: FC<IProps> = (props) => {
       >
         {includes(existAlias, getValue('alias')) && (
           <Message type="warning" className="mb-16">
-            您已经添加过 {getValue('alias')} 的密钥，继续添加将会覆盖原有的密钥
+            {i18n('webview.credential_list.alias_exist', { alias: getValue('alias') })}
           </Message>
         )}
         <Form field={field} {...FORM_LAYOUT}>
-          <FormItem label="云厂商" required style={{ position: 'relative' }}>
+          <FormItem label={i18n('webview.credential_list.cloud_vendor')} required style={{ position: 'relative' }}>
             <Select
               showSearch
-              placeholder="请选择云厂商"
+              placeholder={i18n('webview.credential_list.cloud_vendor_placeholder')}
               className="full-width"
               {...init('provider', {
                 initValue: PROVIDER.alibaba,
                 rules: [
                   {
                     required: true,
-                    message: '云厂商不能为空',
+                    message: i18n('webview.credential_list.cloud_vendor_required'),
                   },
                 ],
               })}
@@ -97,19 +98,19 @@ const Add: FC<IProps> = (props) => {
                 text
                 onClick={handleDoc}
               >
-                密钥获取引导
+                {i18n('webview.credential_list.how_to_get')}
               </Button>
             )}
           </FormItem>
-          <FormItem label="密钥别名" required>
+          <FormItem label={i18n('webview.create_app.key_alias')} required>
             <Input
-              placeholder="请输入密钥别名"
+              placeholder={i18n('webview.create_app.input_key_alias_placeholder')}
               className="full-width"
               {...init('alias', {
                 rules: [
                   {
                     required: true,
-                    message: '密钥别名不能为空',
+                    message: i18n('webview.create_app.key_alias_required'),
                   },
                 ],
               })}

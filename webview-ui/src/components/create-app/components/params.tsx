@@ -6,6 +6,8 @@ import { getAppParams } from '@/services/app';
 import { useRequest } from 'ahooks';
 import { endsWith, first, get, includes, map, replace } from 'lodash';
 import { CreateAppType, IEventData } from '@/constants';
+import i18n from '@/i18n';
+
 
 const FormItem = Form.Item;
 
@@ -70,7 +72,7 @@ const Params: FC<Props> = (props) => {
       if (required) {
         rules.push({
           required: true,
-          message: `${item.title}不能为空`,
+          message: i18n('webview.create_app.params_required', { name: item.title })
         });
       }
       if (item.pattern) {
@@ -111,12 +113,12 @@ const Params: FC<Props> = (props) => {
       {type === CreateAppType.registry && (
         <div className="text-bold fz-20 cursor-pointer mb-16" onClick={onBack}>
           <Icon type="wind-arrow-left" />
-          <span className="ml-4">返回</span>
+          <span className="ml-4">{i18n('webview.common.back')}</span>
         </div>
       )}
       <Loading visible={loading} inline={false}>
         <Form field={field} {...FORM_LAYOUT}>
-          <FormItem label="初始化路径" required>
+          <FormItem label={i18n('webview.create_app.initialization_path')} required>
             <Input
               className="full-width"
               readOnly
@@ -125,7 +127,7 @@ const Params: FC<Props> = (props) => {
                 rules: [
                   {
                     required: true,
-                    message: '初始化路径不能为空',
+                    message: i18n('webview.create_app.initialization_path_required'),
                   },
                 ],
               })}
@@ -134,7 +136,7 @@ const Params: FC<Props> = (props) => {
               }
             />
           </FormItem>
-          <FormItem label="应用名称" required>
+          <FormItem label={i18n('webview.create_app.application_name')} required>
             <Input
               className="full-width"
               {...init('$appName', {
@@ -142,23 +144,23 @@ const Params: FC<Props> = (props) => {
                 rules: [
                   {
                     required: true,
-                    message: '应用名称不能为空',
+                    message: i18n('webview.create_app.application_name_required'),
                   },
                 ],
               })}
             />
           </FormItem>
-          <FormItem label="密钥别名" required>
+          <FormItem label={i18n('webview.create_app.key_alias')} required>
             <Select
               showSearch
-              placeholder="请选择密钥别名"
+              placeholder={i18n('webview.create_app.key_alias_placeholder')}
               className="full-width"
               {...init('$alias', {
                 initValue: includes(aliasList, 'default') ? 'default' : first(aliasList),
                 rules: [
                   {
                     required: true,
-                    message: '密钥别名不能为空',
+                    message: i18n('webview.create_app.key_alias_required'),
                   },
                 ],
               })}
@@ -168,11 +170,11 @@ const Params: FC<Props> = (props) => {
           {renderProperties()}
           <FormItem className="mt-32">
             <Button type="primary" onClick={handleCreate} loading={submitting}>
-              创建
+              {i18n('webview.common.create')}
             </Button>
             {type === CreateAppType.registry && (
               <Button className="ml-16" onClick={onBack} disabled={submitting}>
-                取消
+                {i18n('webview.common.cancel')}
               </Button>
             )}
           </FormItem>

@@ -5,9 +5,10 @@ import Actions, { LinkButton } from '@alicloud/console-components-actions';
 import { map, set, startsWith } from 'lodash';
 import Add from './components/add';
 import Header from '@/components/header';
+import i18n from '@/i18n';
 
 type Props = {
-  credentialList: { Alias: string; [prop: string]: any }[];
+  credentialList: { Alias: string;[prop: string]: any }[];
 };
 
 const CredentialList: FC<Props> = (props) => {
@@ -33,8 +34,8 @@ const CredentialList: FC<Props> = (props) => {
 
   const handleDelete = (value: string) => {
     Dialog.alert({
-      title: `删除密钥：${value}`,
-      content: '您确定要删除当前密钥吗?',
+      title: i18n('webview.credential_list.delete_key', { value }),
+      content: i18n('webview.credential_list.delete_key_tips'),
       onOk: async () => {
         vscode.postMessage({
           command: 'deleteCredential',
@@ -64,7 +65,7 @@ const CredentialList: FC<Props> = (props) => {
       dataIndex: 'Alias',
     },
     {
-      title: '密钥详情',
+      title: i18n('webview.credential_list.key_info'),
       cell: (value, _index, record) => {
         return map(record, (v, k) => {
           if (k === 'Alias' || startsWith(k, '$')) return;
@@ -77,12 +78,12 @@ const CredentialList: FC<Props> = (props) => {
       },
     },
     {
-      title: '操作',
+      title: i18n('webview.common.operation'),
       cell: (value, _index, record) => (
         // @ts-ignore
         <Actions>
           <LinkButton onClick={() => handleShow(record)}>
-            {record.$show ? '隐藏' : '显示'}
+            {record.$show ? i18n('webview.common.hide') : i18n('webview.common.show')}
           </LinkButton>
           <LinkButton
             type="primary"
@@ -90,7 +91,7 @@ const CredentialList: FC<Props> = (props) => {
             onClick={() => handleDelete(record.Alias)}
             loading={record.loading}
           >
-            删除
+            {i18n('webview.common.delete')}
           </LinkButton>
         </Actions>
       ),
@@ -99,9 +100,9 @@ const CredentialList: FC<Props> = (props) => {
 
   return (
     <>
-      <Header title="密钥管理" subtitle="本地密钥信息的管理" />
+      <Header title={i18n('webview.credential_list.key_management')} subtitle={i18n('webview.credential_list.management_of_local_key_information')} />
       <Add existAlias={map(data, (item) => item.Alias)}>
-        <Button type="primary">添加密钥</Button>
+        <Button type="primary">{i18n('webview.credential_list.add_key')}</Button>
       </Add>
       <Table className="mt-16" dataSource={data} columns={columns} />
     </>
