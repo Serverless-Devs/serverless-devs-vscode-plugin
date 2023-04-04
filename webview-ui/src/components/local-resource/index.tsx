@@ -168,7 +168,7 @@ const LocalResource: FC<Props> = (props) => {
       title: '执行',
       align: 'center',
       cell: (value, _index, record) => (
-        <img onClick={() => handleOperate(record)} className='cursor-pointer' src={ICONS.DEPLOY} alt='execute' />
+        <img onClick={() => handleOperate(record)} className='cursor-pointer' src={ICONS.INVOKE} alt='execute' />
       ),
     },
   ];

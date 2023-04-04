@@ -58,6 +58,7 @@ export function getWebviewContent(
 
   const SERVERLESS_DEVS_CONFIG = {
     componentName,
+    lang: vscode.env.language,
     data: rest,
   };
 
