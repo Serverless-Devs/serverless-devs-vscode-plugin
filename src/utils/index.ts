@@ -91,6 +91,7 @@ export function createWebviewPanel(
   const newOptions = {
     // Enable JavaScript in the webview
     enableScripts: true,
+    retainContextWhenHidden: true,
     ...options,
   };
   return vscode.window.createWebviewPanel(viewType, title, newViewColumn, newOptions);

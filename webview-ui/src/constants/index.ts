@@ -2,10 +2,10 @@ type Align = 'right' | 'left' | undefined;
 
 export const FORM_LAYOUT = {
   labelCol: {
-    fixedSpan: 6,
+    fixedSpan: 8,
   },
   wrapperCol: {
-    span: 18,
+    span: 16,
   },
   labelTextAlign: 'left' as Align,
 };

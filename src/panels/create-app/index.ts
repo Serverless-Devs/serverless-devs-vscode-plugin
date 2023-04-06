@@ -5,6 +5,7 @@ import { getWebviewContent, createWebviewPanel } from '../../utils';
 import { WEBVIEW_ICON } from '../../constants';
 import { CreateAppType } from '../../interface';
 import * as event from './event';
+import i18n from '../../i18n';
 const { lodash: _ } = core;
 
 class CreateApp {
@@ -45,7 +46,7 @@ class CreateApp {
       CreateApp.currentPanel._panel.reveal(ViewColumn.One);
     } else {
       // If a webview panel does not already exist create and show a new one
-      const panel = createWebviewPanel('CreateApp', '创建应用');
+      const panel = createWebviewPanel('CreateApp', i18n('vscode.panels.create_app.create_application'));
       panel.iconPath = Uri.parse(WEBVIEW_ICON);
       CreateApp.currentPanel = await new CreateApp(panel, context).run();
       CreateApp.id = id;

@@ -62,7 +62,7 @@
       },
       {
         "view": "local-resource",
-        "contents": "%vscode.local.resource..welcome.contents%"
+        "contents": "%vscode.local.resource.welcome.contents%"
       }
     ],
     "commands": [

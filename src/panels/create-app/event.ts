@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import * as core from '@serverless-devs/core';
+import i18n from '../../i18n';
 const { lodash: _ } = core;
 
 export async function setDownloadPath(
@@ -10,7 +11,7 @@ export async function setDownloadPath(
     canSelectFolders: true,
     canSelectFiles: false,
     canSelectMany: false,
-    openLabel: '选择这个路径',
+    openLabel: i18n('vscode.panels.create_app.choose_this_path'),
     defaultUri: vscode.Uri.file(downloadPath),
   };
   const selectFolderUri = await vscode.window.showOpenDialog(options);

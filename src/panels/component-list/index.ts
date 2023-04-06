@@ -3,6 +3,7 @@ import { WebviewPanel, ViewColumn, ExtensionContext, Uri } from 'vscode';
 import { getWebviewContent, createWebviewPanel } from '../../utils';
 import { WEBVIEW_ICON } from '../../constants';
 import * as event from './event';
+import i18n from '../../i18n';
 const { lodash: _ } = core;
 
 class ComponentList {
@@ -37,7 +38,7 @@ class ComponentList {
       ComponentList.currentPanel._panel.reveal(ViewColumn.One);
     } else {
       // If a webview panel does not already exist create and show a new one
-      const panel = createWebviewPanel('ComponentList', '组件管理');
+      const panel = createWebviewPanel('ComponentList', i18n('vscode.panels.component_list.manage_component'));
       panel.iconPath = Uri.parse(WEBVIEW_ICON);
       ComponentList.currentPanel = await new ComponentList(panel, context).run();
     }

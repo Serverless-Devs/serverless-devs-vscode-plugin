@@ -3,7 +3,7 @@ import * as path from 'path';
 import * as core from '@serverless-devs/core';
 import { ext } from '../../extensionVariables';
 import { TEMPLTE_FILE } from '../../constants';
-import localize from '../../localize';
+import i18n from '../../i18n';
 
 export async function autoMark(appPath: string) {
   const filePath = path.join(appPath, TEMPLTE_FILE);
@@ -18,7 +18,7 @@ export async function autoMark(appPath: string) {
       if (await checkYaml(spath)) {
         data['marked-yamls'].push({
           path: path.relative(ext.cwd, spath),
-          alias: localize('vscode.default.environment'),
+          alias: i18n('vscode.common.default_environment'),
         });
       }
     }

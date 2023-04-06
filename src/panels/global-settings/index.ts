@@ -4,6 +4,7 @@ import { WebviewPanel, ViewColumn, ExtensionContext, Uri } from 'vscode';
 import { getWebviewContent, createWebviewPanel } from '../../utils';
 import { WEBVIEW_ICON, ISSUE_URL } from '../../constants';
 import * as event from './event';
+import i18n from '../../i18n';
 
 class GlobalSettings {
   public static currentPanel: GlobalSettings | undefined;
@@ -39,7 +40,7 @@ class GlobalSettings {
       GlobalSettings.currentPanel._panel.reveal(ViewColumn.One);
     } else {
       // If a webview panel does not already exist create and show a new one
-      const panel = createWebviewPanel('GlobalSettings', '设置中心');
+      const panel = createWebviewPanel('GlobalSettings', i18n('vscode.panels.global_settings.set_center'));
       panel.iconPath = Uri.parse(WEBVIEW_ICON);
       GlobalSettings.currentPanel = await new GlobalSettings(panel, context).run();
     }

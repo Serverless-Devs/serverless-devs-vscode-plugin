@@ -3,7 +3,7 @@ import * as path from 'path';
 import * as core from '@serverless-devs/core';
 import * as fs from 'fs';
 import { ext } from '../../extensionVariables';
-import localize from '../../localize';
+import i18n from '../../i18n';
 import { TEMPLTE_FILE } from '../../constants';
 const { lodash: _ } = core;
 
@@ -13,10 +13,10 @@ async function markYaml(uri: vscode.Uri) {
     // 方法执行成功说明yaml文件符合devs规范
     await core.transforYamlPath(fsPath);
     const answer = await vscode.window.showInputBox({
-      title: localize('vscode.the.alias.for.this.workspace.configuration'),
-      prompt: localize('vscode.please.enter'),
+      title: i18n('vscode.commands.mark_yaml.alias_for_this_workspace_configuration'),
+      prompt: i18n('vscode.common.please_enter'),
       validateInput: (name: string) => {
-        return name.length === 0 ? 'value cannot be empty.' : undefined;
+        return name.length === 0 ? i18n('vscode.common.value_required') : undefined;
       },
     });
     if (_.isEmpty(answer)) return;
@@ -53,9 +53,7 @@ async function markYaml(uri: vscode.Uri) {
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
     ext.localResource.refresh();
   } catch (error) {
-    vscode.window.showErrorMessage(
-      localize('vscode.yaml.files.do.not.conform.to.the.Serverless.Devs.specification'),
-    );
+    vscode.window.showErrorMessage(i18n('vscode.commands.mark_yaml.bad_yaml_file'));
   }
 }
 

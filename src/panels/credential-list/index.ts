@@ -5,6 +5,7 @@ import { WebviewPanel, ViewColumn, ExtensionContext, Uri } from 'vscode';
 import { getWebviewContent, createWebviewPanel } from '../../utils';
 import { WEBVIEW_ICON } from '../../constants';
 import * as event from './event';
+import i18n from '../../i18n';
 const { lodash: _ } = core;
 
 class CredentialList {
@@ -50,7 +51,7 @@ class CredentialList {
       CredentialList.currentPanel._panel.reveal(ViewColumn.One);
     } else {
       // If a webview panel does not already exist create and show a new one
-      const panel = createWebviewPanel('CredentialList', '密钥管理');
+      const panel = createWebviewPanel('CredentialList', i18n('vscode.panels.credential_list.manage_credential'));
       panel.iconPath = Uri.parse(WEBVIEW_ICON);
       CredentialList.currentPanel = await new CredentialList(panel, context).run();
     }

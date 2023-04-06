@@ -71,7 +71,7 @@ async function init(context: vscode.ExtensionContext) {
     await CreateAppPanel.render(context, {
       step: 1,
       type: CreateAppType.template,
-      appName: template.value,
+      appName: _.replace(template.value, 'devsapp/', ''),
     });
   }
 
