@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { Form, Field, Input } from '@alicloud/console-components';
 import { FORM_LAYOUT } from '@/constants';
+import i18n from '@/i18n';
 const FormItem = Form.Item;
 
 type Props = {
@@ -14,13 +15,13 @@ const Google: FC<Props> = (props) => {
     <>
       <FormItem label="PrivateKeyData" required {...FORM_LAYOUT}>
         <Input
-          placeholder="请输入PrivateKeyData"
+          placeholder={i18n('webview.credential_list.private_key_data')}
           className="full-width"
           {...init('PrivateKeyData', {
             rules: [
               {
                 required: true,
-                message: 'PrivateKeyData不能为空',
+                message: i18n('webview.credential_list.private_key_data_required'),
               },
             ],
           })}

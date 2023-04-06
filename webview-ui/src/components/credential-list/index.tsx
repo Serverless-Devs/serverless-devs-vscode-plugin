@@ -104,7 +104,7 @@ const CredentialList: FC<Props> = (props) => {
       <Add existAlias={map(data, (item) => item.Alias)}>
         <Button type="primary">{i18n('webview.credential_list.add_key')}</Button>
       </Add>
-      <Table className="mt-16" dataSource={data} columns={columns} />
+      <Table className="mt-16" dataSource={data} columns={columns} emptyContent={i18n('webview.common.no_data')} />
     </>
   );
 };

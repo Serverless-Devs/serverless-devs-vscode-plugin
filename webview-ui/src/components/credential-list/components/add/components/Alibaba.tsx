@@ -1,6 +1,8 @@
 import { FC } from 'react';
 import { Form, Field, Input } from '@alicloud/console-components';
 import { FORM_LAYOUT } from '@/constants';
+import i18n from '@/i18n';
+
 const FormItem = Form.Item;
 
 type Props = {
@@ -14,13 +16,13 @@ const Alibaba: FC<Props> = (props) => {
     <>
       <FormItem label="AccessKeyID" required {...FORM_LAYOUT}>
         <Input
-          placeholder="请输入AccessKeyID"
+          placeholder={i18n('webview.credential_list.access_key_id')}
           className="full-width"
           {...init('AccessKeyID', {
             rules: [
               {
                 required: true,
-                message: 'AccessKeyID不能为空',
+                message: i18n('webview.credential_list.access_key_id_required'),
               },
             ],
           })}
@@ -28,13 +30,13 @@ const Alibaba: FC<Props> = (props) => {
       </FormItem>
       <FormItem label="AccessKeySecret" required {...FORM_LAYOUT}>
         <Input
-          placeholder="请输入AccessKeySecret"
+          placeholder={i18n('webview.credential_list.access_key_secret')}
           className="full-width"
           {...init('AccessKeySecret', {
             rules: [
               {
                 required: true,
-                message: 'AccessKeySecret不能为空',
+                message: i18n('webview.credential_list.access_key_secret_required'),
               },
             ],
           })}

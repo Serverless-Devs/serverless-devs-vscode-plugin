@@ -4,6 +4,7 @@ import { Table, Dialog, Input, Icon, Field, Form } from '@alicloud/console-compo
 import Header from '@/components/header';
 import { get, map } from 'lodash';
 import { FORM_LAYOUT, ICONS } from '@/constants';
+import i18n from '@/i18n';
 
 type IShortcutsItem = { id: string; command: string, args?: string }
 type IQuickCommandItem = IShortcutsItem & { desc: string };
@@ -92,7 +93,7 @@ const LocalResource: FC<Props> = (props) => {
 
   const shortcutsColumns = [
     {
-      title: '快捷按钮',
+      title: i18n('webview.local_resource.shortcut_button'),
       align: 'center',
       cell: (value, _index, record) => {
         if (record.command === 'deploy') {
@@ -109,16 +110,16 @@ const LocalResource: FC<Props> = (props) => {
     {
       key: 'command',
       align: 'center',
-      title: '行为配置',
+      title: i18n('webview.local_resource.behavior_configuration'),
       dataIndex: 'command',
     },
     {
       key: 'args',
       align: 'center',
-      title: '参数配置',
+      title: i18n('webview.local_resource.parameter_configuration'),
       dataIndex: 'args',
       cell: (value, _index, record) => {
-        return <Input className='full-width' placeholder="请输入参数" value={value} onChange={(value,) => handleShortcutsArgs(value, record)} />;
+        return <Input className='full-width' placeholder={i18n('webview.common.enter_parameters')} value={value} onChange={(value,) => handleShortcutsArgs(value, record)} />;
       }
     },
 
@@ -146,26 +147,26 @@ const LocalResource: FC<Props> = (props) => {
     {
       key: 'command',
       align: 'center',
-      title: '命令',
+      title: i18n('webview.common.command'),
       dataIndex: 'command',
     },
     {
       key: 'desc',
       align: 'center',
-      title: '解释',
+      title: i18n('webview.common.explain'),
       dataIndex: 'desc',
     },
     {
       key: 'args',
       align: 'center',
-      title: '参数配置',
+      title: i18n('webview.local_resource.parameter_configuration'),
       dataIndex: 'args',
       cell: (value, _index, record) => {
-        return <Input className='full-width' placeholder="请输入参数" value={value} onChange={(value,) => handleArgs(value, record)} />;
+        return <Input className='full-width' placeholder={i18n('webview.common.enter_parameters')} value={value} onChange={(value,) => handleArgs(value, record)} />;
       }
     },
     {
-      title: '执行',
+      title: i18n('webview.common.exec'),
       align: 'center',
       cell: (value, _index, record) => (
         <img onClick={() => handleOperate(record)} className='cursor-pointer' src={ICONS.INVOKE} alt='execute' />
@@ -184,20 +185,20 @@ const LocalResource: FC<Props> = (props) => {
   return (
     <>
       <Header title={renderAlias()} extra={<Icon className='cursor-pointer' type='edit' onClick={() => { setValue('visible', true) }} />} />
-      <Header size='small' title="快捷方式操作" subtitle="针对左侧的快捷方式进行自定义配置" />
+      <Header size='small' title={i18n('webview.local_resource.shortcut_operation')} subtitle={i18n('webview.local_resource.shortcut_operation_subtitle')} />
       <Table
         className="mt-16"
         dataSource={shortcuts}
         columns={shortcutsColumns}
       />
-      <Header size='small' className='mt-16' title="快速操作" subtitle="快速执行自定义指令" />
+      <Header size='small' className='mt-16' title={i18n('webview.common.quick_operation')} subtitle={i18n('webview.common.quick_operation_subtitle')} />
       <Table
         className="mt-16"
         dataSource={quickCommandList}
         columns={quickCommandColumns}
       />
       {/* react 18 使用 Dialog.show 报错 */}
-      <Dialog title="编辑"
+      <Dialog title={i18n('"webview.common.edit')}
         visible={getValue('visible')}
         size='small'
         onOk={handleUpdateAlias}
@@ -206,12 +207,12 @@ const LocalResource: FC<Props> = (props) => {
         okProps={{ loading: getValue('updateAliasLoading') }}
       >
         <Form field={field}>
-          <Form.Item label="别名" {...FORM_LAYOUT} required>
+          <Form.Item label={i18n('webview.common.alias')} {...FORM_LAYOUT} required>
             <Input className='full-width' {...init('alias', {
               initValue: alias,
               rules: [{
                 required: true,
-                message: '别名不能为空',
+                message: i18n('"webview.common.alias_required'),
               }]
             })} />
           </Form.Item>

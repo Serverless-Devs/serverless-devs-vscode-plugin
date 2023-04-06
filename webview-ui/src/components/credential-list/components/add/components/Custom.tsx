@@ -1,6 +1,8 @@
 import { FC, useState } from 'react';
 import { uniqueId, concat, map, filter, noop, isEmpty, set } from 'lodash';
 import { Grid, Button, Icon, Input } from '@alicloud/console-components';
+import i18n from '@/i18n';
+
 
 const { Row, Col } = Grid;
 
@@ -29,7 +31,7 @@ export const customFormat = (value: IItem[]) => {
 export const customValidate = (rule, value, callback) => {
   const newData = filter(value, (item) => item.key && item.value);
   if (newData.length === 0) {
-    return callback('请至少填写一条完整的数据');
+    return callback(i18n('webview.common.at_least_one_data_required'));
   }
   callback();
 };
@@ -104,7 +106,7 @@ const KeyValue: FC<Props> = (props) => {
           </Row>
         );
       })}
-      <Button onClick={handleAdd}>+添加条目</Button>
+      <Button onClick={handleAdd}>{i18n('webview.common.add')}</Button>
     </>
   );
 };
