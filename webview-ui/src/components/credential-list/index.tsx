@@ -3,7 +3,7 @@ import { vscode, sleep } from '@/utils';
 import { Button, Table, Dialog } from '@alicloud/console-components';
 import Actions, { LinkButton } from '@alicloud/console-components-actions';
 import { map, set, startsWith } from 'lodash';
-import Add from './components/add';
+import CredentialUi from '@serverless-cd/credential-ui';
 import Header from '@/components/header';
 import i18n from '@/i18n';
 
@@ -58,6 +58,21 @@ const CredentialList: FC<Props> = (props) => {
     setData(newData as any);
   };
 
+  const handleAdd = async (data: Record<string, any>) => {
+    vscode.postMessage({
+      command: 'addCredential',
+      data,
+    });
+    await sleep();
+  }
+
+  const handleOpenDocument = (data: Record<string, any>) => {
+    vscode.postMessage({
+      command: 'openAccessUrl',
+      data,
+    });
+  }
+
   const columns = [
     {
       key: 'Alias',
@@ -101,9 +116,9 @@ const CredentialList: FC<Props> = (props) => {
   return (
     <>
       <Header title={i18n('webview.credential_list.key_management')} subtitle={i18n('webview.credential_list.management_of_local_key_information')} />
-      <Add existAlias={map(data, (item) => item.Alias)}>
+      <CredentialUi existAlias={map(data, (item) => item.Alias)} onConfirm={handleAdd} onOpenDocument={handleOpenDocument}>
         <Button type="primary">{i18n('webview.credential_list.add_key')}</Button>
-      </Add>
+      </CredentialUi>
       <Table className="mt-16" dataSource={data} columns={columns} emptyContent={i18n('webview.common.no_data')} />
     </>
   );
