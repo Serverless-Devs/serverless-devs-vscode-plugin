@@ -304,7 +304,7 @@
     "install:all": "npm install && npm --prefix ./webview-ui install ./webview-ui",
     "start:webview": "npm --prefix ./webview-ui run start",
     "build:webview": "npm --prefix ./webview-ui run build",
-    "vscode:prepublish": "npm run compile",
+    "vscode:prepublish": "npm run build:webview && npm run compile",
     "compile": "tsc -p ./tsconfig.json",
     "watch": "tsc -watch -p ./tsconfig.json",
     "pretest": "npm run compile && npm run lint",
