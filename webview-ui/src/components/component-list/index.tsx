@@ -100,6 +100,7 @@ const ComponentList: FC<Props> = (props) => {
         primaryKey="Component"
         dataSource={componentList}
         columns={columns}
+        emptyContent={i18n('webview.common.no_data')}
       />
     </>
   );

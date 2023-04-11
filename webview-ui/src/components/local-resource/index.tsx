@@ -190,12 +190,14 @@ const LocalResource: FC<Props> = (props) => {
         className="mt-16"
         dataSource={shortcuts}
         columns={shortcutsColumns}
+        emptyContent={i18n('webview.common.no_data')}
       />
       <Header size='small' className='mt-16' title={i18n('webview.common.quick_operation')} subtitle={i18n('webview.common.quick_operation_subtitle')} />
       <Table
         className="mt-16"
         dataSource={quickCommandList}
         columns={quickCommandColumns}
+        emptyContent={i18n('webview.common.no_data')}
       />
       {/* react 18 使用 Dialog.show 报错 */}
       <Dialog title={i18n('"webview.common.edit')}
