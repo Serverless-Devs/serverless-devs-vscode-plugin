@@ -14,7 +14,7 @@ interface CommandItem {
 
 export async function executeCommand(params: { command: string }) {
   const { command } = params;
-  createTerminal(command);
+  await createTerminal(command);
 }
 export async function updateQuickCommandList(params: { quickCommandList: CommandItem[], itemData: ItemData }) {
   const { quickCommandList, itemData } = params;

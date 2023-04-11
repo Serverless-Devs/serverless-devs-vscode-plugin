@@ -43,16 +43,16 @@ export async function activate(context: ExtensionContext) {
     },
     {
       command: 'serverless-devs.verify',
-      callback: (itemData) => {
+      callback: async (itemData) => {
         const template = path.relative(ext.cwd, itemData.fsPath);
-        createTerminal(`s verify -t ${template}`);
+        await createTerminal(`s verify -t ${template}`);
       }
     },
     {
       command: 'serverless-devs.edit',
-      callback: (itemData) => {
+      callback: async (itemData) => {
         const template = path.relative(ext.cwd, itemData.fsPath);
-        createTerminal(`s edit -t ${template}`);
+        await createTerminal(`s edit -t ${template}`);
       }
     },
     {

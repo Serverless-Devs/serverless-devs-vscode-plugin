@@ -21,7 +21,7 @@ async function custom(itemData: ItemData) {
       command = `${command} ${argsObj.args}`;
     }
   }
-  createTerminal(command);
+  await createTerminal(command);
 }
 
 export default custom;

@@ -1,8 +1,12 @@
 import * as path from 'path';
 import * as fs from 'fs';
+import commandExsits from 'command-exists';
 import * as vscode from 'vscode';
 import { ext } from '../extensionVariables';
-import { TEMPLTE_FILE, TERMINAL_NAME } from '../constants';
+import { TEMPLTE_FILE, TERMINAL_NAME, DEVS_INSTALL_CMD } from '../constants';
+import i18n from '../i18n';
+
+
 export { MultiStepInput } from './multiStepInput';
 export { ItemData, TreeItem } from './treeItem';
 
@@ -24,7 +28,29 @@ export function getMarkedYamls() {
   return Array.isArray(data['marked-yamls']) ? data['marked-yamls'] : [];
 }
 
-export function createTerminal(command: string) {
+function checkDevsInstalled() {
+  return new Promise((resolve) => {
+    commandExsits('s', (err, commandExists) => {
+      if (err) {
+        resolve(false);
+      }
+      resolve(commandExists);
+    });
+  });
+}
+export async function createTerminal(command: string) {
+  const isDevsInstalled = await checkDevsInstalled();
+  let newCommand = command;
+  if (!isDevsInstalled) {
+    const res = await vscode.window.showInformationMessage(
+      i18n('vscode.common.check_devs_is_installed'),
+      'yes',
+      'no',
+    );
+    if (res !== 'yes') return;
+    newCommand = `${DEVS_INSTALL_CMD} && ${command}`;
+  }
+
   const terminals = vscode.window.terminals;
   for (const item of terminals) {
     if (item.name === TERMINAL_NAME) {
@@ -32,25 +58,8 @@ export function createTerminal(command: string) {
     }
   }
   const terminal = vscode.window.createTerminal(TERMINAL_NAME);
-  terminal.sendText(command);
+  terminal.sendText(newCommand);
   terminal.show();
   return terminal;
 
-}
-
-export function createTerminalWithExitStatus(command: string): Promise<vscode.TerminalExitStatus> {
-  const terminal = createTerminal(command);
-  terminal.sendText('exit');
-  return new Promise((resolve, reject) => {
-    const disposeToken = vscode.window.onDidCloseTerminal(async (closedTerminal) => {
-      if (closedTerminal === terminal) {
-        disposeToken.dispose();
-        if (terminal.exitStatus !== undefined) {
-          resolve(terminal.exitStatus);
-        } else {
-          reject('Terminal exited with undefined status');
-        }
-      }
-    });
-  });
 }

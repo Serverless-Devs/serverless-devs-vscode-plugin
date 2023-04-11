@@ -12,6 +12,7 @@ const zh = {
     "vscode.panels.credential_list.manage_credential": "密钥管理",
     "vscode.panels.component_list.manage_component": "组件管理",
     "vscode.panels.global_settings.set_center": "设置中心",
+    "vscode.common.check_devs_is_installed": "检测到您未安装Serverless Devs工具，点击yes将自动安装，否则将退出当前程序",
 }
 
 export default zh;

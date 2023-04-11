@@ -12,6 +12,7 @@ const en = {
     "vscode.panels.credential_list.manage_credential": "Manage Credentials",
     "vscode.panels.component_list.manage_component": "Manage Components",
     "vscode.panels.global_settings.set_center": "Settings Center",
+    "vscode.common.check_devs_is_installed": "It is detected that you have not installed the Serverless Devs tool, click yes to install it automatically, otherwise it will exit the current program",
 
 }
 

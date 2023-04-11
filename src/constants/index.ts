@@ -6,3 +6,4 @@ export const GROUP_URL = 'http://i.serverless-devs.com';
 export const GITHUB_URL = 'https://github.com/Serverless-Devs/Serverless-Devs';
 export const REGISTRY_URL = 'http://www.devsapp.cn/index.html'
 export const HOME_URL = 'https://www.serverless-devs.com';
+export const DEVS_INSTALL_CMD = 'npm install -g @serverless-devs/s --registry=https://registry.npmmirror.com';
