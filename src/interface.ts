@@ -17,3 +17,8 @@ export enum CreateAppType {
   template = 'template',
   registry = 'registry',
 }
+
+export interface ImarkedYamlItem {
+  path: string;
+  alias: string;
+}

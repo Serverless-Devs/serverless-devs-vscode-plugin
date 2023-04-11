@@ -3,7 +3,7 @@ import * as path from "path";
 import * as commandExists from 'command-exists';
 import { ext } from "../../extensionVariables";
 import { LocalResourceTreeDataProvider } from "./treeDataProvider";
-import { autoMark } from "./autoMark";
+import autoMark from "./autoMark";
 
 export class LocalResource {
   constructor(context: vscode.ExtensionContext) {
