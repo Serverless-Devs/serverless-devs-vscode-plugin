@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { vscode, sleep } from '@/utils';
+import { vscode, sleep, alert } from '@/utils';
 import { Button, Table, Dialog } from '@alicloud/console-components';
 import Actions, { LinkButton } from '@alicloud/console-components-actions';
 import Header from '@/components/header';
@@ -16,7 +16,7 @@ const ComponentList: FC<Props> = (props) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
 
   const handleDelete = (value: string) => {
-    Dialog.alert({
+    alert({
       title: i18n('webview.component_list.delete_component', { value }),
       content: i18n('webview.component_list.delete_component_tips'),
       onOk: async () => {
@@ -30,7 +30,7 @@ const ComponentList: FC<Props> = (props) => {
   };
 
   const handleBatchDelete = () => {
-    Dialog.alert({
+    alert({
       title: i18n('webview.component_list.batch_delete_component'),
       content: (
         <div style={{ lineHeight: '18px' }} dangerouslySetInnerHTML={{ __html: i18n('webview.component_list.batch_delete_tips', { selectedRowKeys }) }} />

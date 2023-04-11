@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { vscode, sleep } from '@/utils';
+import { vscode, sleep, alert } from '@/utils';
 import { Button, Table, Dialog } from '@alicloud/console-components';
 import Actions, { LinkButton } from '@alicloud/console-components-actions';
 import { map, set, startsWith } from 'lodash';
@@ -33,7 +33,7 @@ const CredentialList: FC<Props> = (props) => {
   const [data, setData] = useState(newCredentialList);
 
   const handleDelete = (value: string) => {
-    Dialog.alert({
+    alert({
       title: i18n('webview.credential_list.delete_key', { value }),
       content: i18n('webview.credential_list.delete_key_tips'),
       onOk: async () => {
