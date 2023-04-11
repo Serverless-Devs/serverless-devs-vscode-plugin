@@ -6,6 +6,7 @@ import { TEMPLTE_FILE } from '../../constants';
 import { ImarkedYamlItem } from '../../interface';
 import i18n from '../../i18n';
 const globby = require('globby');
+const { lodash: _ } = core;
 
 
 async function autoMark(appPath: string) {
@@ -25,6 +26,7 @@ async function autoMark(appPath: string) {
       });
     }
   }
+  if (_.isEmpty(markedYamls)) return;
   fs.writeFileSync(filePath, JSON.stringify({ 'marked-yamls': markedYamls }, null, 2));
   ext.localResource.refresh();
 }
