@@ -1,70 +1,49 @@
-# devs-vscode README
+![插件](https://img.alicdn.com/imgextra/i3/O1CN013XbDqD1KO7RGoz3Q1_!!6000000001153-2-tps-1890-719.png)
 
-This is the README for your extension "devs-vscode". After writing up a brief description, we recommend including the following sections.
+<p align="center">
+  <a href="https://marketplace.visualstudio.com/items?itemName=serverless-devs.serverless-devs">
+    <img src="https://vsmarketplacebadge.apphb.com/version/serverless-devs.serverless-devs.svg?logo=visual-studio-code" /></a>
+  <a href="https://marketplace.visualstudio.com/items?itemName=serverless-devs.serverless-devs">
+    <img src="https://vsmarketplacebadge.apphb.com/installs-short/serverless-devs.serverless-devs.svg" /></a>
+  <a href="https://marketplace.visualstudio.com/items?itemName=serverless-devs.serverless-devs">
+    <img src="https://vsmarketplacebadge.apphb.com/downloads-short/serverless-devs.serverless-devs.svg" /></a>
+  <a href="https://github.com/Serverless-Devs/serverless-devs-vscode-plugin/issues">
+    <img src="https://img.shields.io/github/issues/serverless-devs/serverless-devs-vscode-plugin" alt="issues"></a>
+  <a href="https://github.com/Serverless-Devs/Serverless-Devs/discussions">
+    <img src="https://img.shields.io/github/discussions/serverless-devs/serverless-devs" alt="discussions"></a>
+</p>
 
-## Features
+**Serverless Devs VSCode插件**是为方便Serverless架构的使用而诞生的。通过VSCode插件的形式，用户可以以GUI+CLI的方式更好地体验[Serverless Devs](https://github.com/Serverless-Devs/Serverless-Devs)，目前还在开发与内测阶段，但大部分功能已经可以使用了。我们会不断地改善它，争取为广大开发者带来更好的Serverless体验。
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+## 快速开始
 
-For example if there is an image subfolder under your extension project workspace:
 
-\!\[feature X\]\(images/feature-x.png\)
+1. 安装 Node.js(>=10.8.0) 与 NPM 包管理工具；
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+2. 在VSCode中找到我们的应用(建议您搜索全名:**Serverless-devs**)
 
-## Requirements
+3. 通常情况下，您需要先[获取密钥](https://docs.serverless-devs.com/serverless-devs/default_provider_config/readme)
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+4. 选择创建方式并创建应用
+5. 在新的项目窗口中开发程序并进行编辑配置、部署、构建等操作
 
-## Extension Settings
+   > 部分功能依赖[Serverless Devs](https://github.com/Serverless-Devs/Serverless-Devs),但插件内会检测并提供安装流程。该插件与[Serverless Devs](https://github.com/Serverless-Devs/Serverless-Devs) 共享本地配置文件。
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+## 帮助内容
 
-For example:
+> 如果您是第一次上手serverless架构，我们还提供了以下内容，可能会对您所有帮助。
 
-This extension contributes the following settings:
+- [Serverless Devs 文档](https://docs.serverless-devs.com/serverless-devs/readme)
+- [Yaml规范](https://docs.serverless-devs.com/serverless-devs/yaml)
+- [Serverless Registry(应用下载)](http://www.devsapp.cn/application.html)
+- [阿里云官网](https://www.aliyun.com/)
 
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
+## 交流社区
 
-## Known Issues
+您如果有关于错误的反馈或者未来的期待，您可以在 [Issues](https://github.com/serverless-devs/serverless-devs/issues) 和 [Discussions](https://github.com/serverless-devs/serverless-devs/discussions) 中进行反馈和交流。如果您想要加入我们的讨论组或者了解 Serverless Devs 的最新动态，您可以通过以下渠道进行：
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
 
-## Release Notes
+| <img src="https://img.alicdn.com/imgextra/i2/O1CN01zifTV61Mkg9QRNBUs_!!6000000001473-2-tps-466-462.png" width="200px" > | <img src="https://serverless-article-picture.oss-cn-hangzhou.aliyuncs.com/1635407044136_20211028074404326599.png" width="200px" > | <img src="https://img.alicdn.com/imgextra/i1/O1CN01ECE9wN1RMvgS6d1JM_!!6000000002098-0-tps-881-877.jpg" width="200px" > |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| 关注微信公众号：`serverless`                                 | 联系微信小助手：`xiaojiangwh`                                | 加入钉钉交流群：`33947367`                                   |
 
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
------------------------------------------------------------------------------------------------------------
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
