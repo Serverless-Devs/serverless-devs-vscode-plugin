@@ -76,7 +76,7 @@ const CredentialList: FC<Props> = (props) => {
   const columns = [
     {
       key: 'Alias',
-      title: 'Alias',
+      title: i18n('webview.common.alias'),
       dataIndex: 'Alias',
     },
     {

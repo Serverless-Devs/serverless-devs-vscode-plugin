@@ -200,7 +200,7 @@ const LocalResource: FC<Props> = (props) => {
         emptyContent={i18n('webview.common.no_data')}
       />
       {/* react 18 使用 Dialog.show 报错 */}
-      <Dialog title={i18n('"webview.common.edit')}
+      <Dialog title={i18n('webview.common.edit')}
         visible={getValue('visible')}
         size='small'
         onOk={handleUpdateAlias}

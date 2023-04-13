@@ -8,7 +8,7 @@ export async function deleteCredential(access: string) {
   const data = await core.getYamlContent(filePath);
   const newData = _.omit(data, access);
   fs.writeFileSync(filePath, yaml.dump(newData));
-  vscode.window.showInformationMessage(`Key [${access}] has been successfully removed.`);
+  vscode.window.showInformationMessage(`Access [${access}] has been successfully removed.`);
 }
 
 export async function addCredential(data: any) {
