@@ -16,38 +16,42 @@ export async function executeCommand(params: { command: string }) {
   const { command } = params;
   await createTerminal(command);
 }
-export async function updateQuickCommandList(params: { quickCommandList: CommandItem[], itemData: ItemData }) {
-  const { quickCommandList, itemData } = params;
+export async function updateQuickCommandList(params: { record: CommandItem, itemData: ItemData }) {
+  const { record, itemData } = params;
   const stroreKey = itemData.contextValue === "app" ? "app" : itemData.label;
   const filePath = path.join(ext.cwd, TEMPLTE_FILE);
   if (!fs.existsSync(filePath)) {
     fs.writeFileSync(filePath, JSON.stringify({}));
   }
   const data = JSON.parse(fs.readFileSync(filePath, "utf-8"));
-  if (Array.isArray(data["quick-commands"])) {
-    const findObj = data["quick-commands"].find(
-      (item) => item.path === itemData.spath
-    );
-    if (findObj) {
-      data["quick-commands"] = data["quick-commands"].map((item) => {
-        if (item.path === itemData.spath) {
-          item[stroreKey] = quickCommandList;
+  data["quick-commands"] = _.isArray(data["quick-commands"]) ? data["quick-commands"] : []
+
+  const findObj = data["quick-commands"].find(
+    (item) => item.path === itemData.spath
+  );
+  if (findObj) {
+    data["quick-commands"] = data["quick-commands"].map((item) => {
+      if (item.path === itemData.spath) {
+        const appObj = _.find(item[stroreKey], (obj: CommandItem) => obj.id === record.id);
+        if (appObj) {
+          item[stroreKey] = _.map(item[stroreKey], (obj: CommandItem) => {
+            if (obj.id === record.id) {
+              return record;
+            }
+            return obj;
+          });
+        } else {
+          item[stroreKey] = _.isArray(item[stroreKey]) ? item[stroreKey] : []
+          item[stroreKey].push(record);
         }
-        return item;
-      });
-    } else {
-      data["quick-commands"].push({
-        path: itemData.spath,
-        [stroreKey]: quickCommandList,
-      });
-    }
+      }
+      return item;
+    });
   } else {
-    data["quick-commands"] = [
-      {
-        path: itemData.spath,
-        [stroreKey]: quickCommandList,
-      },
-    ];
+    data["quick-commands"].push({
+      path: itemData.spath,
+      [stroreKey]: [record],
+    });
   }
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
 }

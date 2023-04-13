@@ -8,7 +8,7 @@ import { get } from 'lodash';
 
 function App() {
   const SERVERLESS_DEVS_CONFIG = get(window, 'SERVERLESS_DEVS_CONFIG');
-  const componentName: string = get(SERVERLESS_DEVS_CONFIG, 'componentName', 'CredentialList');
+  const componentName: string = get(SERVERLESS_DEVS_CONFIG, 'componentName', 'LocalResource');
   const data: any = get(SERVERLESS_DEVS_CONFIG, 'data', {});
 
   const Comp = () => {
