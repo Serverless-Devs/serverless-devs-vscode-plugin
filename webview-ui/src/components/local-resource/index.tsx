@@ -2,7 +2,7 @@ import { FC, useState } from 'react';
 import { vscode, sleep } from '@/utils';
 import { Table, Dialog, Input, Icon, Field, Form } from '@alicloud/console-components';
 import Header from '@/components/header';
-import { get, map } from 'lodash';
+import { find, get, map, uniqueId } from 'lodash';
 import { FORM_LAYOUT, ICONS } from '@/constants';
 import i18n from '@/i18n';
 
@@ -20,7 +20,7 @@ const LocalResource: FC<Props> = (props) => {
   const {
     itemData = {},
     quickCommandList: _quickCommandList = [],
-    shortcuts: _shortcuts = []
+    shortcuts: _shortcuts = [{ id: uniqueId(), command: 'deploy' }, { id: uniqueId(), command: 'build' }, { id: uniqueId(), command: 'invoke' }]
   } = props;
 
   const [alias, setAlias] = useState<string>(itemData.alias);
@@ -81,10 +81,11 @@ const LocalResource: FC<Props> = (props) => {
       return item;
     });
     setQuickCommandList(newData);
+    const findObj = find(quickCommandList, item => item.id === record.id);
     vscode.postMessage({
       command: 'updateQuickCommandList',
       data: {
-        quickCommandList: newData,
+        record: { ...findObj, args: value },
         itemData,
       }
     });
@@ -200,7 +201,7 @@ const LocalResource: FC<Props> = (props) => {
         emptyContent={i18n('webview.common.no_data')}
       />
       {/* react 18 使用 Dialog.show 报错 */}
-      <Dialog title={i18n('"webview.common.edit')}
+      <Dialog title={i18n('webview.common.edit')}
         visible={getValue('visible')}
         size='small'
         onOk={handleUpdateAlias}

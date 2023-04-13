@@ -30,7 +30,7 @@ class GlobalSettings {
     const analysis = await core.getSetConfig('analysis');
     this._panel.webview.html = getWebviewContent(this._panel.webview, this.context.extensionUri, {
       componentName: 'GlobalSettings',
-      analysis: analysis === 'enable',
+      analysis: analysis !== 'disable',
       workspace: core.getRootHome(),
     });
     return this;

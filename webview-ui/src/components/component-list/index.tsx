@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import { vscode, sleep, alert } from '@/utils';
-import { Button, Table, Dialog } from '@alicloud/console-components';
+import { Button, Table } from '@alicloud/console-components';
 import Actions, { LinkButton } from '@alicloud/console-components-actions';
 import Header from '@/components/header';
 import i18n from '@/i18n';

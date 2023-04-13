@@ -1,5 +1,7 @@
 {
   "vscode.quick.start": "Quick start",
+  "vscode.format_check": "Format check",
+  "vscode.visual_editing": "visual editing",
   "vscode.a.must-read.for.development": "A must-read for development",
   "vscode.more": "More",
   "vscode.quick.start.welcome.contents": "Quickly start your journey to Serverless\n[Credential Management](command:serverless-devs.access)\n[Create an application](command:serverless-devs.createApp)\n[Component Management](command:serverless-devs.component)\nIn addition, You can quickly refer to and learn more graphic cases through [Get started quickly](https://docs.serverless-devs.com/serverless-devs/quick_start).",

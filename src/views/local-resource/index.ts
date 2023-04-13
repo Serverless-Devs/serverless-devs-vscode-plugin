@@ -15,7 +15,7 @@ export class LocalResource {
         showCollapseAll: true,
       });
       context.subscriptions.push(view);
-      view.title = `${path.basename(ext.cwd)}(Serverless-Devs)`;
+      view.title = 'Serverless-Devs';
       this.registerRefreshCommand();
     }
   }

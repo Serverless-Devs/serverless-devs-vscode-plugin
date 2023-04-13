@@ -43,7 +43,7 @@ class LocalResource {
       LocalResource.currentPanel._panel.reveal(ViewColumn.One);
     } else {
       // If a webview panel does not already exist create and show a new one
-      const panel = createWebviewPanel('LocalResource', 'Set up - Serverless-Devs');
+      const panel = createWebviewPanel('LocalResource', 'Setup - Serverless-Devs');
       panel.iconPath = Uri.parse(WEBVIEW_ICON);
       LocalResource.currentPanel = await new LocalResource(panel, context).run();
       LocalResource.id = id;

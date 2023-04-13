@@ -90,7 +90,7 @@
       },
       {
         "command": "serverless-devs.set",
-        "title": "Set up",
+        "title": "Setup",
         "category": "Serverless-Devs",
         "icon": {
           "light": "media/light/set.svg",
@@ -126,7 +126,7 @@
       },
       {
         "command": "local-resource.set",
-        "title": "Set up",
+        "title": "Setup",
         "category": "Serverless-Devs",
         "icon": {
           "light": "media/light/set.svg",
@@ -152,7 +152,7 @@
       },
       {
         "command": "serverless-devs.verify",
-        "title": "verify",
+        "title": "%vscode.format_check%",
         "category": "Serverless-Devs",
         "icon": {
           "light": "media/light/verify.svg",
@@ -161,7 +161,7 @@
       },
       {
         "command": "serverless-devs.edit",
-        "title": "edit",
+        "title": "%vscode.visual_editing%",
         "category": "Serverless-Devs",
         "icon": {
           "light": "media/light/edit.svg",
@@ -193,15 +193,6 @@
         "icon": {
           "light": "media/light/github.svg",
           "dark": "media/dark/github.svg"
-        }
-      },
-      {
-        "command": "serverless-devs.group",
-        "title": "DingTalk group/community",
-        "category": "Serverless-Devs",
-        "icon": {
-          "light": "media/light/group.svg",
-          "dark": "media/dark/group.svg"
         }
       },
       {
@@ -244,12 +235,8 @@
           "group": "navigation@5"
         },
         {
-          "command": "serverless-devs.group",
-          "group": "navigation@6"
-        },
-        {
           "command": "serverless-devs.issue",
-          "group": "navigation@7"
+          "group": "navigation@6"
         }
       ],
       "explorer/context": [
