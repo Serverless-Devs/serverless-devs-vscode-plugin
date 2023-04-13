@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import { vscode, sleep, alert } from '@/utils';
-import { Button, Table, Dialog } from '@alicloud/console-components';
+import { Button, Table } from '@alicloud/console-components';
 import Actions, { LinkButton } from '@alicloud/console-components-actions';
 import { map, set, startsWith } from 'lodash';
 import CredentialUi from '@serverless-cd/credential-ui';

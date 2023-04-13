@@ -10,7 +10,7 @@
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
     "@serverless-cd/ali-readme": "^0.0.7",
     "@serverless-cd/app-card-ui": "^0.0.7",
-    "@serverless-cd/credential-ui": "^0.0.4",
+    "@serverless-cd/credential-ui": "^0.0.6",
     "@svgr/webpack": "^5.5.0",
     "@types/node": "^16.18.12",
     "@types/react": "^18.0.27",
